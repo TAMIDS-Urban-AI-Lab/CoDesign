@@ -1,0 +1,3 @@
+# Tell ESLint to ignore these files
+/.expo
+node_modules

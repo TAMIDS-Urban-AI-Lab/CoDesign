@@ -1,26 +1,44 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * Below are the colors that are used in the app.
  */
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+export const tamuColors = {
+  primaryBrand: '#500000',
+  primaryBrandDark: '#3c0000',
+  primaryBrandLight: '#732f2f',
+  white: '#ffffff',
+  gray100: '#f6f6f6',
+  gray200: '#eaeaea',
+  gray300: '#d1d1d1',
+  gray400: '#a7a7a7',
+  gray500: '#707070',
+  gray600: '#626262',
+  gray700: '#535353',
+  gray800: '#3e3e3e',
+  gray900: '#202020',
+  black: '#000000',
+  accentCream: '#d6d3c4',
+  accentIvory: '#e9e4dc'
+};
+
+const selectedColorLight = tamuColors.primaryBrand;
+const selectedColorDark = tamuColors.white;
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight
+    text: tamuColors.black,
+    background: tamuColors.white,
+    tint: selectedColorLight,
+    icon: tamuColors.gray500,
+    tabIconDefault: tamuColors.gray500,
+    tabIconSelected: selectedColorLight
   },
   dark: {
     text: '#ECEDEE',
     background: '#151718',
-    tint: tintColorDark,
+    tint: selectedColorDark,
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark
+    tabIconSelected: selectedColorDark
   }
 };

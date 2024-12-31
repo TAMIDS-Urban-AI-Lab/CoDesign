@@ -15,8 +15,9 @@ const MAPPING = {
   'chevron.left.forwardslash.chevron.right': 'chevron-forward',
   'chevron.right': 'chevron-back',
   'map.fill': 'map',
-  'pencil': 'pencil-sharp',
-  'person.crop.circle.fill': 'person-circle'
+  pencil: 'pencil-sharp',
+  'person.crop.circle.fill': 'person-circle',
+  'camera.fill': 'camera'
 } as Partial<
   Record<
     import('expo-symbols').SymbolViewProps['name'],

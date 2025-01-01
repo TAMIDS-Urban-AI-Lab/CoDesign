@@ -1,54 +1,53 @@
-
-
+import { ViewStyle } from 'react-native';
 
 export const Layout = {
   flex: {
-    flex: 1,
+    flex: 1
   },
   row: {
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   col: {
-    flexDirection: "column",
+    flexDirection: 'column'
   },
   alignStart: {
-    alignItems: "flex-start",
+    alignItems: 'flex-start'
   },
   alignCenter: {
-    alignItems: "center",
+    alignItems: 'center'
   },
   alignEnd: {
-    alignItems: "flex-end",
+    alignItems: 'flex-end'
   },
   justifyStart: {
-    justifyContent: "flex-start",
+    justifyContent: 'flex-start'
   },
   justifyCenter: {
-    justifyContent: "center",
+    justifyContent: 'center'
   },
   justifyEnd: {
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end'
   },
   justifySpaceBetween: {
-    justifyContent: "space-between",
+    justifyContent: 'space-between'
   },
   justifySpaceAround: {
-    justifyContent: "space-around",
+    justifyContent: 'space-around'
   },
   justifySpaceEvenly: {
-    justifyContent: "space-evenly",
+    justifyContent: 'space-evenly'
   },
   center: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   spaceBetween: {
-    justifyContent: "space-between",
+    justifyContent: 'space-between'
   },
   spaceAround: {
-    justifyContent: "space-around",
+    justifyContent: 'space-around'
   },
   spaceEvenly: {
-    justifyContent: "space-evenly",
+    justifyContent: 'space-evenly'
   }
-}
+} as Record<string, ViewStyle>;

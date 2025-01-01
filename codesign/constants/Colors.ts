@@ -18,7 +18,9 @@ export const tamuColors = {
   gray900: '#202020',
   black: '#000000',
   accentCream: '#d6d3c4',
-  accentIvory: '#e9e4dc'
+  accentIvory: '#e9e4dc',
+  accentGold: '#af8846',
+  transparent: '#00000000'
 };
 
 const selectedColorLight = tamuColors.primaryBrand;

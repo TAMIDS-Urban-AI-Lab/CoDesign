@@ -1,18 +1,19 @@
+import { type TextStyle } from 'react-native';
 
 export const Typography = {
   textCenter: {
-    textAlign: "center",
+    textAlign: 'center'
   },
   textLeft: {
-    textAlign: "left",
+    textAlign: 'left'
   },
   textRight: {
-    textAlign: "right",
+    textAlign: 'right'
   },
   underline: {
-    textDecorationLine: "underline",
+    textDecorationLine: 'underline'
   },
   textUppercase: {
-    textTransform: "uppercase",
+    textTransform: 'uppercase'
   }
-}
+} as Record<string, TextStyle>;

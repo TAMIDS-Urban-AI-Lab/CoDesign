@@ -1,4 +1,3 @@
-
 // Spacing constants for padding and margin
 
 export const Spacing = {

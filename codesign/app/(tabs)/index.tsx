@@ -1,23 +1,13 @@
 import { StyleSheet } from 'react-native';
 
 import { ThemedView } from '@/components/ThemedView';
-import MapboxGL from '@rnmapbox/maps';
-
-MapboxGL.setTelemetryEnabled(false);
+import { MapView } from '@/components/map/MapView';
+import { Layout } from '@/constants/styles/Layout';
 
 export default function HomeScreen() {
   return (
     <ThemedView style={styles.titleContainer}>
-      <MapboxGL.MapView style={styles.map}>
-        <MapboxGL.Camera
-          zoomLevel={12}
-          centerCoordinate={[-122.4194, 37.7749]} // San Francisco coordinates
-        />
-        <MapboxGL.MarkerView
-          id="marker"
-          coordinate={[-122.4194, 37.7749]}
-        ></MapboxGL.MarkerView>
-      </MapboxGL.MapView>
+      <MapView style={[Layout.flex]} />
     </ThemedView>
   );
 }

@@ -10,9 +10,6 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "We need your location to display the map."
-      },
       "bundleIdentifier": "com.anonymous.codesign"
     },
     "android": {

@@ -16,6 +16,7 @@ import { useFonts } from '@/hooks/useFonts';
 
 // Set the access token from app.json
 MapboxGL.setAccessToken(Constants.expoConfig?.extra?.mapboxAccessToken ?? '');
+MapboxGL.setTelemetryEnabled(false);
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();

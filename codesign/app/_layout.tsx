@@ -8,9 +8,14 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
+import MapboxGL from '@rnmapbox/maps';
+import Constants from 'expo-constants';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useFonts } from '@/hooks/useFonts';
+
+// Set the access token from app.json
+MapboxGL.setAccessToken(Constants.expoConfig?.extra?.mapboxAccessToken ?? '');
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();

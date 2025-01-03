@@ -1,19 +1,22 @@
 import { StyleSheet } from 'react-native';
 
-import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { MapView } from '@/components/map/MapView';
+import { Layout } from '@/constants/styles/Layout';
 
 export default function HomeScreen() {
   return (
     <ThemedView style={styles.titleContainer}>
-      <ThemedText type="title1">Map</ThemedText>
+      <MapView style={[Layout.flex]} />
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flex: 1,
-    padding: 16
+    flex: 1
+  },
+  map: {
+    flex: 1
   }
 });

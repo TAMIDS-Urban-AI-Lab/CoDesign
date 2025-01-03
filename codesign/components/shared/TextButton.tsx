@@ -62,7 +62,9 @@ const styles = StyleSheet.create({
     borderColor: tamuColors.primaryBrand
   },
   secondaryButtonDark: {
-    backgroundColor: tamuColors.transparent
+    backgroundColor: tamuColors.transparent,
+    borderWidth: 2,
+    borderColor: tamuColors.accentGold
   }
 });
 

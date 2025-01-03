@@ -1,4 +1,4 @@
-import { StyleSheet, Image, Pressable } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { ThemedView } from '@/components/ThemedView';
 import { EditProfile } from '@/components/profile/EditProfile';

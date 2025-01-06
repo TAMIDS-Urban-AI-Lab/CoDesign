@@ -5,7 +5,7 @@ import {
 } from '@/types/Report';
 
 export const DefaultIndoorReport: ReportFormDetails = {
-  reportType: ReportType.FEEDBACK,
+  reportType: ReportType.MAINTENANCE,
   reportLocation: ReportLocationType.INDOOR,
   title: '',
   description: '',
@@ -18,7 +18,7 @@ export const DefaultIndoorReport: ReportFormDetails = {
 };
 
 export const DefaultOutdoorReport: ReportFormDetails = {
-  reportType: ReportType.FEEDBACK,
+  reportType: ReportType.MAINTENANCE,
   reportLocation: ReportLocationType.OUTDOOR,
   title: '',
   description: '',

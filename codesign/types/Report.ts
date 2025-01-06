@@ -1,5 +1,6 @@
 export enum ReportType {
-  'FEEDBACK' = 'FEEDBACK'
+  'MAINTENANCE' = 'MAINTENANCE',
+  'OTHER' = 'OTHER'
 }
 
 export enum ReportLocationType {

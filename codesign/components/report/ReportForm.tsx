@@ -2,7 +2,8 @@ import {
   StyleSheet,
   type ViewProps,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  Alert
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 
@@ -25,12 +26,12 @@ import createReport from '@/hooks/report/createReport';
 const BOTTOM_SPACE_HEIGHT = 148;
 
 export function ReportForm({ style }: ViewProps) {
-  const { control, handleSubmit, watch, setValue } = useForm({
+  const { control, handleSubmit, watch, setValue, formState } = useForm({
     defaultValues: DefaultIndoorReport
   });
 
-  // Set ReportType to FEEDBACK by default
-  setValue('reportType', ReportType.FEEDBACK);
+  // Set ReportType to MAINTENANCE by default
+  setValue('reportType', ReportType.MAINTENANCE);
 
   const reportLocation = watch('reportLocation');
 
@@ -43,13 +44,42 @@ export function ReportForm({ style }: ViewProps) {
     reportLocation: ReportLocationType,
     onChange: (...event: any[]) => void
   ) => {
-    // [TO DO: #23]: Add confirmation dialog informing user that Indoor details will be cleared
-
     // reset reportLocationDetails when switching between indoor and outdoor
     setValue('reportLocationDetails', {});
 
     // call onChange to update the value in the form
     onChange(reportLocation);
+  };
+
+  const maybeSwitchLocationAlert = (
+    reportLocation: ReportLocationType,
+    onChange: (...event: any[]) => void
+  ) => {
+    const switchingToOutdoor = reportLocation === ReportLocationType.OUTDOOR;
+    const isIndoorInputsDirty =
+      formState.dirtyFields.reportLocationDetails?.indoorDetails
+        ?.buildingName ||
+      formState.dirtyFields.reportLocationDetails?.indoorDetails?.floorNumber;
+
+    // Only show alert if user has filled out indoor fields
+    if (switchingToOutdoor && isIndoorInputsDirty) {
+      Alert.alert(
+        'Are you sure?',
+        'This will clear the Building Name and Floor Number',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => {}
+          },
+          {
+            text: 'Yes',
+            onPress: () => switchReportLocation(reportLocation, onChange)
+          }
+        ]
+      );
+    } else {
+      switchReportLocation(reportLocation, onChange);
+    }
   };
 
   return (
@@ -75,14 +105,20 @@ export function ReportForm({ style }: ViewProps) {
                   title="Indoor"
                   checked={value === ReportLocationType.INDOOR}
                   onPress={() =>
-                    switchReportLocation(ReportLocationType.INDOOR, onChange)
+                    maybeSwitchLocationAlert(
+                      ReportLocationType.INDOOR,
+                      onChange
+                    )
                   }
                 />
                 <ThemedRadioButton
                   title="Outdoor"
                   checked={value === ReportLocationType.OUTDOOR}
                   onPress={() =>
-                    switchReportLocation(ReportLocationType.OUTDOOR, onChange)
+                    maybeSwitchLocationAlert(
+                      ReportLocationType.OUTDOOR,
+                      onChange
+                    )
                   }
                 />
               </>

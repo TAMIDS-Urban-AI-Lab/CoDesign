@@ -1,19 +1,10 @@
-import { StyleSheet } from 'react-native';
+import { HeaderLayout } from '@/components/shared/HeaderLayout';
+import { ReportForm } from '@/components/report/ReportForm';
 
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-
-export default function TabTwoScreen() {
+export default function ReportScreen() {
   return (
-    <ThemedView style={styles.titleContainer}>
-      <ThemedText type="title">Report</ThemedText>
-    </ThemedView>
+    <HeaderLayout title="Create Report">
+      <ReportForm></ReportForm>
+    </HeaderLayout>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flex: 1,
-    padding: 16
-  }
-});

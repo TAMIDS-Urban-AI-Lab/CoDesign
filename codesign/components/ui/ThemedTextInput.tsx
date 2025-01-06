@@ -18,7 +18,7 @@ export type ThemedTextInputProps = TextInputProps & {
   multiline?: boolean;
   numberOfLines?: number;
   onChangeText: ((text: string) => void) | undefined;
-  value: string;
+  value?: string;
   placeholder: string;
 };
 

@@ -2,7 +2,8 @@ import {
   StyleSheet,
   Pressable,
   type ViewProps,
-  type TextProps
+  type TextProps,
+  type PressableProps
 } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
@@ -13,31 +14,34 @@ import { tamuColors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Layout } from '@/constants/styles/Layout';
 
-type TextButtonType = 'primary' | 'secondary';
+type TextButtonType = 'primary' | 'secondary' | 'tertiary';
 
-type TextButtonProps = {
+type TextButtonProps = PressableProps & {
   text: string;
   type?: TextButtonType;
   style?: ViewProps['style'];
   textStyle?: TextProps['style'];
+  smallCaps?: boolean;
 };
 
 export function TextButton({
   text,
   type = 'primary',
   style,
-  textStyle
+  textStyle,
+  smallCaps = true,
+  ...rest
 }: TextButtonProps) {
   const colorScheme = useColorScheme() ?? 'light';
   const buttonStyle = typeToButtonStyle[type][colorScheme];
   const textColorScheme = typeToTextColor[type];
   const textColor = { color: useThemeColor(textColorScheme, 'text') };
-
+  const textCapitalization = smallCaps ? Typography.textUppercase : {};
   return (
-    <Pressable style={[styles.buttonBase, buttonStyle, style]}>
+    <Pressable style={[styles.buttonBase, buttonStyle, style]} {...rest}>
       <ThemedText
         type="title5"
-        style={[textColor, Typography.textUppercase, textStyle]}
+        style={[textColor, textCapitalization, textStyle]}
       >
         {text}
       </ThemedText>
@@ -48,6 +52,7 @@ export function TextButton({
 const styles = StyleSheet.create({
   buttonBase: {
     height: Spacing.xxlarge,
+    paddingHorizontal: Spacing.large,
     ...Layout.center
   },
   primaryButtonLight: {
@@ -65,6 +70,12 @@ const styles = StyleSheet.create({
     backgroundColor: tamuColors.transparent,
     borderWidth: 2,
     borderColor: tamuColors.accentGold
+  },
+  tertiaryButtonLight: {
+    backgroundColor: tamuColors.transparent
+  },
+  tertiaryButtonDark: {
+    backgroundColor: tamuColors.transparent
   }
 });
 
@@ -76,6 +87,10 @@ const typeToButtonStyle = {
   secondary: {
     light: styles.secondaryButtonLight,
     dark: styles.secondaryButtonDark
+  },
+  tertiary: {
+    light: styles.tertiaryButtonLight,
+    dark: styles.tertiaryButtonDark
   }
 };
 
@@ -85,6 +100,10 @@ const typeToTextColor = {
     dark: tamuColors.primaryBrand
   },
   secondary: {
+    light: tamuColors.primaryBrand,
+    dark: tamuColors.white
+  },
+  tertiary: {
     light: tamuColors.primaryBrand,
     dark: tamuColors.white
   }

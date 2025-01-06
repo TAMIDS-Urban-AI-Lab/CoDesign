@@ -43,6 +43,8 @@ export function ReportForm({ style }: ViewProps) {
     reportLocation: ReportLocationType,
     onChange: (...event: any[]) => void
   ) => {
+    // [TO DO: #23]: Add confirmation dialog informing user that Indoor details will be cleared
+
     // reset reportLocationDetails when switching between indoor and outdoor
     setValue('reportLocationDetails', {});
 

@@ -40,14 +40,5 @@ export const Layout = {
   center: {
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  spaceBetween: {
-    justifyContent: 'space-between'
-  },
-  spaceAround: {
-    justifyContent: 'space-around'
-  },
-  spaceEvenly: {
-    justifyContent: 'space-evenly'
   }
 } as Record<string, ViewStyle>;

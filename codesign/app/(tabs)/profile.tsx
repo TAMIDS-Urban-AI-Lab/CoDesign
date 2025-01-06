@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default function TabTwoScreen() {
+export default function ProfileScreen() {
   return (
     <HeaderLayout title="Profile">
       <EditProfile style={styles.profileContainer} />

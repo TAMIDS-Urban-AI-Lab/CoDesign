@@ -6,6 +6,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { Border } from '@/constants/styles/Border';
 import { Layout } from '@/constants/styles/Layout';
 import { Spacing } from '@/constants/styles/Spacing';
+import { ThemedScrollView } from '@/components/ThemedScrollView';
 
 const styles = StyleSheet.create({
   parentContainer: {
@@ -42,7 +43,12 @@ export function HeaderLayout({ title, style, children }: HeaderLayoutProps) {
           {title}
         </ThemedText>
       </ThemedView>
-      <ThemedView style={styles.childrenContainer}>{children}</ThemedView>
+      <ThemedScrollView
+        style={styles.childrenContainer}
+        scrollToOverflowEnabled={true}
+      >
+        {children}
+      </ThemedScrollView>
     </ThemedView>
   );
 }

@@ -8,7 +8,6 @@ import { useForm, Controller } from 'react-hook-form';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { ThemedScrollView } from '@/components/ThemedScrollView';
 import { Spacing } from '@/constants/styles/Spacing';
 import { Layout } from '@/constants/styles/Layout';
 import { TextButton } from '@/components/shared/TextButton';
@@ -55,10 +54,7 @@ export function ReportForm({ style }: ViewProps) {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <ThemedScrollView
-        style={[styles.formContainer, style]}
-        scrollToOverflowEnabled={true}
-      >
+      <ThemedView style={[style]}>
         <ThemedText
           type="title4"
           withDivider={true}
@@ -178,15 +174,12 @@ export function ReportForm({ style }: ViewProps) {
           />
         </ThemedView>
         <ThemedView style={styles.bottomSpace}></ThemedView>
-      </ThemedScrollView>
+      </ThemedView>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  formContainer: {
-    paddingRight: Spacing.medium
-  },
   input: {
     marginBottom: Spacing.large
   },

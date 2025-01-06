@@ -1,6 +1,11 @@
 import { Text, type TextProps, StyleSheet } from 'react-native';
 
 import { useThemeColor } from '@/hooks/useThemeColor';
+import { ThemedView } from '@/components/ThemedView';
+import { Layout } from '@/constants/styles/Layout';
+import { Typography } from '@/constants/styles/Typography';
+import { tamuColors } from '@/constants/Colors';
+import { Spacing } from '@/constants/styles/Spacing';
 
 type ThemedTextType =
   | 'paragraph'
@@ -12,12 +17,14 @@ type ThemedTextType =
   | 'title4'
   | 'title5'
   | 'title6'
-  | 'link';
+  | 'link'
+  | 'formText';
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
   type?: ThemedTextType;
+  withDivider?: boolean;
 };
 
 export function ThemedText({
@@ -25,73 +32,39 @@ export function ThemedText({
   lightColor,
   darkColor,
   type = 'paragraph',
+  withDivider = false,
   ...rest
 }: ThemedTextProps) {
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
 
-  const typeStyle = getStyleType(type);
+  const typography = getTypographyByType(type);
 
-  return <Text style={[{ color }, typeStyle, style]} {...rest} />;
+  if (withDivider) {
+    return (
+      <ThemedView
+        style={[Layout.row, Layout.center, { gap: Spacing.small }, style]}
+      >
+        <Text style={[{ color }, typography]} {...rest} />
+        <ThemedView style={[styles.divider]} />
+      </ThemedView>
+    );
+  }
+
+  return <Text style={[{ color }, typography, style]} {...rest} />;
 }
 
 /**
- * Looks up the style for the given type,
+ * Looks up the typography for the given type,
  * defaults to paragraph style
  */
-function getStyleType(type: ThemedTextType) {
-  return styles[type] || styles.paragraph;
+function getTypographyByType(type: ThemedTextType) {
+  return Typography[type] || Typography.paragraph;
 }
 
 const styles = StyleSheet.create({
-  paragraph: {
-    fontSize: 16,
-    lineHeight: 24,
-    fontFamily: 'OpenSansRegular'
-  },
-  paragraphBold: {
-    fontSize: 16,
-    lineHeight: 24,
-    fontFamily: 'OpenSansBold'
-  },
-  paragraphItalic: {
-    fontSize: 16,
-    lineHeight: 24,
-    fontFamily: 'OpenSansItalic'
-  },
-  title1: {
-    fontSize: 52,
-    lineHeight: 66,
-    fontFamily: 'OswaldRegular'
-  },
-  title2: {
-    fontSize: 32,
-    lineHeight: 48,
-    fontFamily: 'OswaldRegular'
-  },
-  title3: {
-    fontSize: 24,
-    lineHeight: 33,
-    fontFamily: 'WorkSansSemiBold'
-  },
-  title4: {
-    fontSize: 20,
-    lineHeight: 30,
-    fontFamily: 'OpenSansRegular'
-  },
-  title5: {
-    fontSize: 18,
-    lineHeight: 27,
-    fontFamily: 'WorkSansBold'
-  },
-  title6: {
-    fontSize: 14,
-    lineHeight: 21,
-    fontFamily: 'OpenSansItalic'
-  },
-  link: {
-    fontSize: 18,
-    lineHeight: 25,
-    fontFamily: 'OpenSansBold',
-    textDecorationLine: 'underline'
+  divider: {
+    ...Layout.flex,
+    height: 1,
+    backgroundColor: tamuColors.gray400
   }
 });

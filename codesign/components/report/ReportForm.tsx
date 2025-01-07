@@ -34,7 +34,7 @@ export function ReportForm({ style }: ViewProps) {
   const router = useRouter();
   const { reports, setReports } = useCodesignData();
 
-  const { control, handleSubmit, watch, setValue, formState } = useForm({
+  const { control, handleSubmit, watch, setValue, formState, reset } = useForm({
     defaultValues: DefaultIndoorReport
   });
 
@@ -59,13 +59,15 @@ export function ReportForm({ style }: ViewProps) {
         });
         setReports([...reports, newReport]);
 
-        // TO DO: Reset form after submitting
+        reset();
 
         // Navigate to the Map tab
         router.replace({ pathname: TAB_ROUTE_PATH[TAB_ROUTES.INDEX] });
+
+        // TO DO #24 : Add success modal
       })
       .catch((error) => {
-        // TO DO: Show an error on the form
+        // TO DO #24: Show an error on the form
       });
   };
 
@@ -233,6 +235,7 @@ export function ReportForm({ style }: ViewProps) {
             type="tertiary"
             smallCaps={false}
             textStyle={styles.clearFormButton}
+            onPress={() => reset()}
           />
           <TextButton
             text="Submit"

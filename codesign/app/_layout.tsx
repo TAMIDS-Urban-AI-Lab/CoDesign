@@ -13,7 +13,8 @@ import Constants from 'expo-constants';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useFonts } from '@/hooks/useFonts';
-import { CodesignDataProvider } from '@/components/CodesignDataProvider';
+import { CodesignDataProvider } from '@/components/provider/CodesignDataProvider';
+import { ModalProvider } from '@/components/provider/ModalProvider';
 
 // Set the access token from app.json
 MapboxGL.setAccessToken(Constants.expoConfig?.extra?.mapboxAccessToken ?? '');
@@ -39,7 +40,7 @@ function App({ children }: { children: React.ReactNode }) {
   return (
     <CodesignDataProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        {children}
+        <ModalProvider>{children}</ModalProvider>
       </ThemeProvider>
     </CodesignDataProvider>
   );

@@ -24,9 +24,10 @@ import {
   Report
 } from '@/types/Report';
 import createReport from '@/hooks/report/createReport';
-import { useCodesignData } from '@/components/CodesignDataProvider';
+import { useCodesignData } from '@/components/provider/CodesignDataProvider';
 import { createRandomCoordinates } from '@/utils/report/createReportMockData';
 import { TAB_ROUTE_PATH, TAB_ROUTES } from '@/constants/Routes';
+import { useModal } from '@/components/provider/ModalProvider';
 
 const BOTTOM_SPACE_HEIGHT = 148;
 
@@ -37,6 +38,8 @@ export function ReportForm({ style }: ViewProps) {
   const { control, handleSubmit, watch, setValue, formState, reset } = useForm({
     defaultValues: DefaultIndoorReport
   });
+
+  const successModal = useModal('success');
 
   // Set ReportType to MAINTENANCE by default
   setValue('reportType', ReportType.MAINTENANCE);
@@ -63,8 +66,7 @@ export function ReportForm({ style }: ViewProps) {
 
         // Navigate to the Map tab
         router.replace({ pathname: TAB_ROUTE_PATH[TAB_ROUTES.INDEX] });
-
-        // TO DO #24 : Add success modal
+        successModal.openModal();
       })
       .catch((error) => {
         // TO DO #24: Show an error on the form

@@ -3,10 +3,13 @@ import { StyleSheet, Image } from 'react-native';
 import { ThemedView } from '@/components/ThemedView';
 import { MapView } from '@/components/map/MapView';
 import { Layout } from '@/constants/styles/Layout';
-import { useCodesignData } from '@/components/CodesignDataProvider';
+import { useCodesignData } from '@/components/provider/CodesignDataProvider';
 import { MarkerView } from '@/components/map/MarkerView';
 import { useColorScheme } from '@/hooks/useColorScheme';
-
+import { ThemedModal } from '@/components/ui/ThemedModal';
+import { useModal } from '@/components/provider/ModalProvider';
+import { ThemedText } from '@/components/ThemedText';
+import { Spacing } from '@/constants/styles/Spacing';
 const REPORT_ICON_SRC = {
   light: require('@/assets/images/custom-form-icon-light.png'),
   dark: require('@/assets/images/custom-form-icon-dark.png')
@@ -18,8 +21,16 @@ export default function HomeScreen() {
   const { reports } = useCodesignData();
   const isReportsEmpty = reports.length === 0;
 
+  const { isVisible, closeModal } = useModal('success');
   return (
     <ThemedView style={styles.titleContainer}>
+      <ThemedModal closeModal={closeModal} visible={isVisible}>
+        <Image
+          style={styles.successBadge}
+          source={require('@/assets/images/badge-check.png')}
+        />
+        <ThemedText>Report Submitted</ThemedText>
+      </ThemedModal>
       <MapView style={[Layout.flex]}>
         {!isReportsEmpty &&
           reports.map((report) => (
@@ -53,5 +64,10 @@ const styles = StyleSheet.create({
   reportImage: {
     width: 25,
     height: 30
+  },
+  successBadge: {
+    width: 50,
+    height: 50,
+    marginBottom: Spacing.medium
   }
 });

@@ -3,6 +3,7 @@ import {
   ReportType,
   ReportLocationType
 } from '@/types/Report';
+import { ALBRITTON_BELL_TOWER } from '@/constants/map/Coordinates';
 
 export const DefaultIndoorReport: ReportFormDetails = {
   id: -1,
@@ -16,7 +17,7 @@ export const DefaultIndoorReport: ReportFormDetails = {
       floorNumber: 1
     }
   },
-  geoCoordinates: [],
+  coordinates: ALBRITTON_BELL_TOWER,
   createdAt: new Date()
 };
 
@@ -27,6 +28,6 @@ export const DefaultOutdoorReport: ReportFormDetails = {
   title: '',
   description: '',
   reportLocationDetails: {},
-  geoCoordinates: [],
+  coordinates: ALBRITTON_BELL_TOWER,
   createdAt: new Date()
 };

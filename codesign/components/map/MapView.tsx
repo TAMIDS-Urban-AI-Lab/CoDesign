@@ -2,6 +2,7 @@ import { type ViewProps } from 'react-native';
 import MapboxGL, { Camera, StyleURL } from '@rnmapbox/maps';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { ALBRITTON_BELL_TOWER } from '@/constants/map/Coordinates';
 
 type LocalMapViewProps = {
   style?: ViewProps['style'];
@@ -9,12 +10,10 @@ type LocalMapViewProps = {
   centerCoords?: number[];
 };
 
-const CENTER_COORDS = [-96.3446075505438, 30.613381329387035]; // Centered on Albritton Bell Tower
-
 export function MapView({
   style,
   children,
-  centerCoords = CENTER_COORDS
+  centerCoords = ALBRITTON_BELL_TOWER
 }: LocalMapViewProps) {
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
   const styleURL = colorScheme === 'light' ? StyleURL.Light : StyleURL.Dark;

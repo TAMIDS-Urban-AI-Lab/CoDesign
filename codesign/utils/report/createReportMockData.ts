@@ -1,4 +1,9 @@
-import { ReportLocationType, ReportType, Report } from '@/types/Report';
+import {
+  ReportLocationType,
+  ReportType,
+  Report,
+  Coordinates
+} from '@/types/Report';
 import { getRandomNumber } from '../Math';
 
 export function createReportMockData(report = {}): Report {
@@ -16,10 +21,10 @@ export function createReportMockData(report = {}): Report {
           }
         }
       : {};
-  const geoCoordinates = [
-    getRandomNumber(37.7749, 37.7751), // longitude
-    getRandomNumber(-122.4194, -122.4196) // latitude
-  ];
+  const coordinates = [
+    getRandomNumber(-96.35119602985726, -96.33890180386302),
+    getRandomNumber(30.607255922217114, 30.617351074711575)
+  ] as Coordinates;
   const reportData = new Report({
     id: Math.floor(Math.random() * 1000),
     reportType: ReportType.MAINTENANCE,
@@ -28,7 +33,7 @@ export function createReportMockData(report = {}): Report {
       'While I was walking to the bus top to take bus 47, I noticed that there is a crack in the pavement by the bus stop. It makes it pretty easy for people to trip over it and fall.',
     reportLocation,
     reportLocationDetails,
-    geoCoordinates,
+    coordinates,
     createdAt: new Date(),
     ...report
   });

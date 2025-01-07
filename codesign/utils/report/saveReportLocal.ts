@@ -12,7 +12,10 @@ export async function setReportsLocal(reports: Report[] = []) {
 export async function getReportsLocal(): Promise<Report[]> {
   try {
     const storedReports = await AsyncStorage.getItem('reports');
-    return JSON.parse(storedReports || '[]');
+    const rawReports = JSON.parse(storedReports || '[]');
+    // map raw reports to Report class
+    const reports = rawReports.map((report) => new Report(report));
+    return reports;
   } catch {
     console.error('Error getting reports from AsyncStorage');
     return [];

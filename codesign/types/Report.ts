@@ -8,7 +8,9 @@ export enum ReportLocationType {
   'OUTDOOR' = 'OUTDOOR'
 }
 
-type ReportLocationDetails = {
+export type Coordinates = [number, number];
+
+export type ReportLocationDetails = {
   indoorDetails?: IndoorDetails;
 };
 
@@ -23,7 +25,7 @@ export type ReportFormDetails = {
   reportLocation: ReportLocationType;
   title: string;
   description: string;
-  geoCoordinates: number[];
+  coordinates: Coordinates;
   reportLocationDetails: ReportLocationDetails;
   createdAt: Date;
 };
@@ -34,7 +36,7 @@ export class Report implements ReportFormDetails {
   reportLocation: ReportLocationType;
   title: string;
   description: string;
-  geoCoordinates: number[];
+  coordinates: Coordinates;
   reportLocationDetails: ReportLocationDetails;
   createdAt: Date;
 
@@ -44,7 +46,7 @@ export class Report implements ReportFormDetails {
     this.reportLocation = reportDetails.reportLocation;
     this.title = reportDetails.title;
     this.description = reportDetails.description;
-    this.geoCoordinates = reportDetails.geoCoordinates;
+    this.coordinates = reportDetails.coordinates;
     this.reportLocationDetails = reportDetails.reportLocationDetails;
     this.createdAt = reportDetails.createdAt;
   }
@@ -69,8 +71,8 @@ export class Report implements ReportFormDetails {
     return this.description;
   }
 
-  getGeoCoordinates(): number[] {
-    return this.geoCoordinates;
+  getCoordinates(): number[] {
+    return this.coordinates;
   }
 
   getReportLocationDetails(): ReportLocationDetails {

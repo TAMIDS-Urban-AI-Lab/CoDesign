@@ -7,6 +7,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { TAB_ROUTES } from '@/constants/Routes';
 
 const TAB_BAR_HEIGHT = 90;
 const TAB_BAR_GAP = 5;
@@ -54,7 +55,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name={TAB_ROUTES.INDEX}
         options={{
           title: 'View Map',
           tabBarIcon: ({ color }) => (
@@ -63,7 +64,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="report"
+        name={TAB_ROUTES.REPORT}
         options={{
           title: 'Create Report',
           tabBarIcon: ({ color }) => (
@@ -72,7 +73,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name={TAB_ROUTES.PROFILE}
         options={{
           title: 'Profile',
           tabBarIcon: ({ color }) => (

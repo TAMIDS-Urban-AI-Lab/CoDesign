@@ -6,6 +6,13 @@ import {
 } from '@/types/Report';
 import { getRandomNumber } from '../Math';
 
+export const createRandomCoordinates = (): Coordinates => {
+  return [
+    getRandomNumber(-96.35119602985726, -96.33890180386302),
+    getRandomNumber(30.607255922217114, 30.617351074711575)
+  ] as Coordinates;
+};
+
 export function createReportMockData(report = {}): Report {
   // Randomly select a location
   const reportLocation =
@@ -21,10 +28,7 @@ export function createReportMockData(report = {}): Report {
           }
         }
       : {};
-  const coordinates = [
-    getRandomNumber(-96.35119602985726, -96.33890180386302),
-    getRandomNumber(30.607255922217114, 30.617351074711575)
-  ] as Coordinates;
+  const coordinates = createRandomCoordinates();
   const reportData = new Report({
     id: Math.floor(Math.random() * 1000),
     reportType: ReportType.MAINTENANCE,

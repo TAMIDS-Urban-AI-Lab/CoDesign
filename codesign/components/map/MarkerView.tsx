@@ -4,22 +4,21 @@ import { PropsWithChildren } from 'react';
 
 import { ThemedView } from '@/components/ThemedView';
 import { tamuColors } from '@/constants/Colors';
-import { MapDataPoint } from '@/components/map/MapView';
 
 type MarkerViewProps = PropsWithChildren<{
   style?: ViewProps['style'];
-  point: MapDataPoint;
+  coordinates: number[];
   onPress?: () => void;
 }>;
 
 export function MarkerView({
   children,
   style,
-  point,
+  coordinates,
   onPress
 }: MarkerViewProps) {
   return (
-    <MapboxGL.MarkerView coordinate={point.coordinates}>
+    <MapboxGL.MarkerView coordinate={coordinates}>
       <Pressable style={[styles.markerContainer, style]} onPress={onPress}>
         <ThemedView style={styles.marker}>{children}</ThemedView>
       </Pressable>

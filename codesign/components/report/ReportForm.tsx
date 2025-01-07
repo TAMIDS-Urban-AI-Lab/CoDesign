@@ -6,6 +6,7 @@ import {
   Alert
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
+import { useRouter } from 'expo-router';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -19,25 +20,55 @@ import { DefaultIndoorReport } from '@/constants/report/Report';
 import {
   ReportLocationType,
   ReportType,
-  ReportFormDetails
+  ReportFormDetails,
+  Report
 } from '@/types/Report';
 import createReport from '@/hooks/report/createReport';
+import { useCodesignData } from '@/components/CodesignDataProvider';
+import { createRandomCoordinates } from '@/utils/report/createReportMockData';
+import { TAB_ROUTE_PATH, TAB_ROUTES } from '@/constants/Routes';
 
 const BOTTOM_SPACE_HEIGHT = 148;
 
 export function ReportForm({ style }: ViewProps) {
-  const { control, handleSubmit, watch, setValue, formState } = useForm({
+  const router = useRouter();
+  const { reports, setReports } = useCodesignData();
+
+  const { control, handleSubmit, watch, setValue, formState, reset } = useForm({
     defaultValues: DefaultIndoorReport
   });
 
   // Set ReportType to MAINTENANCE by default
   setValue('reportType', ReportType.MAINTENANCE);
 
+  // TO DO: Allow user to set coordinates
+  setValue('coordinates', createRandomCoordinates());
+
   const reportLocation = watch('reportLocation');
 
   const onSubmit = (data: ReportFormDetails) => {
     // TO DO: Add form validation before submitting report
-    createReport(data);
+
+    createReport(data)
+      .then((success) => {
+        // Create Report from user submitted data
+        const newReport = new Report({
+          ...data,
+          id: success.id,
+          createdAt: new Date()
+        });
+        setReports([...reports, newReport]);
+
+        reset();
+
+        // Navigate to the Map tab
+        router.replace({ pathname: TAB_ROUTE_PATH[TAB_ROUTES.INDEX] });
+
+        // TO DO #24 : Add success modal
+      })
+      .catch((error) => {
+        // TO DO #24: Show an error on the form
+      });
   };
 
   const switchReportLocation = (
@@ -204,6 +235,7 @@ export function ReportForm({ style }: ViewProps) {
             type="tertiary"
             smallCaps={false}
             textStyle={styles.clearFormButton}
+            onPress={() => reset()}
           />
           <TextButton
             text="Submit"

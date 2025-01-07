@@ -13,6 +13,7 @@ import Constants from 'expo-constants';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useFonts } from '@/hooks/useFonts';
+import { CodesignDataProvider } from '@/components/CodesignDataProvider';
 
 // Set the access token from app.json
 MapboxGL.setAccessToken(Constants.expoConfig?.extra?.mapboxAccessToken ?? '');
@@ -21,7 +22,7 @@ MapboxGL.setTelemetryEnabled(false);
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+function App({ children }: { children: React.ReactNode }) {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts();
 
@@ -36,12 +37,22 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <CodesignDataProvider>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        {children}
+      </ThemeProvider>
+    </CodesignDataProvider>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <App>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
-    </ThemeProvider>
+    </App>
   );
 }

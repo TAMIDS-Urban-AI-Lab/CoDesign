@@ -17,7 +17,8 @@ const MAPPING = {
   'map.fill': 'map',
   pencil: 'pencil-sharp',
   'person.crop.circle.fill': 'person-circle',
-  'camera.fill': 'camera'
+  'camera.fill': 'camera',
+  'photo.fill': 'image-outline'
 } as Partial<
   Record<
     import('expo-symbols').SymbolViewProps['name'],

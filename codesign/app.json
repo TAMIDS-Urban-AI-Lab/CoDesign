@@ -48,6 +48,13 @@
         {
           "launchMode": "most-recent"
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Codesign to access your photos",
+          "cameraPermission": "Allow Codesign to access your camera"
+        }
       ]
     ],
     "experiments": {

@@ -8,12 +8,13 @@ import { Layout } from '@/constants/styles/Layout';
 import { Spacing } from '@/constants/styles/Spacing';
 import { Border } from '@/constants/styles/Border';
 import { tamuColors } from '@/constants/Colors';
-import { IconSymbol } from '../ui/IconSymbol';
-import { ThemedText } from '../ThemedText';
-
+import { IconSymbol } from '@/components/ui/IconSymbol';
+import { ThemedText } from '@/components/ThemedText';
+import { ImageButton } from '@/components/ui/ImageButton';
 const PHOTO_HEIGHT = 120;
 const IMAGE_UPLOAD_LIMIT = 3;
 const PLACEHOLDER_KEY = 'placeholder';
+const REMOVE_IMAGE_SRC = require('@/assets/images/circle-xmark.png');
 
 type ImageUploadProps = {
   style: ViewProps['style'];
@@ -21,7 +22,6 @@ type ImageUploadProps = {
 
 export function ImageUpload({ style }: ImageUploadProps) {
   const [images, setImages] = useState<string[]>([]);
-  const [image, setImage] = useState<string | null>(null);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -38,7 +38,6 @@ export function ImageUpload({ style }: ImageUploadProps) {
       const newImages = [...images];
       newImages.push(result.assets[0].uri);
       setImages(newImages);
-      setImage(result.assets[0].uri);
     }
   };
 
@@ -52,27 +51,36 @@ export function ImageUpload({ style }: ImageUploadProps) {
     ) as string[])
   ];
 
-  console.log('DEBUG');
+  const removeImage = (index: number) => {
+    const newImages = [...images].toSpliced(index, 1);
+    setImages(newImages);
+  };
 
   return (
     <ThemedView style={style}>
-      <ThemedView style={styles.imagePreviewRow}>
+      <ThemedView style={styles.imagePreviewRow} key="image_previews">
         {renderArray.map((imageURI, index) => {
           if (imageURI === PLACEHOLDER_KEY) {
-            return <DefaultImage keyName={`placeholder_${index}`} />;
+            return <DefaultImage key={`placeholder_${index}`} />;
           } else {
             return (
               <ThemedView
                 key={`uploaded_${index}`}
                 style={styles.imageContainer}
               >
+                <ImageButton
+                  source={REMOVE_IMAGE_SRC}
+                  size={24}
+                  transparent={true}
+                  style={styles.removeImageButton}
+                  onPress={() => removeImage(index)}
+                />
                 <Image source={{ uri: imageURI }} style={styles.image} />
               </ThemedView>
             );
           }
         })}
       </ThemedView>
-      {image && <Image source={{ uri: image }} style={styles.image} />}
       {!maxImagesUploaded && (
         <TextButton type="secondary" text="Add Photos" onPress={pickImage} />
       )}
@@ -90,13 +98,12 @@ export function ImageUpload({ style }: ImageUploadProps) {
   );
 }
 
-function DefaultImage({ keyName }: { keyName: string }) {
+function DefaultImage() {
   return (
     <ThemedView
-      key={keyName}
       lightColor={tamuColors.gray300}
       darkColor={tamuColors.gray800}
-      style={styles.imageContainer}
+      style={styles.defaultContainer}
     >
       <IconSymbol name="photo.fill" size={28} color={tamuColors.gray500} />
     </ThemedView>
@@ -110,7 +117,7 @@ const styles = StyleSheet.create({
     gap: Spacing.medium,
     marginBottom: Spacing.large
   },
-  imageContainer: {
+  defaultContainer: {
     ...Layout.flex,
     ...Layout.center,
     ...Border.elevatedSmall,
@@ -118,9 +125,24 @@ const styles = StyleSheet.create({
     width: 'auto',
     height: PHOTO_HEIGHT
   },
+  imageContainer: {
+    ...Layout.flex,
+    ...Layout.absolute,
+    ...Border.elevatedSmall,
+    ...Border.roundedSmall,
+    width: 'auto',
+    height: PHOTO_HEIGHT
+  },
   image: {
-    flex: 1,
+    // ...Layout.flex,
     width: '100%',
+    height: '100%',
     ...Border.roundedSmall
+  },
+  removeImageButton: {
+    position: 'absolute',
+    top: Spacing.xsmall,
+    right: Spacing.xsmall,
+    zIndex: 1
   }
 });

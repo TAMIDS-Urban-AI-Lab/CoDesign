@@ -16,7 +16,7 @@ type ThemedTextType =
   | 'title3'
   | 'title4'
   | 'title5'
-  | 'title6'
+  | 'feedback'
   | 'link'
   | 'formText';
 

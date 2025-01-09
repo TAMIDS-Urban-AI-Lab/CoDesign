@@ -57,7 +57,7 @@ export const Typography = {
     lineHeight: 27,
     fontFamily: 'WorkSansBold'
   },
-  title6: {
+  feedback: {
     fontSize: 14,
     lineHeight: 21,
     fontFamily: 'OpenSansItalic'

@@ -22,5 +22,15 @@ export const Border = {
     shadowOpacity: 0.3,
     shadowRadius: 12,
     elevation: 5
+  },
+  elevatedSmall: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.5,
+    elevation: 5
   }
 };

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { StyleSheet, type ViewProps, Image } from 'react-native';
 import {
   launchImageLibraryAsync,
@@ -28,10 +27,11 @@ type ImageUploadProps = {
   value: ImageDetails[];
 };
 
-export function ImageUpload({ style, onChange, value }: ImageUploadProps) {
-  const [images, setImages] = useState<ImageDetails[]>([]);
-  value = images;
-
+export function ImageUpload({
+  style,
+  onChange: updateForm,
+  value: images
+}: ImageUploadProps) {
   const [status, requestPermission] = useMediaLibraryPermissions();
 
   const pickImage = async () => {
@@ -55,8 +55,7 @@ export function ImageUpload({ style, onChange, value }: ImageUploadProps) {
               uri: imagePickerAsset.uri,
               base64: imagePickerAsset.base64
             } as ImageDetails);
-            setImages(newImages);
-            onChange(newImages);
+            updateForm(newImages);
           } else {
             throw new Error('Failed to upload image to Codesign');
           }
@@ -79,7 +78,7 @@ export function ImageUpload({ style, onChange, value }: ImageUploadProps) {
 
   const removeImage = (index: number) => {
     const newImages = [...images].toSpliced(index, 1);
-    setImages(newImages);
+    updateForm(newImages);
   };
 
   return (

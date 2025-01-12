@@ -117,7 +117,7 @@ export function ReportForm({ style }: ViewProps) {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <ThemedView style={[styles.formContainer, style]}>
+      <ThemedView style={[style]}>
         <ThemedText
           type="title4"
           withDivider={true}
@@ -177,12 +177,12 @@ export function ReportForm({ style }: ViewProps) {
                 control={control}
                 name="reportLocationDetails.indoorDetails.floorNumber"
                 render={({ field: { onChange, value } }) => (
-                  // Do not pass value prop to ThemedTextInput, it is managed by onChangeText
                   <ThemedTextInput
                     label="Floor Number"
+                    value={value} // value is a number on purpose
                     onChangeText={(text) => onChange(parseInt(text, 10) || 1)}
                     keyboardType="numeric"
-                    placeholder="Enter floor number please:"
+                    placeholder="Enter floor number"
                   />
                 )}
               />
@@ -241,7 +241,7 @@ export function ReportForm({ style }: ViewProps) {
         </ThemedView>
         <ThemedView style={[styles.submitContainer]}>
           <TextButton
-            text="Clear Form"
+            text="Reset Form"
             type="tertiary"
             smallCaps={false}
             textStyle={styles.clearFormButton}
@@ -263,10 +263,6 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: Spacing.large
   },
-  // formContainer: {
-  //   ...Layout.flex,
-  //   gap: Spacing.medium
-  // },
   submitContainer: {
     ...Layout.row,
     ...Layout.justifyEnd

@@ -10,9 +10,15 @@ import { ThemedModal } from '@/components/ui/ThemedModal';
 import { useModal } from '@/components/provider/ModalProvider';
 import { ThemedText } from '@/components/ThemedText';
 import { Spacing } from '@/constants/styles/Spacing';
+
 const REPORT_ICON_SRC = {
   light: require('@/assets/images/custom-form-icon-light.png'),
   dark: require('@/assets/images/custom-form-icon-dark.png')
+};
+
+const SUCCESS_BADGE_SRC = {
+  light: require('@/assets/images/badge-check-light.png'),
+  dark: require('@/assets/images/badge-check-dark.png')
 };
 
 export default function HomeScreen() {
@@ -27,7 +33,7 @@ export default function HomeScreen() {
       <ThemedModal closeModal={closeModal} visible={isVisible}>
         <Image
           style={styles.successBadge}
-          source={require('@/assets/images/badge-check.png')}
+          source={SUCCESS_BADGE_SRC[colorScheme]}
         />
         <ThemedText>Report Submitted</ThemedText>
       </ThemedModal>

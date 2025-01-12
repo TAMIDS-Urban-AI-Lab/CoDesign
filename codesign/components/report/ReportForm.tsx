@@ -59,7 +59,6 @@ export function ReportForm({ style }: ViewProps) {
           createdAt: new Date()
         });
         setReports([...reports, newReport]);
-        console.log('Report created:', newReport);
         reset();
 
         // Navigate to the Map tab

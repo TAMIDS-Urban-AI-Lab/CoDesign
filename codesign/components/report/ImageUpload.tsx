@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { StyleSheet, type ViewProps, Image } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import {
+  launchImageLibraryAsync,
+  useMediaLibraryPermissions,
+  type ImagePickerAsset
+} from 'expo-image-picker';
 
 import { ThemedView } from '@/components/ThemedView';
 import { TextButton } from '@/components/shared/TextButton';
@@ -11,41 +15,63 @@ import { tamuColors } from '@/constants/Colors';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { ThemedText } from '@/components/ThemedText';
 import { ImageButton } from '@/components/ui/ImageButton';
+import { ImageDetails } from '@/types/Report';
+
 const PHOTO_HEIGHT = 120;
 const IMAGE_UPLOAD_LIMIT = 3;
 const PLACEHOLDER_KEY = 'placeholder';
 const REMOVE_IMAGE_SRC = require('@/assets/images/circle-xmark.png');
 
 type ImageUploadProps = {
-  style: ViewProps['style'];
+  style?: ViewProps['style'];
+  onChange: (...event: any[]) => void;
+  value: ImageDetails[];
 };
 
-export function ImageUpload({ style }: ImageUploadProps) {
-  const [images, setImages] = useState<string[]>([]);
+export function ImageUpload({ style, onChange, value }: ImageUploadProps) {
+  const [images, setImages] = useState<ImageDetails[]>([]);
+  value = images;
+
+  const [status, requestPermission] = useMediaLibraryPermissions();
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images', 'videos'],
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      const newImages = [...images];
-      newImages.push(result.assets[0].uri);
-      setImages(newImages);
+    if (!status?.granted) {
+      requestPermission();
     }
+
+    launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      selectionLimit: 1,
+      base64: true // access base64 encoded image data
+    })
+      .then((result) => {
+        if (!result.canceled) {
+          const newImages = [...images];
+
+          const imagePickerAsset: ImagePickerAsset = result.assets[0];
+          if (imagePickerAsset.uri && imagePickerAsset.base64) {
+            newImages.push({
+              uri: imagePickerAsset.uri,
+              base64: imagePickerAsset.base64
+            } as ImageDetails);
+            setImages(newImages);
+            onChange(newImages);
+          } else {
+            throw new Error('Failed to upload image to Codesign');
+          }
+        }
+      })
+      .catch((error) => {
+        // TO DO: Show error to user when uploading image fails
+      });
   };
 
   const maxImagesUploaded = images.length >= IMAGE_UPLOAD_LIMIT;
   const placeholderCount = IMAGE_UPLOAD_LIMIT - images.length;
 
   var renderArray: string[] = [
-    ...images,
+    ...images.map((imagePickerAsset) => imagePickerAsset.uri),
     ...(Array.from({ length: placeholderCount }).fill(
       PLACEHOLDER_KEY
     ) as string[])
@@ -61,7 +87,7 @@ export function ImageUpload({ style }: ImageUploadProps) {
       <ThemedView style={styles.imagePreviewRow} key="image_previews">
         {renderArray.map((imageURI, index) => {
           if (imageURI === PLACEHOLDER_KEY) {
-            return <DefaultImage key={`placeholder_${index}`} />;
+            return <DefaultImage key={`${PLACEHOLDER_KEY}_${index}`} />;
           } else {
             return (
               <ThemedView

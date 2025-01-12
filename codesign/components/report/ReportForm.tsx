@@ -59,7 +59,7 @@ export function ReportForm({ style }: ViewProps) {
           createdAt: new Date()
         });
         setReports([...reports, newReport]);
-
+        console.log('Report created:', newReport);
         reset();
 
         // Navigate to the Map tab
@@ -199,7 +199,15 @@ export function ReportForm({ style }: ViewProps) {
           Report Details
         </ThemedText>
 
-        <ImageUpload style={styles.input} />
+        <ThemedView style={styles.input}>
+          <Controller
+            control={control}
+            name="images"
+            render={({ field: { onChange, value } }) => (
+              <ImageUpload value={value} onChange={onChange} />
+            )}
+          />
+        </ThemedView>
 
         <ThemedView style={styles.input}>
           <Controller

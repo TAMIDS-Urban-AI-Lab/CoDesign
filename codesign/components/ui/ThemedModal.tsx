@@ -5,6 +5,7 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 export type ThemedModalProps = ModalProps & {
   lightColor?: string;
   darkColor?: string;
+  transparent?: boolean;
   children: React.ReactNode;
 };
 
@@ -13,6 +14,7 @@ export function ThemedModal({
   darkColor,
   children,
   style,
+  transparent = false,
   ...otherProps
 }: ThemedModalProps) {
   const backgroundColor = useThemeColor(
@@ -22,7 +24,7 @@ export function ThemedModal({
 
   return (
     <Modal
-      transparent={true}
+      transparent={transparent}
       animationType="fade"
       {...otherProps}
       style={[{ backgroundColor }, style]}

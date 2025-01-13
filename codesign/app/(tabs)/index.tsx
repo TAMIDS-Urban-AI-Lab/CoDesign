@@ -6,7 +6,7 @@ import { Layout } from '@/constants/styles/Layout';
 import { useCodesignData } from '@/components/provider/CodesignDataProvider';
 import { MarkerView } from '@/components/map/MarkerView';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { ThemedModal } from '@/components/ui/ThemedModal';
+import { FloatingModal } from '@/components/ui/FloatingModal';
 import { useModal } from '@/components/provider/ModalProvider';
 import { ThemedText } from '@/components/ThemedText';
 import { Spacing } from '@/constants/styles/Spacing';
@@ -30,13 +30,13 @@ export default function HomeScreen() {
   const { isVisible, closeModal } = useModal('success');
   return (
     <ThemedView style={styles.titleContainer}>
-      <ThemedModal closeModal={closeModal} visible={isVisible}>
+      <FloatingModal closeModal={closeModal} visible={isVisible}>
         <Image
           style={styles.successBadge}
           source={SUCCESS_BADGE_SRC[colorScheme]}
         />
         <ThemedText>Report Submitted</ThemedText>
-      </ThemedModal>
+      </FloatingModal>
       <MapView style={[Layout.flex]}>
         {!isReportsEmpty &&
           reports.map((report) => (

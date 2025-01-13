@@ -29,7 +29,6 @@ import { createRandomCoordinates } from '@/utils/report/createReportMockData';
 import { TAB_ROUTE_PATH, TAB_ROUTES } from '@/constants/Routes';
 import { ImageUpload } from '@/components/report/ImageUpload';
 import { useModal } from '@/components/provider/ModalProvider';
-import { ImageUpload } from '@/components/report/ImageUpload';
 
 const BOTTOM_SPACE_HEIGHT = 148;
 
@@ -120,7 +119,7 @@ export function ReportForm({ style }: ViewProps) {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <ThemedView style={[styles.formContainer, style]}>
+      <ThemedView style={[style]}>
         <ThemedText
           type="title4"
           withDivider={true}
@@ -201,8 +200,6 @@ export function ReportForm({ style }: ViewProps) {
           Report Details
         </ThemedText>
 
-        <ImageUpload style={styles.input} />
-
         <ThemedView style={styles.input}>
           <Controller
             control={control}
@@ -268,10 +265,6 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: Spacing.large
   },
-  // formContainer: {
-  //   ...Layout.flex,
-  //   gap: Spacing.medium
-  // },
   submitContainer: {
     ...Layout.row,
     ...Layout.justifyEnd

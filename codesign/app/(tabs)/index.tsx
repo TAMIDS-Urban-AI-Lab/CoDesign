@@ -1,4 +1,5 @@
 import { StyleSheet, Image } from 'react-native';
+import { Camera } from '@rnmapbox/maps';
 
 import { ThemedView } from '@/components/ThemedView';
 import { MapView } from '@/components/map/MapView';
@@ -10,6 +11,7 @@ import { FloatingModal } from '@/components/ui/FloatingModal';
 import { useModal } from '@/components/provider/ModalProvider';
 import { ThemedText } from '@/components/ThemedText';
 import { Spacing } from '@/constants/styles/Spacing';
+import { ALBRITTON_BELL_TOWER } from '@/constants/map/Coordinates';
 
 const REPORT_ICON_SRC = {
   light: require('@/assets/images/custom-form-icon-light.png'),
@@ -38,6 +40,7 @@ export default function HomeScreen() {
         <ThemedText>Report Submitted</ThemedText>
       </FloatingModal>
       <MapView style={[Layout.flex]}>
+        <Camera zoomLevel={14} centerCoordinate={ALBRITTON_BELL_TOWER} />
         {!isReportsEmpty &&
           reports.map((report) => (
             <MarkerView

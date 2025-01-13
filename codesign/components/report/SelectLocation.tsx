@@ -1,4 +1,4 @@
-import { StyleSheet, Image, type ViewProps } from 'react-native';
+import { StyleSheet, Image, type ViewProps, Pressable } from 'react-native';
 import { Camera } from '@rnmapbox/maps';
 
 import { MapView } from '@/components/map/MapView';
@@ -11,7 +11,11 @@ import { ThemedView } from '@/components/ThemedView';
 import { MarkerView } from '@/components/map/MarkerView';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Spacing } from '@/constants/styles/Spacing';
-
+import { useModal } from '@/components/provider/ModalProvider';
+import { ImageButton } from '@/components/ui/ImageButton';
+import { ThemedModal } from '@/components/ui/ThemedModal';
+import { TextButton } from '@/components/shared/TextButton';
+import { Typography } from '@/constants/styles/Typography';
 const PREVIEW_HEIGHT = 120;
 
 const PIN_ICON_SRC = {
@@ -30,6 +34,8 @@ export function SelectLocation({
   selectedLocation,
   setSelectedLocation
 }: SelectLocationProps) {
+  const { isVisible, openModal, closeModal } = useModal('selectLocation');
+
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
 
   const pinLocation: Coordinates = selectedLocation ?? ALBRITTON_BELL_TOWER;
@@ -38,8 +44,8 @@ export function SelectLocation({
   return (
     <>
       <ThemedView style={[styles.container, style]}>
-        <ThemedView style={[styles.roundCorner, style]}>
-          <MapView style={[styles.map]}>
+        <Pressable style={[styles.roundCorner]} onPress={openModal}>
+          <MapView style={[styles.previewMap]}>
             <Camera
               zoomLevel={14}
               centerCoordinate={mapCenter}
@@ -53,11 +59,51 @@ export function SelectLocation({
               ></Image>
             </MarkerView>
           </MapView>
-        </ThemedView>
+        </Pressable>
       </ThemedView>
       <ThemedView style={[styles.messageContainer]} transparent={true}>
         <ThemedText type="feedback">Tap to select location</ThemedText>
       </ThemedView>
+      <ThemedModal animationType="slide" visible={isVisible}>
+        <ThemedView style={styles.modalContainer}>
+          <ImageButton
+            source={require('@/assets/images/back-arrow.png')}
+            size={24}
+            onPress={closeModal}
+            elevated={true}
+            style={styles.backButton}
+          />
+          <ThemedView style={[Layout.flex]}>
+            <MapView style={Layout.flex}>
+              <Camera
+                zoomLevel={14}
+                centerCoordinate={mapCenter}
+                animationMode="moveTo"
+              />
+              <MarkerView coordinates={pinLocation}>
+                <Image
+                  source={PIN_ICON_SRC[colorScheme]}
+                  style={styles.pinImage}
+                ></Image>
+              </MarkerView>
+            </MapView>
+            <ThemedView style={styles.bottomSheetContainer}>
+              <TextButton
+                type="tertiary"
+                text="Use Current Location"
+                textStyle={styles.setCurrentLocationText}
+                smallCaps={false}
+              >
+                <Image
+                  source={require('@/assets/images/location-icon.png')}
+                  style={styles.locationIcon}
+                />
+              </TextButton>
+              <TextButton type="primary" text="Set Location" />
+            </ThemedView>
+          </ThemedView>
+        </ThemedView>
+      </ThemedModal>
     </>
   );
 }
@@ -73,7 +119,7 @@ const styles = StyleSheet.create({
     ...Border.roundedLarge,
     overflow: 'hidden'
   },
-  map: {
+  previewMap: {
     height: '150%'
   },
   pinImage: {
@@ -83,6 +129,32 @@ const styles = StyleSheet.create({
   messageContainer: {
     ...Layout.center,
     ...Layout.flex,
-    marginTop: Spacing.medium
+    marginTop: Spacing.small
+  },
+  modalContainer: {
+    ...Layout.flex
+  },
+  backButton: {
+    position: 'absolute',
+    top: Spacing.xxxlarge,
+    left: Spacing.large,
+    zIndex: 1
+  },
+  bottomSheetContainer: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    ...Border.roundedTopLarge,
+    ...Border.elevated,
+    gap: Spacing.small,
+    padding: Spacing.large,
+    paddingBottom: Spacing.xxlarge
+  },
+  locationIcon: {
+    width: 24,
+    height: 24
+  },
+  setCurrentLocationText: {
+    ...Typography.formText
   }
 });

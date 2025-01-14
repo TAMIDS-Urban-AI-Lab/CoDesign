@@ -23,6 +23,7 @@ import { ThemedModal } from '@/components/ui/ThemedModal';
 import { TextButton } from '@/components/shared/TextButton';
 import { Typography } from '@/constants/styles/Typography';
 
+const CAMERA_ZOOM = 16;
 const PREVIEW_HEIGHT = 120;
 const PIN_ICON_SRC = {
   light: require('@/assets/images/location-dot-light.png'),
@@ -102,7 +103,7 @@ export function SelectLocation({
           <ThemedView style={[Layout.flex]}>
             <MapView style={[Layout.flex]} ref={modalMapRef}>
               <Camera
-                zoomLevel={14}
+                zoomLevel={CAMERA_ZOOM}
                 centerCoordinate={pinLocation}
                 animationMode="moveTo"
               />
@@ -145,7 +146,7 @@ function LocationPreview({
 }: LocationPreviewProps) {
   const previewCenter = [
     pinLocation[0],
-    pinLocation[1] - 0.0005
+    pinLocation[1] - 0.00025
   ] as Coordinates;
 
   return (
@@ -154,7 +155,7 @@ function LocationPreview({
         <Pressable style={[styles.roundCorner]} onPress={onPress}>
           <MapView style={[styles.previewMap]}>
             <Camera
-              zoomLevel={15}
+              zoomLevel={CAMERA_ZOOM}
               centerCoordinate={previewCenter}
               animationMode="moveTo"
               animationDuration={0}

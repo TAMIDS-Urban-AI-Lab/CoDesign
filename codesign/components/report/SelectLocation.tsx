@@ -51,7 +51,6 @@ export function SelectLocation({
   const pinLocation: Coordinates = selectedLocation ?? ALBRITTON_BELL_TOWER;
 
   const modalMapRef = useRef<MapGL.MapView>(null);
-  console.log(modalMapRef);
 
   async function updateSelectedLocation() {
     if (modalMapRef.current) {

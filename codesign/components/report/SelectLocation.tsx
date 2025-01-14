@@ -4,7 +4,8 @@ import {
   Pressable,
   ImageSourcePropType
 } from 'react-native';
-import { Camera } from '@rnmapbox/maps';
+import { useRef } from 'react';
+import MapGL, { Camera } from '@rnmapbox/maps';
 
 import { MapView } from '@/components/map/MapView';
 import { Coordinates } from '@/types/Report';
@@ -29,8 +30,8 @@ const PIN_ICON_SRC = {
 };
 
 type SelectLocationProps = {
-  selectedLocation?: Coordinates;
-  setSelectedLocation?: (location: Coordinates) => void;
+  selectedLocation: Coordinates;
+  setSelectedLocation: (location: Coordinates) => void;
 };
 
 export function SelectLocation({
@@ -47,6 +48,23 @@ export function SelectLocation({
   const pinImageSrc = PIN_ICON_SRC[colorScheme];
 
   const pinLocation: Coordinates = selectedLocation ?? ALBRITTON_BELL_TOWER;
+
+  const modalMapRef = useRef<MapGL.MapView>(null);
+  console.log(modalMapRef);
+
+  async function updateSelectedLocation() {
+    if (modalMapRef.current) {
+      modalMapRef.current
+        .getCenter()
+        .then((center) => {
+          setSelectedLocation(center as Coordinates);
+          closeLocationModal();
+        })
+        .catch((error) => {
+          console.error('Error fetching map center:', error);
+        });
+    }
+  }
 
   return (
     <>
@@ -82,7 +100,7 @@ export function SelectLocation({
             </ThemedView>
           </ThemedView>
           <ThemedView style={[Layout.flex]}>
-            <MapView style={[Layout.flex]}>
+            <MapView style={[Layout.flex]} ref={modalMapRef}>
               <Camera
                 zoomLevel={14}
                 centerCoordinate={pinLocation}
@@ -101,7 +119,11 @@ export function SelectLocation({
                   style={styles.locationIcon}
                 />
               </TextButton>
-              <TextButton type="primary" text="Set Location" />
+              <TextButton
+                type="primary"
+                text="Set Location"
+                onPress={() => updateSelectedLocation()}
+              />
             </ThemedView>
           </ThemedView>
         </ThemedView>
@@ -121,7 +143,10 @@ function LocationPreview({
   pinLocation,
   pinImageSrc
 }: LocationPreviewProps) {
-  const previewCenter = [pinLocation[0], pinLocation[1] - 0.001] as Coordinates;
+  const previewCenter = [
+    pinLocation[0],
+    pinLocation[1] - 0.0005
+  ] as Coordinates;
 
   return (
     <ThemedView>
@@ -129,7 +154,7 @@ function LocationPreview({
         <Pressable style={[styles.roundCorner]} onPress={onPress}>
           <MapView style={[styles.previewMap]}>
             <Camera
-              zoomLevel={13}
+              zoomLevel={15}
               centerCoordinate={previewCenter}
               animationMode="moveTo"
               animationDuration={0}

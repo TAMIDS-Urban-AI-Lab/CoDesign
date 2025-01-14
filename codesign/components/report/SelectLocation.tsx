@@ -39,7 +39,7 @@ export function SelectLocation({
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
 
   const pinLocation: Coordinates = selectedLocation ?? ALBRITTON_BELL_TOWER;
-  const mapCenter = [pinLocation[0], pinLocation[1] - 0.001] as Coordinates;
+  const previewCenter = [pinLocation[0], pinLocation[1] - 0.001] as Coordinates;
 
   return (
     <>
@@ -48,7 +48,7 @@ export function SelectLocation({
           <MapView style={[styles.previewMap]}>
             <Camera
               zoomLevel={14}
-              centerCoordinate={mapCenter}
+              centerCoordinate={previewCenter}
               animationMode="moveTo"
               animationDuration={0}
             />
@@ -73,19 +73,29 @@ export function SelectLocation({
             elevated={true}
             style={styles.backButton}
           />
+          <ThemedView
+            style={styles.pinAbsoluteContainer}
+            transparent={true}
+            pointerEvents="none"
+          >
+            <ThemedView
+              style={styles.pinFillContainer}
+              transparent={true}
+              pointerEvents="none"
+            >
+              <Image
+                source={PIN_ICON_SRC[colorScheme]}
+                style={[styles.pinImage]}
+              />
+            </ThemedView>
+          </ThemedView>
           <ThemedView style={[Layout.flex]}>
-            <MapView style={Layout.flex}>
+            <MapView style={[Layout.flex]}>
               <Camera
                 zoomLevel={14}
-                centerCoordinate={mapCenter}
+                centerCoordinate={pinLocation}
                 animationMode="moveTo"
               />
-              <MarkerView coordinates={pinLocation}>
-                <Image
-                  source={PIN_ICON_SRC[colorScheme]}
-                  style={styles.pinImage}
-                ></Image>
-              </MarkerView>
             </MapView>
             <ThemedView style={styles.bottomSheetContainer}>
               <TextButton
@@ -121,6 +131,16 @@ const styles = StyleSheet.create({
   },
   previewMap: {
     height: '150%'
+  },
+  pinAbsoluteContainer: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    zIndex: 1 // Position pin above map
+  },
+  pinFillContainer: {
+    ...Layout.flex,
+    ...Layout.center
   },
   pinImage: {
     width: 24,

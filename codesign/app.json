@@ -48,6 +48,12 @@
         {
           "launchMode": "most-recent"
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow Codesign to access current location while app is in use"
+        }
       ]
     ],
     "experiments": {

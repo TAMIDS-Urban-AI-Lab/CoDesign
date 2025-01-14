@@ -4,8 +4,13 @@ import {
   Pressable,
   ImageSourcePropType
 } from 'react-native';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import MapGL, { Camera } from '@rnmapbox/maps';
+import {
+  LocationObject,
+  requestForegroundPermissionsAsync,
+  getCurrentPositionAsync
+} from 'expo-location';
 
 import { MapView } from '@/components/map/MapView';
 import { Coordinates } from '@/types/Report';
@@ -48,9 +53,21 @@ export function SelectLocation({
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
   const pinImageSrc = PIN_ICON_SRC[colorScheme];
 
-  const pinLocation: Coordinates = selectedLocation ?? ALBRITTON_BELL_TOWER;
-
   const modalMapRef = useRef<MapGL.MapView>(null);
+  const [currentLocation, setCurrentLocation] = useState<Coordinates | null>(
+    null
+  );
+  const [mapKey, forceMapRerender] = useState(0);
+
+  // Determine center of map
+  var pinLocation: Coordinates;
+  if (currentLocation) {
+    pinLocation = currentLocation;
+  } else if (selectedLocation) {
+    pinLocation = selectedLocation;
+  } else {
+    pinLocation = ALBRITTON_BELL_TOWER;
+  }
 
   async function updateSelectedLocation() {
     if (modalMapRef.current) {
@@ -58,6 +75,7 @@ export function SelectLocation({
         .getCenter()
         .then((center) => {
           setSelectedLocation(center as Coordinates);
+          setCurrentLocation(null);
           closeLocationModal();
         })
         .catch((error) => {
@@ -65,6 +83,28 @@ export function SelectLocation({
         });
     }
   }
+
+  async function centerMapOnCurrentLocation() {
+    requestForegroundPermissionsAsync()
+      .then((response) => {
+        if (response.status !== 'granted') {
+          throw new Error('Location permission not granted');
+        }
+        getCurrentPositionAsync({}).then((location: LocationObject) => {
+          setCurrentLocation(locationToCoordinates(location));
+          forceMapRerender((prevKey) => prevKey + 1);
+        });
+      })
+      .catch((error) => {
+        console.error('Error fetching location permission:', error);
+        // TO DO: Show an error that the location permission is required
+      });
+  }
+
+  const handleBackButton = () => {
+    setCurrentLocation(null);
+    closeLocationModal();
+  };
 
   return (
     <>
@@ -79,7 +119,7 @@ export function SelectLocation({
           <ImageButton
             source={require('@/assets/images/back-arrow.png')}
             size={24}
-            onPress={closeLocationModal}
+            onPress={handleBackButton}
             elevated={true}
             style={styles.backButton}
           />
@@ -100,7 +140,7 @@ export function SelectLocation({
             </ThemedView>
           </ThemedView>
           <ThemedView style={[Layout.flex]}>
-            <MapView style={[Layout.flex]} ref={modalMapRef}>
+            <MapView style={[Layout.flex]} ref={modalMapRef} key={mapKey}>
               <Camera
                 zoomLevel={CAMERA_ZOOM}
                 centerCoordinate={pinLocation}
@@ -113,6 +153,7 @@ export function SelectLocation({
                 text="Use Current Location"
                 textStyle={styles.setCurrentLocationText}
                 smallCaps={false}
+                onPress={() => centerMapOnCurrentLocation()}
               >
                 <Image
                   source={require('@/assets/images/location-icon.png')}
@@ -170,6 +211,10 @@ function LocationPreview({
       </ThemedView>
     </ThemedView>
   );
+}
+
+function locationToCoordinates(location: LocationObject): Coordinates {
+  return [location.coords.longitude, location.coords.latitude] as Coordinates;
 }
 
 const styles = StyleSheet.create({

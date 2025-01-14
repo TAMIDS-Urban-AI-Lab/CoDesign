@@ -45,7 +45,8 @@
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
     "react-refresh": "^0.16.0",
-    "@react-native-async-storage/async-storage": "1.23.1"
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "expo-location": "~18.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

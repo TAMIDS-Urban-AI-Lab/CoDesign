@@ -1,4 +1,9 @@
-import { StyleSheet, Image, type ViewProps, Pressable } from 'react-native';
+import {
+  StyleSheet,
+  Image,
+  Pressable,
+  ImageSourcePropType
+} from 'react-native';
 import { Camera } from '@rnmapbox/maps';
 
 import { MapView } from '@/components/map/MapView';
@@ -16,60 +21,47 @@ import { ImageButton } from '@/components/ui/ImageButton';
 import { ThemedModal } from '@/components/ui/ThemedModal';
 import { TextButton } from '@/components/shared/TextButton';
 import { Typography } from '@/constants/styles/Typography';
-const PREVIEW_HEIGHT = 120;
 
+const PREVIEW_HEIGHT = 120;
 const PIN_ICON_SRC = {
   light: require('@/assets/images/location-dot-light.png'),
   dark: require('@/assets/images/location-dot-dark.png')
 };
 
 type SelectLocationProps = {
-  style?: ViewProps['style'];
   selectedLocation?: Coordinates;
   setSelectedLocation?: (location: Coordinates) => void;
 };
 
 export function SelectLocation({
-  style,
   selectedLocation,
   setSelectedLocation
 }: SelectLocationProps) {
-  const { isVisible, openModal, closeModal } = useModal('selectLocation');
+  const {
+    isVisible,
+    openModal: openLocationModal,
+    closeModal: closeLocationModal
+  } = useModal('selectLocation');
 
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
+  const pinImageSrc = PIN_ICON_SRC[colorScheme];
 
   const pinLocation: Coordinates = selectedLocation ?? ALBRITTON_BELL_TOWER;
-  const previewCenter = [pinLocation[0], pinLocation[1] - 0.001] as Coordinates;
 
   return (
     <>
-      <ThemedView style={[styles.container, style]}>
-        <Pressable style={[styles.roundCorner]} onPress={openModal}>
-          <MapView style={[styles.previewMap]}>
-            <Camera
-              zoomLevel={14}
-              centerCoordinate={previewCenter}
-              animationMode="moveTo"
-              animationDuration={0}
-            />
-            <MarkerView coordinates={pinLocation}>
-              <Image
-                source={PIN_ICON_SRC[colorScheme]}
-                style={styles.pinImage}
-              ></Image>
-            </MarkerView>
-          </MapView>
-        </Pressable>
-      </ThemedView>
-      <ThemedView style={[styles.messageContainer]} transparent={true}>
-        <ThemedText type="feedback">Tap to select location</ThemedText>
-      </ThemedView>
+      <LocationPreview
+        onPress={openLocationModal}
+        pinLocation={pinLocation}
+        pinImageSrc={pinImageSrc}
+      />
+
       <ThemedModal animationType="slide" visible={isVisible}>
         <ThemedView style={styles.modalContainer}>
           <ImageButton
             source={require('@/assets/images/back-arrow.png')}
             size={24}
-            onPress={closeModal}
+            onPress={closeLocationModal}
             elevated={true}
             style={styles.backButton}
           />
@@ -118,8 +110,45 @@ export function SelectLocation({
   );
 }
 
+type LocationPreviewProps = {
+  onPress: () => void;
+  pinLocation: Coordinates;
+  pinImageSrc: ImageSourcePropType;
+};
+
+function LocationPreview({
+  onPress,
+  pinLocation,
+  pinImageSrc
+}: LocationPreviewProps) {
+  const previewCenter = [pinLocation[0], pinLocation[1] - 0.001] as Coordinates;
+
+  return (
+    <ThemedView>
+      <ThemedView style={[styles.previewContainer]}>
+        <Pressable style={[styles.roundCorner]} onPress={onPress}>
+          <MapView style={[styles.previewMap]}>
+            <Camera
+              zoomLevel={13}
+              centerCoordinate={previewCenter}
+              animationMode="moveTo"
+              animationDuration={0}
+            />
+            <MarkerView coordinates={pinLocation}>
+              <Image source={pinImageSrc} style={styles.pinImage}></Image>
+            </MarkerView>
+          </MapView>
+        </Pressable>
+      </ThemedView>
+      <ThemedView style={[styles.messageContainer]} transparent={true}>
+        <ThemedText type="feedback">Tap to select location</ThemedText>
+      </ThemedView>
+    </ThemedView>
+  );
+}
+
 const styles = StyleSheet.create({
-  container: {
+  previewContainer: {
     height: PREVIEW_HEIGHT,
     ...Border.roundedLarge,
     ...Border.elevatedSmall

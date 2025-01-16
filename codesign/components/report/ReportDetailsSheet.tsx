@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { format } from 'date-fns';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import Animated, {
@@ -18,8 +18,9 @@ import { Layout } from '@/constants/styles/Layout';
 import { Spacing } from '@/constants/styles/Spacing';
 import { tamuColors } from '@/constants/Colors';
 import { ImageButton } from '@/components/ui/ImageButton';
+import { ThemedScrollView } from '../ThemedScrollView';
 
-const HALF_SCREEN = '40%';
+const HALF_SCREEN = '45%';
 const FULL_SCREEN = '100%';
 type SnapPointType = typeof HALF_SCREEN | typeof FULL_SCREEN;
 const SNAP_POINTS: SnapPointType[] = [HALF_SCREEN, FULL_SCREEN];
@@ -52,6 +53,10 @@ export function ReportDetailsSheet({
     useState<SnapPointType | null>(null);
 
   const height = useSharedValue(HALF_HEADER_HEIGHT);
+  const [closeButtonTop, closeButtonRight] = [
+    useSharedValue(Spacing.xsmall),
+    useSharedValue(Spacing.xsmall)
+  ];
 
   if (!report) return null;
 
@@ -69,28 +74,29 @@ export function ReportDetailsSheet({
     switch (snapPoint) {
       case FULL_SCREEN:
         height.value = withTiming(FULL_HEADER_HEIGHT, TIMING_PARAMS);
+        closeButtonTop.value = withTiming(Spacing.xxlarge, TIMING_PARAMS);
+        closeButtonRight.value = withTiming(Spacing.small, TIMING_PARAMS);
         break;
       case HALF_SCREEN:
       default:
         height.value = withTiming(HALF_HEADER_HEIGHT, TIMING_PARAMS);
+        closeButtonTop.value = withTiming(Spacing.xsmall, TIMING_PARAMS);
+        closeButtonRight.value = withTiming(Spacing.xsmall, TIMING_PARAMS);
         break;
     }
   };
 
   const isFullScreen = currentSnapPoint === FULL_SCREEN;
-
   const images = report.getImages();
   const defaultImage = require('@/assets/images/react-logo.png');
   const previewImageURI = images?.length ? images[0].uri : defaultImage;
-
-  const dateString = format(report.getCreatedAt(), 'MMMM dd, yyyy');
 
   return (
     <BottomSheet
       index={1}
       snapPoints={SNAP_POINTS}
       ref={bottomSheetRef}
-      style={{ backgroundColor, ...Border.elevated, ...Border.roundedTopLarge }}
+      style={{ backgroundColor, ...Border.elevated, ...Border.roundedTopSmall }}
       handleStyle={styles.handleContainer}
       onChange={handleSheetChange}
       onClose={afterCloseCallback}
@@ -99,42 +105,71 @@ export function ReportDetailsSheet({
         style={{
           backgroundColor,
           ...Layout.flex,
-          ...Border.roundedTopLarge,
+          ...Border.roundedTopSmall,
           overflow: 'hidden'
         }}
       >
-        {!isFullScreen && (
+        <Animated.View
+          style={[
+            styles.closeButtonContainer,
+            { top: closeButtonTop, right: closeButtonRight }
+          ]}
+        >
           <ImageButton
             source={CLOSE_SHEET_SRC}
             size={24}
             transparent={true}
-            style={styles.closeSheetButton}
             onPress={closeSheet}
           />
-        )}
+        </Animated.View>
 
         <ThemedView style={styles.contentContainer}>
           <Animated.View style={[styles.header, { height }]}>
-            <Image source={previewImageURI} />
+            <Animated.Image
+              source={previewImageURI}
+              style={[styles.headerImage, { height }]}
+            />
           </Animated.View>
-          <ThemedView style={styles.content}>
-            <ThemedText type="title2" style={[styles.titleText]}>
-              {report.getTitle()}
-            </ThemedText>
-            <ThemedText type="feedback">{dateString}</ThemedText>
-            <ThemedText>{report.getDescription()}</ThemedText>
-          </ThemedView>
+          {isFullScreen ? (
+            <ThemedScrollView>
+              <ReportDetails report={report} />
+            </ThemedScrollView>
+          ) : (
+            <ThemedView style={Layout.flex}>
+              <ReportDetails report={report} />
+            </ThemedView>
+          )}
         </ThemedView>
       </BottomSheetView>
     </BottomSheet>
   );
 }
 
+function ReportDetails({ report }: { report: Report }) {
+  return (
+    <ThemedView style={styles.content}>
+      <ThemedView style={styles.contentSection}>
+        <ThemedText type="title2" style={[styles.titleText]}>
+          {report.getTitle()}
+        </ThemedText>
+        <ThemedText type="feedback">
+          {format(report.getCreatedAt(), 'MMMM dd, yyyy')}
+        </ThemedText>
+      </ThemedView>
+
+      <ThemedView style={styles.contentSection}>
+        <ThemedText type="title3">Details</ThemedText>
+        <ThemedText style={styles.description}>
+          {report.getDescription()}
+        </ThemedText>
+      </ThemedView>
+    </ThemedView>
+  );
+}
+
 const styles = StyleSheet.create({
-  closeSheetButton: {
+  closeButtonContainer: {
     position: 'absolute',
-    top: Spacing.xsmall,
-    right: Spacing.xsmall,
     zIndex: 1
   },
   handleContainer: {
@@ -145,19 +180,30 @@ const styles = StyleSheet.create({
   contentContainer: {
     ...Layout.flex,
     ...Border.elevated,
-    ...Border.roundedTopLarge,
+    ...Border.roundedTopSmall,
     overflow: 'hidden'
   },
   header: {
-    ...Border.roundedTopLarge,
+    ...Border.roundedTopSmall,
     backgroundColor: tamuColors.primaryBrandLight,
     overflow: 'hidden'
   },
+  headerImage: {
+    width: '100%',
+    resizeMode: 'cover'
+  },
   content: {
     ...Layout.flex,
-    padding: Spacing.large
+    padding: Spacing.large,
+    gap: Spacing.large
+  },
+  contentSection: {
+    gap: Spacing.small
   },
   titleText: {
     lineHeight: 40
+  },
+  description: {
+    textOverflow: 'ellipsis'
   }
 });

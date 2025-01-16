@@ -81,7 +81,7 @@ export class Report implements ReportFormDetails {
     return this.description;
   }
 
-  getCoordinates(): number[] {
+  getCoordinates(): Coordinates {
     return this.coordinates;
   }
 

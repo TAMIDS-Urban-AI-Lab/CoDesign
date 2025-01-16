@@ -9,7 +9,7 @@ import Animated, {
   ReduceMotion
 } from 'react-native-reanimated';
 
-import { Report } from '@/types/Report';
+import { Report, ImageDetails } from '@/types/Report';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
@@ -20,7 +20,7 @@ import { tamuColors } from '@/constants/Colors';
 import { ImageButton } from '@/components/ui/ImageButton';
 import { ThemedScrollView } from '../ThemedScrollView';
 
-const HALF_SCREEN = '45%';
+const HALF_SCREEN = '30%';
 const FULL_SCREEN = '100%';
 type SnapPointType = typeof HALF_SCREEN | typeof FULL_SCREEN;
 const SNAP_POINTS: SnapPointType[] = [HALF_SCREEN, FULL_SCREEN];
@@ -35,6 +35,7 @@ const TIMING_PARAMS = {
 };
 
 const CLOSE_SHEET_SRC = require('@/assets/images/circle-xmark.png');
+const DEFAULT_IMAGE_SRC = require('@/assets/images/react-logo.png');
 
 type ReportDetailsSheetProps = {
   report: Report | null;
@@ -87,9 +88,6 @@ export function ReportDetailsSheet({
   };
 
   const isFullScreen = currentSnapPoint === FULL_SCREEN;
-  const images = report.getImages();
-  const defaultImage = require('@/assets/images/react-logo.png');
-  const previewImageURI = images?.length ? images[0].uri : defaultImage;
 
   return (
     <BottomSheet
@@ -126,7 +124,7 @@ export function ReportDetailsSheet({
         <ThemedView style={styles.contentContainer}>
           <Animated.View style={[styles.header, { height }]}>
             <Animated.Image
-              source={previewImageURI}
+              source={getImageSrc(report.getImages())}
               style={[styles.headerImage, { height }]}
             />
           </Animated.View>
@@ -167,6 +165,16 @@ function ReportDetails({ report }: { report: Report }) {
   );
 }
 
+const getImageSrc = (images: ImageDetails[]) => {
+  if (!images || images.length === 0) return DEFAULT_IMAGE_SRC;
+
+  if (typeof images[0].uri === 'string') {
+    return { uri: images[0].uri };
+  } else {
+    return images[0].uri;
+  }
+};
+
 const styles = StyleSheet.create({
   closeButtonContainer: {
     position: 'absolute',
@@ -185,7 +193,7 @@ const styles = StyleSheet.create({
   },
   header: {
     ...Border.roundedTopSmall,
-    backgroundColor: tamuColors.primaryBrandLight,
+    backgroundColor: tamuColors.gray500,
     overflow: 'hidden'
   },
   headerImage: {

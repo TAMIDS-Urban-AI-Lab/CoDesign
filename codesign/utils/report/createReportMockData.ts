@@ -4,7 +4,14 @@ import {
   Report,
   Coordinates
 } from '@/types/Report';
-import { getRandomNumber } from '../Math';
+import { getRandomNumber } from '@/utils/Math';
+import { ImageDetails } from '@/types/Report';
+
+const DEFAULT_IMAGES: ImageDetails[] = [
+  { uri: require('@/assets/images/default/corner.png') },
+  { uri: require('@/assets/images/default/square.png') },
+  { uri: require('@/assets/images/default/stairs.png') }
+];
 
 export const createRandomCoordinates = (): Coordinates => {
   return [
@@ -39,6 +46,7 @@ export function createReportMockData(report = {}): Report {
     reportLocationDetails,
     coordinates,
     createdAt: new Date(),
+    images: DEFAULT_IMAGES,
     ...report
   });
   return reportData;

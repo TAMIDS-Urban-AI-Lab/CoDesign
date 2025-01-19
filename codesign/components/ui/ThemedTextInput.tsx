@@ -18,7 +18,7 @@ export type ThemedTextInputProps = TextInputProps & {
   multiline?: boolean;
   numberOfLines?: number;
   onChangeText: ((text: string) => void) | undefined;
-  value?: string;
+  value?: string | number;
   placeholder: string;
 };
 
@@ -28,7 +28,7 @@ export function ThemedTextInput({
   editable = true,
   multiline = false,
   numberOfLines = 1,
-  onChangeText: onChange,
+  onChangeText,
   value,
   placeholder,
   ...rest
@@ -49,8 +49,8 @@ export function ThemedTextInput({
         editable={editable}
         multiline={multiline}
         numberOfLines={numberOfLines}
-        onChangeText={onChange}
-        value={value}
+        onChangeText={onChangeText}
+        value={value?.toString()}
         placeholder={placeholder}
         {...rest}
       />

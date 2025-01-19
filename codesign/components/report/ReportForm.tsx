@@ -27,6 +27,7 @@ import createReport from '@/hooks/report/createReport';
 import { useCodesignData } from '@/components/provider/CodesignDataProvider';
 import { createRandomCoordinates } from '@/utils/report/createReportMockData';
 import { TAB_ROUTE_PATH, TAB_ROUTES } from '@/constants/Routes';
+import { ImageUpload } from '@/components/report/ImageUpload';
 import { useModal } from '@/components/provider/ModalProvider';
 
 const BOTTOM_SPACE_HEIGHT = 148;
@@ -61,7 +62,6 @@ export function ReportForm({ style }: ViewProps) {
           createdAt: new Date()
         });
         setReports([...reports, newReport]);
-
         reset();
 
         // Navigate to the Map tab
@@ -179,12 +179,12 @@ export function ReportForm({ style }: ViewProps) {
                 control={control}
                 name="reportLocationDetails.indoorDetails.floorNumber"
                 render={({ field: { onChange, value } }) => (
-                  // Do not pass value prop to ThemedTextInput, it is managed by onChangeText
                   <ThemedTextInput
                     label="Floor Number"
+                    value={value} // value is a number on purpose
                     onChangeText={(text) => onChange(parseInt(text, 10) || 1)}
                     keyboardType="numeric"
-                    placeholder="Enter floor number please:"
+                    placeholder="Enter floor number"
                   />
                 )}
               />
@@ -199,6 +199,16 @@ export function ReportForm({ style }: ViewProps) {
         >
           Report Details
         </ThemedText>
+
+        <ThemedView style={styles.input}>
+          <Controller
+            control={control}
+            name="images"
+            render={({ field: { onChange, value } }) => (
+              <ImageUpload value={value} onChange={onChange} />
+            )}
+          />
+        </ThemedView>
 
         <ThemedView style={styles.input}>
           <Controller
@@ -233,7 +243,7 @@ export function ReportForm({ style }: ViewProps) {
         </ThemedView>
         <ThemedView style={[styles.submitContainer]}>
           <TextButton
-            text="Clear Form"
+            text="Reset Form"
             type="tertiary"
             smallCaps={false}
             textStyle={styles.clearFormButton}

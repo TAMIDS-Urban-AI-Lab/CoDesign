@@ -19,15 +19,23 @@ type IndoorDetails = {
   floorNumber: number;
 };
 
+export type ImageDetails = {
+  uri: string; // path to file on device
+  base64: string; // base64 encoded image data
+};
+
 export type ReportFormDetails = {
+  // Fields created by the backend
   id: number;
+  createdAt: Date;
+  // Fields defined by user input
   reportType: ReportType;
   reportLocation: ReportLocationType;
+  reportLocationDetails: ReportLocationDetails;
+  coordinates: Coordinates;
+  images: ImageDetails[];
   title: string;
   description: string;
-  coordinates: Coordinates;
-  reportLocationDetails: ReportLocationDetails;
-  createdAt: Date;
 };
 
 export class Report implements ReportFormDetails {
@@ -39,6 +47,7 @@ export class Report implements ReportFormDetails {
   coordinates: Coordinates;
   reportLocationDetails: ReportLocationDetails;
   createdAt: Date;
+  images: ImageDetails[];
 
   constructor(reportDetails: ReportFormDetails) {
     this.id = reportDetails.id;
@@ -49,6 +58,7 @@ export class Report implements ReportFormDetails {
     this.coordinates = reportDetails.coordinates;
     this.reportLocationDetails = reportDetails.reportLocationDetails;
     this.createdAt = reportDetails.createdAt;
+    this.images = reportDetails.images;
   }
 
   getId(): number {
@@ -107,5 +117,9 @@ export class Report implements ReportFormDetails {
     }
 
     return this.reportLocationDetails.indoorDetails!.floorNumber;
+  }
+
+  getImages(): ImageDetails[] {
+    return this.images;
   }
 }

@@ -23,6 +23,11 @@ MapboxGL.setTelemetryEnabled(false);
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
+SplashScreen.setOptions({
+  duration: 500,
+  fade: true
+});
+
 function App({ children }: { children: React.ReactNode }) {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts();

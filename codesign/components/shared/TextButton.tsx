@@ -22,6 +22,7 @@ type TextButtonProps = PressableProps & {
   style?: ViewProps['style'];
   textStyle?: TextProps['style'];
   smallCaps?: boolean;
+  children?: React.ReactNode;
 };
 
 export function TextButton({
@@ -30,6 +31,7 @@ export function TextButton({
   style,
   textStyle,
   smallCaps = true,
+  children,
   ...rest
 }: TextButtonProps) {
   const colorScheme = useColorScheme() ?? 'light';
@@ -37,8 +39,10 @@ export function TextButton({
   const textColorScheme = typeToTextColor[type];
   const textColor = { color: useThemeColor(textColorScheme, 'text') };
   const textCapitalization = smallCaps ? Typography.textUppercase : {};
+
   return (
     <Pressable style={[styles.buttonBase, buttonStyle, style]} {...rest}>
+      {children}
       <ThemedText
         type="title5"
         style={[textColor, textCapitalization, textStyle]}
@@ -53,7 +57,9 @@ const styles = StyleSheet.create({
   buttonBase: {
     height: Spacing.xxlarge,
     paddingHorizontal: Spacing.large,
-    ...Layout.center
+    ...Layout.row,
+    ...Layout.center,
+    gap: Spacing.small
   },
   primaryButtonLight: {
     backgroundColor: tamuColors.primaryBrand
@@ -76,6 +82,11 @@ const styles = StyleSheet.create({
   },
   tertiaryButtonDark: {
     backgroundColor: tamuColors.transparent
+  },
+  centerText: {
+    ...Layout.row,
+    ...Layout.center,
+    gap: Spacing.small
   }
 });
 

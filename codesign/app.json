@@ -50,6 +50,12 @@
         }
       ],
       [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow Codesign to access current location while app is in use"
+        }
+      ],
+      [
         "expo-image-picker",
         {
           "photosPermission": "Allow Codesign to access your photos",

@@ -8,42 +8,52 @@ import {
 } from 'react-native';
 
 import { Spacing } from '@/constants/styles/Spacing';
-import { useThemeColor } from '@/hooks/useThemeColor';
 import { Layout } from '@/constants/styles/Layout';
+import { ThemedView } from '../ThemedView';
+import { Border } from '@/constants/styles/Border';
 
 type ImageButtonProps = PressableProps & {
   style?: ViewProps['style'];
   transparent?: boolean;
   size?: number;
+  elevated?: boolean;
   source: ImageSourcePropType;
 };
 
 export function ImageButton({
   style,
   transparent = false,
+  elevated = false,
   size = 24,
   source,
   ...rest
 }: ImageButtonProps) {
-  const themeColor = useThemeColor({}, 'background');
-  const backgroundColor = transparent ? {} : themeColor;
-  const buttonSize = { width: size, height: size };
+  const imageSize = { width: size, height: size };
+  const buttonSize = {
+    width: size + Spacing.large,
+    height: size + Spacing.large
+  };
+  const elevation = elevated ? Border.elevated : {};
 
   return (
-    <Pressable
-      style={[backgroundColor, buttonSize, styles.buttonBase, style]}
-      {...rest}
+    <ThemedView
+      style={[styles.buttonContainer, buttonSize, elevation, style]}
+      transparent={transparent}
     >
-      <Image source={source} style={[buttonSize]}></Image>
-    </Pressable>
+      <Pressable {...rest}>
+        <Image source={source} style={[imageSize]}></Image>
+      </Pressable>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    ...Layout.center,
+    borderRadius: '50%'
+  },
   buttonBase: {
     ...Layout.flex,
-    ...Layout.center,
-    padding: Spacing.small,
-    borderRadius: '50%'
+    ...Layout.center
   }
 });

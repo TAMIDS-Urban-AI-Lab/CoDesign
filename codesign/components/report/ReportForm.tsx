@@ -25,10 +25,10 @@ import {
 } from '@/types/Report';
 import createReport from '@/hooks/report/createReport';
 import { useCodesignData } from '@/components/provider/CodesignDataProvider';
-import { createRandomCoordinates } from '@/utils/report/createReportMockData';
 import { TAB_ROUTE_PATH, TAB_ROUTES } from '@/constants/Routes';
 import { ImageUpload } from '@/components/report/ImageUpload';
 import { useModal } from '@/components/provider/ModalProvider';
+import { SelectLocation } from '@/components/report/SelectLocation';
 
 const BOTTOM_SPACE_HEIGHT = 148;
 
@@ -44,9 +44,6 @@ export function ReportForm({ style }: ViewProps) {
 
   // Set ReportType to MAINTENANCE by default
   setValue('reportType', ReportType.MAINTENANCE);
-
-  // TO DO: Allow user to set coordinates
-  setValue('coordinates', createRandomCoordinates());
 
   const reportLocation = watch('reportLocation');
 
@@ -158,6 +155,20 @@ export function ReportForm({ style }: ViewProps) {
             )}
           />
         </ThemedView>
+
+        <ThemedView style={styles.input}>
+          <Controller
+            control={control}
+            name="coordinates"
+            render={({ field: { onChange, value } }) => (
+              <SelectLocation
+                setSelectedLocation={onChange}
+                selectedLocation={value}
+              />
+            )}
+          />
+        </ThemedView>
+
         {reportLocation === ReportLocationType.INDOOR && (
           <>
             <ThemedView style={styles.input}>

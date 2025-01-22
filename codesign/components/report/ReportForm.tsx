@@ -29,6 +29,7 @@ import { TAB_ROUTE_PATH, TAB_ROUTES } from '@/constants/Routes';
 import { ImageUpload } from '@/components/report/ImageUpload';
 import { useModal } from '@/components/provider/ModalProvider';
 import { SelectLocation } from '@/components/report/SelectLocation';
+import { sendReportToServer } from '@/utils/report/saveReportServer';
 
 const BOTTOM_SPACE_HEIGHT = 148;
 
@@ -58,12 +59,12 @@ export function ReportForm({ style }: ViewProps) {
           id: success.id,
           createdAt: new Date()
         });
-        setReports([...reports, newReport]);
-        reset();
-
         // Navigate to the Map tab
         router.replace({ pathname: TAB_ROUTE_PATH[TAB_ROUTES.INDEX] });
+        setReports([...reports, newReport]);
+        sendReportToServer([newReport]);
         successModal.openModal();
+        reset();
       })
       .catch((error) => {
         // TO DO #24: Show an error on the form

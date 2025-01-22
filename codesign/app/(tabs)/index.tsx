@@ -44,9 +44,9 @@ export default function HomeScreen() {
         {!isReportsEmpty &&
           reports.map((report) => (
             <MarkerView
-              key={report.getId()}
-              coordinates={report.getCoordinates()}
-              onPress={() => alertLocation(report.getTitle())}
+              key={report.id}
+              coordinates={report.coordinates}
+              onPress={() => alertLocation(report)}
             >
               <Image
                 source={REPORT_ICON_SRC[colorScheme]}
@@ -59,8 +59,14 @@ export default function HomeScreen() {
   );
 }
 
-function alertLocation(name: string) {
-  alert(`Marker Pressed for ${name}`);
+function alertLocation(report: Report) {
+  // TODO: remove alert
+  // Add popup box with image thumbnail
+  alert(`
+    Title: ${report.title}
+    Type: ${report.reportType}
+    Desc: ${report.description}
+  `);
 }
 
 const styles = StyleSheet.create({

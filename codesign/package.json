@@ -18,10 +18,12 @@
   "dependencies": {
     "@expo/react-native-action-sheet": "^4.1.0",
     "@expo/vector-icons": "^14.0.2",
+    "@gorhom/bottom-sheet": "^5.0.6",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/bottom-tabs": "^7.0.0",
     "@react-navigation/native": "^7.0.0",
     "@rnmapbox/maps": "^10.1.33",
+    "date-fns": "^4.1.0",
     "expo": "~52.0.20",
     "expo-blur": "~14.0.1",
     "expo-constants": "~17.0.3",
@@ -30,6 +32,7 @@
     "expo-haptics": "~14.0.0",
     "expo-image-picker": "~16.0.3",
     "expo-linking": "~7.0.3",
+    "expo-location": "~18.0.5",
     "expo-router": "~4.0.15",
     "expo-splash-screen": "~0.29.18",
     "expo-status-bar": "~2.0.0",
@@ -47,8 +50,7 @@
     "react-native-screens": "~4.4.0",
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
-    "react-refresh": "^0.16.0",
-    "expo-location": "~18.0.5"
+    "react-refresh": "^0.16.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

@@ -21,7 +21,7 @@ type IndoorDetails = {
 
 export type ImageDetails = {
   uri: string; // path to file on device
-  base64: string; // base64 encoded image data
+  base64?: string; // base64 encoded image data
 };
 
 export type ReportFormDetails = {
@@ -81,7 +81,7 @@ export class Report implements ReportFormDetails {
     return this.description;
   }
 
-  getCoordinates(): number[] {
+  getCoordinates(): Coordinates {
     return this.coordinates;
   }
 

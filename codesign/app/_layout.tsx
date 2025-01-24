@@ -3,6 +3,7 @@ import {
   DefaultTheme,
   ThemeProvider
 } from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -43,11 +44,15 @@ function App({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <CodesignDataProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <ModalProvider>{children}</ModalProvider>
-      </ThemeProvider>
-    </CodesignDataProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <CodesignDataProvider>
+        <ThemeProvider
+          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+        >
+          <ModalProvider>{children}</ModalProvider>
+        </ThemeProvider>
+      </CodesignDataProvider>
+    </GestureHandlerRootView>
   );
 }
 

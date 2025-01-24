@@ -15,8 +15,6 @@ function MapView(
 ) {
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
   const styleURL = colorScheme === 'light' ? StyleURL.Light : StyleURL.Dark;
-  // need to set this, otherwise mapLoad will fail
-  MapboxGL.setAccessToken("pk.eyJ1IjoicGFybmRlcHUiLCJhIjoiY20xam8yYzZpMDNxOTJscHlncHI3OXZmZCJ9.LItUIAG1L1DrNugKyb4V4g");
 
   return (
     <MapboxGL.MapView

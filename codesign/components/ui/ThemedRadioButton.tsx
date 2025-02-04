@@ -1,7 +1,7 @@
 import { CheckBox } from 'react-native-elements';
 import {
   GestureResponderEvent,
-  type ViewProps,
+  type TextProps,
   StyleSheet,
   Image
 } from 'react-native';
@@ -9,9 +9,11 @@ import {
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Typography } from '@/constants/styles/Typography';
+import { ThemedText } from '../ThemedText';
+import { Spacing } from '@/constants/styles/Spacing';
 
 export type ThemedRadiobButtonProps = {
-  style?: ViewProps['style'];
+  style?: TextProps['style'];
   title: string;
   checked: boolean;
   onPress: ((event: GestureResponderEvent) => void) | undefined;
@@ -45,7 +47,14 @@ export function ThemedRadioButton({
         styles.radioButtonContainer
       ]}
       textStyle={[{ color: textColor }, { ...Typography.formText }]}
-      title={title}
+      title={
+        <ThemedText
+          type="formText"
+          style={[{ marginLeft: Spacing.small }, style]}
+        >
+          {title}
+        </ThemedText>
+      }
       checked={checked}
       onPress={onPress}
       checkedIcon={

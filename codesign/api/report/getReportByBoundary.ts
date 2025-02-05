@@ -46,7 +46,7 @@ export async function getReportByBoundary(
   north: number
 ): Promise<Report[]> {
   try {
-    const query = `${Constants.expoConfig?.extra?.baseUrl ?? ''}?west=${west}&south=${south}&east=${east}&north=${north}`;
+    const query = `${Constants.expoConfig?.extra?.baseUrl ?? ''}/locations?west=${west}&south=${south}&east=${east}&north=${north}`;
     const response = await axios.get<Report[]>(query);
     console.log("Server-success: GET");
     const reports = convertToReportArray(response.data);

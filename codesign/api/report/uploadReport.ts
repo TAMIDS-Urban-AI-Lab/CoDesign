@@ -8,7 +8,8 @@ import { ReportFormDetails } from "@/types/Report";
  */
 export async function uploadReport(reportData: ReportFormDetails) {
   try {
-    const response = await axios.post(Constants.expoConfig?.extra?.baseUrl ?? '', JSON.stringify(reportData), {
+    const query = `${Constants.expoConfig?.extra?.baseUrl ?? ''}/locations`;
+    const response = await axios.post(query, JSON.stringify([reportData]), {
       headers: {
         "Content-Type": "application/json",
       }
@@ -16,6 +17,7 @@ export async function uploadReport(reportData: ReportFormDetails) {
     console.log("Server-success: POST");
     return response.data;
   } catch (error) {
+    console.log("Server-error: POST");
     throw new Error("Server-error: POST");
   }
 };

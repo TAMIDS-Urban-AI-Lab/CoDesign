@@ -7,7 +7,6 @@ async function createReport(data: ReportFormDetails) {
     // Backend returns an id associated with the report
     const id = Math.floor(Math.random() * 1000);
     const response = await uploadReport(data);
-    console.log(response);
     return { id };
   } catch {
     throw new Error('Failed to create report');

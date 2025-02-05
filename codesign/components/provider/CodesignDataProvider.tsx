@@ -1,8 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Report } from '@/types/Report';
-import {
-  getReportFromServer,
-} from "@/utils/report/saveReportServer";
+import { getReportByBoundary } from '@/api/report/getReportByBoundary';
 
 type CodesignDataContextType = {
   reports: Report[];
@@ -42,8 +40,8 @@ export const CodesignDataProvider = ({
     east: -96.334904,
     north: 30.627126,
     };
-    // GET request
-    getReportFromServer(loc.west, loc.south, loc.east, loc.north)
+    
+    getReportByBoundary(loc.west, loc.south, loc.east, loc.north)
     .then((reports: Report[]) => {
       if (reports.length == 0) {
         throw new Error("No reports found at this location");

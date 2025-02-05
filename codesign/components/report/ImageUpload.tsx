@@ -166,8 +166,8 @@ const styles = StyleSheet.create({
   },
   removeImageButton: {
     position: 'absolute',
-    top: Spacing.xsmall,
-    right: Spacing.xsmall,
+    top: 0,
+    right: 0,
     zIndex: 1
   }
 });

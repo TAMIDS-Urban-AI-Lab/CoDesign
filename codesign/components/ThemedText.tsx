@@ -17,6 +17,7 @@ type ThemedTextType =
   | 'title4'
   | 'title5'
   | 'feedback'
+  | 'error'
   | 'link'
   | 'formText';
 
@@ -35,7 +36,12 @@ export function ThemedText({
   withDivider = false,
   ...rest
 }: ThemedTextProps) {
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
+  var defaultColor = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    'text'
+  );
+  var errorColor = useThemeColor({}, 'error');
+  var textColor = type === 'error' ? errorColor : defaultColor;
 
   const typography = getTypographyByType(type);
 
@@ -44,13 +50,13 @@ export function ThemedText({
       <ThemedView
         style={[Layout.row, Layout.center, { gap: Spacing.small }, style]}
       >
-        <Text style={[{ color }, typography]} {...rest} />
+        <Text style={[{ color: textColor }, typography]} {...rest} />
         <ThemedView style={[styles.divider]} />
       </ThemedView>
     );
   }
 
-  return <Text style={[{ color }, typography, style]} {...rest} />;
+  return <Text style={[{ color: textColor }, typography, style]} {...rest} />;
 }
 
 /**

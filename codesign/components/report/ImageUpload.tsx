@@ -1,4 +1,5 @@
 import { StyleSheet, type ViewProps, Image } from 'react-native';
+import { useState } from 'react';
 import {
   launchImageLibraryAsync,
   useMediaLibraryPermissions,
@@ -17,22 +18,27 @@ import { ImageButton } from '@/components/ui/ImageButton';
 import { ImageDetails } from '@/types/Report';
 
 const PHOTO_HEIGHT = 120;
-const IMAGE_UPLOAD_LIMIT = 3;
+export const IMAGE_UPLOAD_LIMIT = 3;
 const PLACEHOLDER_KEY = 'placeholder';
 const REMOVE_IMAGE_SRC = require('@/assets/images/circle-xmark.png');
+const MAX_MB = 20;
+const MAX_IMAGE_SIZE = MAX_MB * 1024 * 1024;
 
 type ImageUploadProps = {
   style?: ViewProps['style'];
   onChange: (...event: any[]) => void;
   value: ImageDetails[];
+  errorText?: string;
 };
 
 export function ImageUpload({
   style,
   onChange: updateForm,
-  value: images
+  value: images,
+  errorText
 }: ImageUploadProps) {
   const [status, requestPermission] = useMediaLibraryPermissions();
+  const [uploadErrorText, setUploadErrorText] = useState<string | null>(null);
 
   const pickImage = async () => {
     if (!status?.granted) {
@@ -50,19 +56,24 @@ export function ImageUpload({
           const newImages = [...images];
 
           const imagePickerAsset: ImagePickerAsset = result.assets[0];
+
+          if ((imagePickerAsset.fileSize ?? 0) > MAX_IMAGE_SIZE) {
+            throw new Error(`Image size exceeds ${MAX_MB} MB`);
+          }
           if (imagePickerAsset.uri && imagePickerAsset.base64) {
             newImages.push({
               uri: imagePickerAsset.uri,
               base64: imagePickerAsset.base64
             } as ImageDetails);
             updateForm(newImages);
+            setUploadErrorText(null);
           } else {
-            throw new Error('Failed to upload image to Codesign');
+            throw new Error('Failed to upload image. Please try again.');
           }
         }
       })
       .catch((error) => {
-        // TO DO: Show error to user when uploading image fails
+        setUploadErrorText(error.message);
       });
   };
 
@@ -83,6 +94,16 @@ export function ImageUpload({
 
   return (
     <ThemedView style={style}>
+      {errorText && (
+        <ThemedText type="error" style={styles.errorText}>
+          {errorText}
+        </ThemedText>
+      )}
+      {uploadErrorText && (
+        <ThemedText type="error" style={styles.errorText}>
+          {uploadErrorText}
+        </ThemedText>
+      )}
       <ThemedView style={styles.imagePreviewRow} key="image_previews">
         {renderArray.map((imageURI, index) => {
           if (imageURI === PLACEHOLDER_KEY) {
@@ -136,6 +157,9 @@ function DefaultImage() {
 }
 
 const styles = StyleSheet.create({
+  errorText: {
+    marginBottom: Spacing.small
+  },
   imagePreviewRow: {
     ...Layout.row,
     ...Layout.justifySpaceEvenly,

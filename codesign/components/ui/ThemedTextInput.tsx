@@ -20,6 +20,7 @@ export type ThemedTextInputProps = TextInputProps & {
   onChangeText: ((text: string) => void) | undefined;
   value?: string | number;
   placeholder: string;
+  errorText?: string;
 };
 
 export function ThemedTextInput({
@@ -31,6 +32,7 @@ export function ThemedTextInput({
   onChangeText,
   value,
   placeholder,
+  errorText,
   ...rest
 }: ThemedTextInputProps) {
   const backgroundColor = useThemeColor({}, 'background');
@@ -40,6 +42,7 @@ export function ThemedTextInput({
   return (
     <ThemedView>
       <ThemedText type={'formText'}>{label}</ThemedText>
+      {errorText && <ThemedText type={'error'}>{errorText}</ThemedText>}
       <TextInput
         style={[
           styles.textInput,

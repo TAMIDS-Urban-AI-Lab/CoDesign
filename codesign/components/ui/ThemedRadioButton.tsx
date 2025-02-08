@@ -76,7 +76,8 @@ export function ThemedRadioButton({
 const styles = StyleSheet.create({
   radioButtonContainer: {
     borderWidth: 0,
-    margin: 0
+    margin: 0,
+    paddingVertical: Spacing.xsmall
   },
   radioButtonText: {
     ...Typography.formText

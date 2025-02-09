@@ -85,7 +85,10 @@ export function ReportForm({ style }: ViewProps) {
     onChange: (...event: any[]) => void
   ) => {
     // reset reportLocationDetails when switching between indoor and outdoor
-    setValue('reportLocationDetails', {});
+    setValue(
+      'reportLocationDetails',
+      DefaultIndoorReport.reportLocationDetails
+    );
 
     // call onChange to update the value in the form
     onChange(reportLocation);

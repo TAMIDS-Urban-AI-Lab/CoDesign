@@ -5,6 +5,7 @@ import {
   Platform,
   Alert
 } from 'react-native';
+import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useRouter } from 'expo-router';
 
@@ -36,6 +37,7 @@ const BOTTOM_SPACE_HEIGHT = 148;
 export function ReportForm({ style }: ViewProps) {
   const router = useRouter();
   const { reports, setReports } = useCodesignData();
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
 
   const {
     control,
@@ -58,26 +60,26 @@ export function ReportForm({ style }: ViewProps) {
   const onSubmit = (data: ReportFormDetails) => {
     createReport(data)
       .then((success) => {
-        // Create Report from user submitted data
+        // Update reports locally
         const newReport = new Report({
           ...data,
           id: success.id,
           createdAt: new Date()
         });
         setReports([...reports, newReport]);
+        // Clear form state
+        setSubmissionError(null);
         reset();
 
-        // Navigate to the Map tab
+        // Navigate to the Map tab on success
         router.replace({ pathname: TAB_ROUTE_PATH[TAB_ROUTES.INDEX] });
         successModal.openModal();
       })
       .catch((error) => {
-        // TO DO #24: Show an error on the form
+        setSubmissionError(
+          'An error occurred when submitting report. Please try again.'
+        );
       });
-  };
-
-  const onError = (error: any) => {
-    // TO DO: Set focus on first input with error
   };
 
   const switchReportLocation = (
@@ -295,6 +297,18 @@ export function ReportForm({ style }: ViewProps) {
             )}
           />
         </ThemedView>
+        <ThemedView style={[styles.errorsContainer]}>
+          {Object.keys(errors).length > 0 && (
+            <ThemedText type="error" style={[Typography.textRight]}>
+              Please fill out all required fields
+            </ThemedText>
+          )}
+          {submissionError && (
+            <ThemedText type="error" style={[Typography.textRight]}>
+              {submissionError}
+            </ThemedText>
+          )}
+        </ThemedView>
         <ThemedView style={[styles.submitContainer]}>
           <TextButton
             text="Reset Form"
@@ -306,7 +320,7 @@ export function ReportForm({ style }: ViewProps) {
           <TextButton
             text="Submit"
             type="primary"
-            onPress={handleSubmit(onSubmit, onError)}
+            onPress={handleSubmit(onSubmit)}
           />
         </ThemedView>
         <ThemedView style={styles.bottomSpace}></ThemedView>
@@ -318,6 +332,12 @@ export function ReportForm({ style }: ViewProps) {
 const styles = StyleSheet.create({
   input: {
     marginBottom: Spacing.large
+  },
+  errorsContainer: {
+    ...Layout.flex,
+    ...Layout.alignEnd,
+    gap: Spacing.medium,
+    marginBottom: Spacing.medium
   },
   submitContainer: {
     ...Layout.row,

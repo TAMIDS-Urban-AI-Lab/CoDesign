@@ -136,8 +136,7 @@ export function ImageUpload({
           lightColor={tamuColors.gray700}
           darkColor={tamuColors.accentGold}
         >
-          Up to {IMAGE_UPLOAD_LIMIT} images may be uploaded. Please remove an
-          existing image to upload another.
+          Up to {IMAGE_UPLOAD_LIMIT} images may be uploaded.
         </ThemedText>
       )}
     </ThemedView>

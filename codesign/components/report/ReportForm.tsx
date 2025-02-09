@@ -297,12 +297,7 @@ export function ReportForm({ style }: ViewProps) {
             )}
           />
         </ThemedView>
-        <ThemedView style={[styles.errorsContainer]}>
-          {Object.keys(errors).length > 0 && (
-            <ThemedText type="error" style={[Typography.textRight]}>
-              Please fill out all required fields
-            </ThemedText>
-          )}
+        <ThemedView style={[styles.errorContainer]}>
           {submissionError && (
             <ThemedText type="error" style={[Typography.textRight]}>
               {submissionError}
@@ -333,7 +328,7 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: Spacing.large
   },
-  errorsContainer: {
+  errorContainer: {
     ...Layout.flex,
     ...Layout.alignEnd,
     gap: Spacing.medium,

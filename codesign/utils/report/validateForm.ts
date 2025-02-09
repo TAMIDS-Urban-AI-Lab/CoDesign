@@ -52,7 +52,7 @@ function validateCoordinates(coords: Coordinates) {
     DefaultIndoorReport.coordinates
   );
   if (!coords || isDefaultLocation) {
-    return 'Please choose location on map';
+    return 'Please choose a location on map';
   }
   if (coords[0] < -180 || coords[0] > 180) {
     return 'Longitude must be between -180 and 180';

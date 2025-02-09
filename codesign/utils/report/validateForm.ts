@@ -47,8 +47,6 @@ function validateLocationType(value: ReportLocationType) {
 }
 
 function validateCoordinates(coords: Coordinates) {
-  console.log('validate coords');
-
   const isDefaultLocation = areCoordinatesEqual(
     coords,
     DefaultIndoorReport.coordinates

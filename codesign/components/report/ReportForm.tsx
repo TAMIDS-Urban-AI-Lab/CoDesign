@@ -203,6 +203,7 @@ export function ReportForm({ style }: ViewProps) {
                       errors.reportLocationDetails?.indoorDetails?.buildingName
                         ?.message
                     }
+                    required
                   />
                 )}
               />
@@ -223,6 +224,7 @@ export function ReportForm({ style }: ViewProps) {
                       errors.reportLocationDetails?.indoorDetails?.floorNumber
                         ?.message
                     }
+                    required
                   />
                 )}
               />
@@ -265,6 +267,7 @@ export function ReportForm({ style }: ViewProps) {
                 value={value}
                 placeholder="Enter title"
                 errorText={errors.title?.message}
+                required
               />
             )}
           />
@@ -284,6 +287,7 @@ export function ReportForm({ style }: ViewProps) {
                 multiline
                 numberOfLines={4}
                 errorText={errors.description?.message}
+                required
               />
             )}
           />

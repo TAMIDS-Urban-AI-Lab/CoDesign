@@ -20,8 +20,9 @@ export const VALIDATION_RULES = {
     required: 'Building Name is required'
   },
   floorNumber: {
-    required: 'Floor Number is required',
-    min: { value: 1, message: 'Floor Number must be greater than 0' }
+    validate: (value: number) => {
+      return validateFloorNumber(value);
+    }
   },
   images: {
     validate: (value: ImageDetails[]) => {
@@ -42,6 +43,17 @@ function validateLocationType(value: ReportLocationType) {
     value !== ReportLocationType.OUTDOOR
   ) {
     return 'Location must be Indoor or Outdoor';
+  }
+  return true;
+}
+
+function validateFloorNumber(value: string | number) {
+  if (!value) return 'Floor Number is required'; // handle null, undefined, empty string
+  const num = typeof value === 'string' ? Number(value) : value;
+  if (isNaN(num)) return 'Floor Number must be a number';
+  if (num < 1) return 'Floor Number must be greater than 0';
+  if (!Number.isInteger(num)) {
+    return 'Floor Number must be a whole number';
   }
   return true;
 }

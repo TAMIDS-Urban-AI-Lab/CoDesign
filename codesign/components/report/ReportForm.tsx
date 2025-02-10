@@ -70,6 +70,11 @@ export function ReportForm({ style }: ViewProps) {
       });
   };
 
+  const onReset = () => {
+    // Do not change report location when resetting form
+    reset({ ...DefaultIndoorReport, reportLocation });
+  };
+
   const switchReportLocation = (
     reportLocation: ReportLocationType,
     onChange: (...event: any[]) => void
@@ -258,7 +263,7 @@ export function ReportForm({ style }: ViewProps) {
             type="tertiary"
             smallCaps={false}
             textStyle={styles.clearFormButton}
-            onPress={() => reset()}
+            onPress={onReset}
           />
           <TextButton
             text="Submit"

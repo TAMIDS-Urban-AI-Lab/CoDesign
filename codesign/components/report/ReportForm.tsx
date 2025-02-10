@@ -197,8 +197,8 @@ export function ReportForm({ style }: ViewProps) {
                 render={({ field: { onChange, value } }) => (
                   <ThemedTextInput
                     label="Floor Number"
-                    value={value} // value is a number on purpose
-                    onChangeText={(text) => onChange(parseInt(text, 10) || 1)}
+                    value={value} // value may be number or string
+                    onChangeText={(text) => onChange(Number(text) || text)}
                     keyboardType="numeric"
                     placeholder="Enter floor number"
                   />

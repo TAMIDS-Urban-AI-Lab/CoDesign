@@ -1,12 +1,14 @@
+/* eslint-disable no-unused-vars */
 export enum ReportType {
-  'MAINTENANCE' = 'MAINTENANCE',
-  'OTHER' = 'OTHER'
+  MAINTENANCE = 'MAINTENANCE',
+  OTHER = 'OTHER'
 }
 
 export enum ReportLocationType {
-  'INDOOR' = 'INDOOR',
-  'OUTDOOR' = 'OUTDOOR'
+  INDOOR = 'INDOOR',
+  OUTDOOR = 'OUTDOOR'
 }
+/* eslint-enable no-unused-vars */
 
 export type Coordinates = [number, number];
 

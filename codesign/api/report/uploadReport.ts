@@ -14,10 +14,8 @@ export async function uploadReport(reportData: ReportFormDetails) {
         "Content-Type": "application/json",
       }
     });
-    console.log("Server-success: POST");
     return response.data;
   } catch (error) {
-    console.log("Server-error: POST");
     throw new Error("Server-error: POST");
   }
 };

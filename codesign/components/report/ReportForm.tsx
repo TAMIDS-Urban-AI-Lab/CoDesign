@@ -23,12 +23,12 @@ import {
   ReportFormDetails,
   Report
 } from '@/types/Report';
-import createReport from '@/hooks/report/createReport';
 import { useCodesignData } from '@/components/provider/CodesignDataProvider';
 import { TAB_ROUTE_PATH, TAB_ROUTES } from '@/constants/Routes';
 import { ImageUpload } from '@/components/report/ImageUpload';
 import { useModal } from '@/components/provider/ModalProvider';
 import { SelectLocation } from '@/components/report/SelectLocation';
+import { uploadReport } from '@/api/report/uploadReport';
 
 const BOTTOM_SPACE_HEIGHT = 148;
 
@@ -50,7 +50,7 @@ export function ReportForm({ style }: ViewProps) {
   const onSubmit = (data: ReportFormDetails) => {
     // TO DO: Add form validation before submitting report
 
-    createReport(data)
+    uploadReport(data)
       .then((success) => {
         // Create Report from user submitted data
         const newReport = new Report({

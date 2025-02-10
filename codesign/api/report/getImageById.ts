@@ -10,8 +10,7 @@ import Constants from "expo-constants";
 const convertToImageDetails = (imageData: any[]): ImageDetails[] => {
   return imageData.map((item) => {
     const image_data: ImageDetails = {
-      uri: "no uri, retrieved image from server",
-      base64: item,
+      base64: item
     };
     return image_data;
   });
@@ -19,7 +18,7 @@ const convertToImageDetails = (imageData: any[]): ImageDetails[] => {
 
 /**
  * Get image by id
- * @param id
+ * @param id: report id
  * @returns 
  */
 export async function getImageById(id: number) {
@@ -28,7 +27,6 @@ export async function getImageById(id: number) {
     const response = await axios.get<object>(query);
     return convertToImageDetails(response.data["image_data"]);
   } catch (error) {
-    console.log("Server-error:", error);
     return [];
   }
 };

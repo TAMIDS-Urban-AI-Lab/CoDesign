@@ -110,9 +110,11 @@ export function SelectLocation({
 
   return (
     <>
-      <ThemedText type="error" style={{ marginBottom: Spacing.small }}>
-        {errorText}
-      </ThemedText>
+      {errorText && (
+        <ThemedText type="error" style={{ marginBottom: Spacing.small }}>
+          {errorText}
+        </ThemedText>
+      )}
       <LocationPreview
         onPress={openLocationModal}
         pinLocation={pinLocation}

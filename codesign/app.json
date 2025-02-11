@@ -67,7 +67,8 @@
       "typedRoutes": true
     },
     "extra": {
-      "mapboxAccessToken": ""
+      "mapboxAccessToken": "",
+      "baseUrl": ""
     }
   }
 }

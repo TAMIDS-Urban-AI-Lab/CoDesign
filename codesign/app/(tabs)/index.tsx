@@ -15,6 +15,7 @@ import { Spacing } from '@/constants/styles/Spacing';
 import { Coordinates, Report } from '@/types/Report';
 import { ReportDetailsSheet } from '@/components/report/ReportDetailsSheet';
 import { ALBRITTON_BELL_TOWER } from '@/constants/map/Coordinates';
+import { getImageById } from '@/api/report/getImageById';
 
 const REPORT_ICON_SRC = {
   light: require('@/assets/images/custom-form-icon-light.png'),
@@ -51,8 +52,12 @@ export default function HomeScreen() {
     setSheetExpanded(true);
 
     if (displayedReport?.getId() !== report.getId()) {
-      rerenderSheet((prev) => prev + 1);
-      setDisplayedReport(report);
+      // retrieve images from the server by id
+      getImageById(report.getId()).then((data) => {
+        report.images = data;
+        rerenderSheet((prev) => prev + 1);
+        setDisplayedReport(report);
+      });
     }
   };
 

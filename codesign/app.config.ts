@@ -6,6 +6,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   name: 'codesign',
   slug: 'codesign',
   extra: {
-    mapboxAccessToken: process.env.MAPBOX_ACCESS_TOKEN
+    mapboxAccessToken: process.env.MAPBOX_ACCESS_TOKEN,
+    baseUrl: process.env.BASE_URL
   }
 });

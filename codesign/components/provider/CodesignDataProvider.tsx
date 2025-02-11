@@ -1,10 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Report } from '@/types/Report';
-import {
-  setReportsLocal,
-  getReportsLocal
-} from '@/utils/report/saveReportLocal';
-import { createReportMockData } from '@/utils/report/createReportMockData';
+import { getReportByBoundary } from '@/api/report/getReportByBoundary';
 
 type CodesignDataContextType = {
   reports: Report[];
@@ -35,41 +31,25 @@ export const CodesignDataProvider = ({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch reports on component mount
   useEffect(() => {
-    // This is where a GET request would be made to fetch reports
-    // for now, we will just initialize the reports locally from AsyncStorage or use mock data
-    getReportsLocal()
-      .then((reports: Report[]) => {
-        if (reports.length === 0) {
-          throw new Error(
-            'No reports from AsyncStorage so initializing with mock data'
-          );
-        }
-        setReports(reports);
-        setIsLoading(false);
-      })
-      .catch(() => {
-        const REPORT_DATA: Report[] = [
-          createReportMockData(),
-          createReportMockData(),
-          createReportMockData()
-        ];
-        setReportsLocal(REPORT_DATA)
-          .then(() => {
-            setReports(REPORT_DATA);
-            setIsLoading(false);
-          })
-          .catch((err) => {
-            setError(err);
-          });
-      });
-  }, []);
-
-  // sync reports with AsyncStorage
-  useEffect(() => {
-    setReportsLocal(reports);
-  }, [reports]);
+    // selected location 
+    // TODO: make this dynamically get bbox based on screen size
+    const loc = {
+    west: -96.339152,
+    south: 30.600238,
+    east: -96.334904,
+    north: 30.627126,
+    };
+    
+    getReportByBoundary(loc.west, loc.south, loc.east, loc.north)
+    .then((reports: Report[]) => {
+      if (reports.length == 0) {
+        throw new Error("No reports found at this location");
+      }
+      setReports(reports);
+      setIsLoading(false);
+    });
+  },[]);
 
   return (
     <CodesignDataContext.Provider

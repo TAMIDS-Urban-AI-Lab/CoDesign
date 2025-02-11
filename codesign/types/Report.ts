@@ -20,7 +20,7 @@ type IndoorDetails = {
 };
 
 export type ImageDetails = {
-  uri: string; // path to file on device
+  uri?: string; // path to file on device
   base64?: string; // base64 encoded image data
 };
 

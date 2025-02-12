@@ -69,6 +69,11 @@ export function ReportForm({ style }: ViewProps) {
       });
   };
 
+  const onReset = () => {
+    // Do not change report location when resetting form
+    reset({ ...DefaultIndoorReport, reportLocation });
+  };
+
   const switchReportLocation = (
     reportLocation: ReportLocationType,
     onChange: (...event: any[]) => void
@@ -191,8 +196,8 @@ export function ReportForm({ style }: ViewProps) {
                 render={({ field: { onChange, value } }) => (
                   <ThemedTextInput
                     label="Floor Number"
-                    value={value} // value is a number on purpose
-                    onChangeText={(text) => onChange(parseInt(text, 10) || 1)}
+                    value={value} // value may be number or string
+                    onChangeText={(text) => onChange(Number(text) || text)}
                     keyboardType="numeric"
                     placeholder="Enter floor number"
                   />
@@ -257,7 +262,7 @@ export function ReportForm({ style }: ViewProps) {
             type="tertiary"
             smallCaps={false}
             textStyle={styles.clearFormButton}
-            onPress={() => reset()}
+            onPress={onReset}
           />
           <TextButton
             text="Submit"

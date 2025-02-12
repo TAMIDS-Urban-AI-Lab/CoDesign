@@ -1,0 +1,2 @@
+cd codesign
+npm run lint-staged

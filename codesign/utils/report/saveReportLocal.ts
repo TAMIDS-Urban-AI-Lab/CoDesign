@@ -5,7 +5,7 @@ export async function setReportsLocal(reports: Report[] = []) {
   try {
     await AsyncStorage.setItem('reports', JSON.stringify(reports));
   } catch {
-    console.error('Error initializing reports to AsyncStorage');
+    throw new Error('Error initializing reports to AsyncStorage');
   }
 }
 
@@ -17,7 +17,6 @@ export async function getReportsLocal(): Promise<Report[]> {
     const reports = rawReports.map((report) => new Report(report));
     return reports;
   } catch {
-    console.error('Error getting reports from AsyncStorage');
-    return [];
+    throw new Error('Error getting reports from AsyncStorage');
   }
 }

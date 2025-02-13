@@ -9,7 +9,7 @@ import {
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Typography } from '@/constants/styles/Typography';
-import { ThemedText } from '../ThemedText';
+import { ThemedText } from '@/components/ui/ThemedText';
 import { Spacing } from '@/constants/styles/Spacing';
 
 export type ThemedRadiobButtonProps = {

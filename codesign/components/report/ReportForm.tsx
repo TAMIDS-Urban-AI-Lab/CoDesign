@@ -9,11 +9,11 @@ import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useRouter } from 'expo-router';
 
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { ThemedText } from '@/components/ui/ThemedText';
+import { ThemedView } from '@/components/ui/ThemedView';
 import { Spacing } from '@/constants/styles/Spacing';
 import { Layout } from '@/constants/styles/Layout';
-import { TextButton } from '@/components/shared/TextButton';
+import { TextButton } from '@/components/ui/TextButton';
 import { ThemedRadioButton } from '@/components/ui/ThemedRadioButton';
 import { ThemedTextInput } from '@/components/ui/ThemedTextInput';
 import { Typography } from '@/constants/styles/Typography';

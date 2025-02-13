@@ -1,6 +1,6 @@
 import { type ModalProps, StyleSheet, Pressable } from 'react-native';
 
-import { ThemedView } from '../ThemedView';
+import { ThemedView } from '@/components/ui/ThemedView';
 import { Layout } from '@/constants/styles/Layout';
 import { Border } from '@/constants/styles/Border';
 import { Spacing } from '@/constants/styles/Spacing';

@@ -1,7 +1,7 @@
 import { Text, type TextProps, StyleSheet } from 'react-native';
 
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { ThemedView } from '@/components/ThemedView';
+import { ThemedView } from '@/components/ui/ThemedView';
 import { Layout } from '@/constants/styles/Layout';
 import { Typography } from '@/constants/styles/Typography';
 import { tamuColors } from '@/constants/Colors';

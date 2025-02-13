@@ -1,7 +1,7 @@
 import { StyleSheet, Image, Pressable, type ViewProps } from 'react-native';
 
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { ThemedText } from '@/components/ui/ThemedText';
+import { ThemedView } from '@/components/ui/ThemedView';
 import { Border } from '@/constants/styles/Border';
 import { Spacing } from '@/constants/styles/Spacing';
 import { tamuColors } from '@/constants/Colors';

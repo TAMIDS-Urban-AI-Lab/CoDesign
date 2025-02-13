@@ -24,13 +24,13 @@ import {
   ReportFormDetails,
   Report
 } from '@/types/Report';
-import createReport from '@/hooks/report/createReport';
 import { useCodesignData } from '@/components/provider/CodesignDataProvider';
 import { TAB_ROUTE_PATH, TAB_ROUTES } from '@/constants/Routes';
 import { ImageUpload } from '@/components/report/ImageUpload';
 import { useModal } from '@/components/provider/ModalProvider';
 import { SelectLocation } from '@/components/report/SelectLocation';
 import { VALIDATION_RULES } from '@/utils/report/validateForm';
+import { uploadReport } from '@/api/report/uploadReport';
 
 const BOTTOM_SPACE_HEIGHT = 148;
 
@@ -58,7 +58,9 @@ export function ReportForm({ style }: ViewProps) {
   const reportLocation = watch('reportLocation');
 
   const onSubmit = (data: ReportFormDetails) => {
-    createReport(data)
+    // TO DO: Add form validation before submitting report
+
+    uploadReport(data)
       .then((success) => {
         // Update reports locally
         const newReport = new Report({
@@ -67,19 +69,25 @@ export function ReportForm({ style }: ViewProps) {
           createdAt: new Date()
         });
         setReports([...reports, newReport]);
-        // Clear form state
-        setSubmissionError(null);
-        reset();
 
         // Navigate to the Map tab on success
         router.replace({ pathname: TAB_ROUTE_PATH[TAB_ROUTES.INDEX] });
         successModal.openModal();
+
+        // Clear form state
+        setSubmissionError(null);
+        reset();
       })
-      .catch((error) => {
+      .catch(() => {
         setSubmissionError(
           'An error occurred when submitting report. Please try again.'
         );
       });
+  };
+
+  const onReset = () => {
+    // Do not change report location when resetting form
+    reset({ ...DefaultIndoorReport, reportLocation });
   };
 
   const switchReportLocation = (
@@ -221,8 +229,8 @@ export function ReportForm({ style }: ViewProps) {
                 render={({ field: { onChange, value } }) => (
                   <ThemedTextInput
                     label="Floor Number"
-                    value={value} // value is a number on purpose
-                    onChangeText={(text) => onChange(parseInt(text, 10) || 1)}
+                    value={value} // value may be number or string
+                    onChangeText={(text) => onChange(Number(text) || text)}
                     keyboardType="numeric"
                     placeholder="Enter floor number"
                     errorText={
@@ -310,7 +318,7 @@ export function ReportForm({ style }: ViewProps) {
             type="tertiary"
             smallCaps={false}
             textStyle={styles.clearFormButton}
-            onPress={() => reset()}
+            onPress={onReset}
           />
           <TextButton
             text="Submit"

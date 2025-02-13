@@ -81,7 +81,7 @@ export function SelectLocation({
           closeLocationModal();
         })
         .catch((error) => {
-          console.error('Error fetching map center:', error);
+          // TO DO: Show an error that the location could not be set
         });
     }
   }
@@ -98,7 +98,6 @@ export function SelectLocation({
         });
       })
       .catch((error) => {
-        console.error('Error fetching location permission:', error);
         // TO DO: Show an error that the location permission is required
       });
   }

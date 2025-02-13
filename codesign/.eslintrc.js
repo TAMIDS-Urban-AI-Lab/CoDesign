@@ -7,6 +7,11 @@ module.exports = {
   plugins: ['prettier'],
   ignorePatterns: ['/dist/*'],
   rules: {
-    'prettier/prettier': ['error', { useTabs: false, tabWidth: 2 }]
+    'prettier/prettier': ['error', { useTabs: false, tabWidth: 2 }],
+    'no-console': 'error',
+    'no-debugger': 'error',
+    eqeqeq: 'error',
+    'prefer-const': 'error',
+    'no-unused-vars': 'error'
   }
 };

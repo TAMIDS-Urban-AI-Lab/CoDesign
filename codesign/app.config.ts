@@ -7,6 +7,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   slug: 'codesign',
   extra: {
     mapboxAccessToken: process.env.MAPBOX_ACCESS_TOKEN,
-    baseUrl: process.env.BASE_URL
+    baseUrl: process.env.BASE_URL,
+    // set NO_BACKEND=true to test without backend
+    testWithoutBackend: process.env.NO_BACKEND
   }
 });

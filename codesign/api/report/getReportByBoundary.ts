@@ -7,6 +7,11 @@ import {
   Coordinates,
   ReportFormDetails
 } from '@/types/Report';
+import { createReportMockData } from '@/utils/report/createReportMockData';
+import {
+  getReportsLocal,
+  setReportsLocal
+} from '@/utils/report/saveReportLocal';
 
 /**
  * Convert json response to Report type
@@ -55,5 +60,32 @@ export async function getReportByBoundary(
     return reports;
   } catch {
     return [];
+  }
+}
+
+export async function getReportByBoundaryLocal(
+  west: number,
+  south: number,
+  east: number,
+  north: number
+): Promise<Report[]> {
+  try {
+    const reports = await getReportsLocal();
+    if (reports.length === 0) {
+      throw new Error('No reports so initializing with mock data');
+    }
+    return reports;
+  } catch {
+    const mockData = [
+      createReportMockData(),
+      createReportMockData(),
+      createReportMockData()
+    ];
+    try {
+      setReportsLocal(mockData);
+      return mockData;
+    } catch {
+      throw new Error('Error initializing reports to AsyncStorage');
+    }
   }
 }

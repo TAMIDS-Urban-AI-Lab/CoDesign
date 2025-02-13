@@ -1,6 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import Constants from 'expo-constants';
+
 import { Report } from '@/types/Report';
-import { getReportByBoundary } from '@/api/report/getReportByBoundary';
+import {
+  getReportByBoundary,
+  getReportByBoundaryLocal
+} from '@/api/report/getReportByBoundary';
 
 type CodesignDataContextType = {
   reports: Report[];
@@ -41,7 +46,11 @@ export const CodesignDataProvider = ({
       north: 30.627126
     };
 
-    getReportByBoundary(loc.west, loc.south, loc.east, loc.north)
+    const noBackend = Constants.expoConfig?.extra?.testWithoutBackend;
+
+    const getData = noBackend ? getReportByBoundaryLocal : getReportByBoundary;
+
+    getData(loc.west, loc.south, loc.east, loc.north)
       .then((reports: Report[]) => {
         if (reports.length === 0) {
           throw new Error('No reports found at this location');
@@ -49,7 +58,7 @@ export const CodesignDataProvider = ({
         setReports(reports);
         setIsLoading(false);
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         setError(err.message);
         setIsLoading(false);
       });

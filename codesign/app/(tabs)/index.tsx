@@ -1,6 +1,7 @@
 import { StyleSheet, Image } from 'react-native';
 import { Camera } from '@rnmapbox/maps';
 import { useState } from 'react';
+import Constants from 'expo-constants';
 
 import { ThemedView } from '@/components/ThemedView';
 import { MapView } from '@/components/map/MapView';
@@ -53,11 +54,18 @@ export default function HomeScreen() {
 
     if (displayedReport?.getId() !== report.getId()) {
       // retrieve images from the server by id
-      getImageById(report.getId()).then((data) => {
-        report.images = data;
-        rerenderSheet((prev) => prev + 1);
-        setDisplayedReport(report);
-      });
+      if (!Constants.expoConfig?.extra?.testWithoutBackend) {
+        getImageById(report.getId())
+          .then((data) => {
+            report.images = data;
+          })
+          .catch(() => {
+            // TO DO: Handle image fetching error
+          });
+      }
+
+      rerenderSheet((prev) => prev + 1);
+      setDisplayedReport(report);
     }
   };
 

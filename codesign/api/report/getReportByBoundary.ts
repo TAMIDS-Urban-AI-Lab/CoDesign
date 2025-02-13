@@ -1,17 +1,17 @@
-import axios from "axios";
-import Constants from "expo-constants";
-import { 
-  Report, 
-  ReportType, 
-  ReportLocationType, 
-  Coordinates, 
-  ReportFormDetails 
-} from "@/types/Report";
+import axios from 'axios';
+import Constants from 'expo-constants';
+import {
+  Report,
+  ReportType,
+  ReportLocationType,
+  Coordinates,
+  ReportFormDetails
+} from '@/types/Report';
 
 /**
  * Convert json response to Report type
- * @param data 
- * @returns 
+ * @param data
+ * @returns
  */
 const convertToReportArray = (data: any[]): Report[] => {
   return data.map((item) => {
@@ -19,7 +19,10 @@ const convertToReportArray = (data: any[]): Report[] => {
       id: item.id,
       createdAt: new Date(item.createAt),
       reportType: ReportType[item.reportType as keyof typeof ReportType],
-      reportLocation: ReportLocationType[item.reportLocation as keyof typeof ReportLocationType],
+      reportLocation:
+        ReportLocationType[
+          item.reportLocation as keyof typeof ReportLocationType
+        ],
       reportLocationDetails: item.reportLocationDetails || {},
       coordinates: item.coordinates as Coordinates,
       images: item.images || [],
@@ -34,15 +37,15 @@ const convertToReportArray = (data: any[]): Report[] => {
 /**
  * Get uploaded reports within boundary
  * @param west
- * @param south 
- * @param east 
- * @param north 
- * @returns 
+ * @param south
+ * @param east
+ * @param north
+ * @returns
  */
 export async function getReportByBoundary(
-  west: number, 
-  south: number, 
-  east: number, 
+  west: number,
+  south: number,
+  east: number,
   north: number
 ): Promise<Report[]> {
   try {
@@ -50,7 +53,7 @@ export async function getReportByBoundary(
     const response = await axios.get<Report[]>(query);
     const reports = convertToReportArray(response.data);
     return reports;
-  } catch (error) {
+  } catch {
     return [];
   }
-};
+}

@@ -32,24 +32,28 @@ export const CodesignDataProvider = ({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // selected location 
+    // selected location
     // TODO: make this dynamically get bbox based on screen size
     const loc = {
-    west: -96.339152,
-    south: 30.600238,
-    east: -96.334904,
-    north: 30.627126,
+      west: -96.339152,
+      south: 30.600238,
+      east: -96.334904,
+      north: 30.627126
     };
-    
+
     getReportByBoundary(loc.west, loc.south, loc.east, loc.north)
-    .then((reports: Report[]) => {
-      if (reports.length == 0) {
-        throw new Error("No reports found at this location");
-      }
-      setReports(reports);
-      setIsLoading(false);
-    });
-  },[]);
+      .then((reports: Report[]) => {
+        if (reports.length === 0) {
+          throw new Error('No reports found at this location');
+        }
+        setReports(reports);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setIsLoading(false);
+      });
+  }, []);
 
   return (
     <CodesignDataContext.Provider

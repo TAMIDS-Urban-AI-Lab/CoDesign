@@ -7,17 +7,18 @@ import { Border } from '@/constants/styles/Border';
 import { Layout } from '@/constants/styles/Layout';
 import { Spacing } from '@/constants/styles/Spacing';
 import { ThemedScrollView } from '@/components/ThemedScrollView';
+import { tamuColors } from '@/constants/Colors';
 
 const styles = StyleSheet.create({
   parentContainer: {
     ...Layout.flex,
-    backgroundColor: 'maroon'
+    backgroundColor: tamuColors.primaryBrand
   },
   headerContainer: {
     paddingHorizontal: Spacing.large,
     paddingBottom: Spacing.large,
     paddingTop: Spacing.xxxlarge,
-    backgroundColor: 'maroon'
+    backgroundColor: tamuColors.primaryBrand
   },
   headerTitle: {
     color: 'white'

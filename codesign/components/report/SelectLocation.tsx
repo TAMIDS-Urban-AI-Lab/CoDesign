@@ -17,7 +17,6 @@ import { Coordinates } from '@/types/Report';
 import { Border } from '@/constants/styles/Border';
 import { Layout } from '@/constants/styles/Layout';
 import { ThemedText } from '@/components/ThemedText';
-import { ALBRITTON_BELL_TOWER } from '@/constants/map/Coordinates';
 import { ThemedView } from '@/components/ThemedView';
 import { MarkerView } from '@/components/map/MarkerView';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -27,6 +26,7 @@ import { ImageButton } from '@/components/ui/ImageButton';
 import { ThemedModal } from '@/components/ui/ThemedModal';
 import { TextButton } from '@/components/shared/TextButton';
 import { Typography } from '@/constants/styles/Typography';
+import { DefaultIndoorReport } from '@/constants/report/Report';
 
 const CAMERA_ZOOM = 16;
 const PREVIEW_HEIGHT = 120;
@@ -38,11 +38,13 @@ const PIN_ICON_SRC = {
 type SelectLocationProps = {
   selectedLocation: Coordinates;
   setSelectedLocation: (location: Coordinates) => void;
+  errorText?: string;
 };
 
 export function SelectLocation({
   selectedLocation,
-  setSelectedLocation
+  setSelectedLocation,
+  errorText
 }: SelectLocationProps) {
   const {
     isVisible,
@@ -66,7 +68,7 @@ export function SelectLocation({
   } else if (selectedLocation) {
     pinLocation = selectedLocation;
   } else {
-    pinLocation = ALBRITTON_BELL_TOWER;
+    pinLocation = DefaultIndoorReport.coordinates;
   }
 
   async function updateSelectedLocation() {
@@ -107,6 +109,11 @@ export function SelectLocation({
 
   return (
     <>
+      {errorText && (
+        <ThemedText type="error" style={{ marginBottom: Spacing.small }}>
+          {errorText}
+        </ThemedText>
+      )}
       <LocationPreview
         onPress={openLocationModal}
         pinLocation={pinLocation}

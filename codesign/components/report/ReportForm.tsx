@@ -5,6 +5,7 @@ import {
   Platform,
   Alert
 } from 'react-native';
+import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useRouter } from 'expo-router';
 
@@ -28,6 +29,7 @@ import { TAB_ROUTE_PATH, TAB_ROUTES } from '@/constants/Routes';
 import { ImageUpload } from '@/components/report/ImageUpload';
 import { useModal } from '@/components/provider/ModalProvider';
 import { SelectLocation } from '@/components/report/SelectLocation';
+import { VALIDATION_RULES } from '@/utils/report/validateForm';
 import { uploadReport } from '@/api/report/uploadReport';
 
 const BOTTOM_SPACE_HEIGHT = 148;
@@ -35,8 +37,16 @@ const BOTTOM_SPACE_HEIGHT = 148;
 export function ReportForm({ style }: ViewProps) {
   const router = useRouter();
   const { reports, setReports } = useCodesignData();
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
 
-  const { control, handleSubmit, watch, setValue, formState, reset } = useForm({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, dirtyFields },
+    reset
+  } = useForm({
     defaultValues: DefaultIndoorReport
   });
 
@@ -52,20 +62,26 @@ export function ReportForm({ style }: ViewProps) {
 
     uploadReport(data)
       .then((success) => {
-        // Create Report from user submitted data
+        // Update reports locally
         const newReport = new Report({
           ...data,
           id: success.id,
           createdAt: new Date()
         });
-        // Navigate to the Map tab
-        router.replace({ pathname: TAB_ROUTE_PATH[TAB_ROUTES.INDEX] });
         setReports([...reports, newReport]);
+
+        // Navigate to the Map tab on success
+        router.replace({ pathname: TAB_ROUTE_PATH[TAB_ROUTES.INDEX] });
         successModal.openModal();
+
+        // Clear form state
+        setSubmissionError(null);
         reset();
       })
-      .catch((error) => {
-        // TO DO #24: Show an error on the form
+      .catch(() => {
+        setSubmissionError(
+          'An error occurred when submitting report. Please try again.'
+        );
       });
   };
 
@@ -79,7 +95,10 @@ export function ReportForm({ style }: ViewProps) {
     onChange: (...event: any[]) => void
   ) => {
     // reset reportLocationDetails when switching between indoor and outdoor
-    setValue('reportLocationDetails', {});
+    setValue(
+      'reportLocationDetails',
+      DefaultIndoorReport.reportLocationDetails
+    );
 
     // call onChange to update the value in the form
     onChange(reportLocation);
@@ -91,9 +110,8 @@ export function ReportForm({ style }: ViewProps) {
   ) => {
     const switchingToOutdoor = reportLocation === ReportLocationType.OUTDOOR;
     const isIndoorInputsDirty =
-      formState.dirtyFields.reportLocationDetails?.indoorDetails
-        ?.buildingName ||
-      formState.dirtyFields.reportLocationDetails?.indoorDetails?.floorNumber;
+      dirtyFields.reportLocationDetails?.indoorDetails?.buildingName ||
+      dirtyFields.reportLocationDetails?.indoorDetails?.floorNumber;
 
     // Only show alert if user has filled out indoor fields
     if (switchingToOutdoor && isIndoorInputsDirty) {
@@ -133,8 +151,14 @@ export function ReportForm({ style }: ViewProps) {
             control={control}
             name="reportLocation"
             defaultValue={ReportLocationType.INDOOR}
+            rules={VALIDATION_RULES.reportLocation}
             render={({ field: { onChange, value } }) => (
               <>
+                {errors.reportLocation && (
+                  <ThemedText type="error">
+                    {errors.reportLocation.message}
+                  </ThemedText>
+                )}
                 <ThemedRadioButton
                   title="Indoor"
                   checked={value === ReportLocationType.INDOOR}
@@ -164,10 +188,12 @@ export function ReportForm({ style }: ViewProps) {
           <Controller
             control={control}
             name="coordinates"
+            rules={VALIDATION_RULES.coordinates}
             render={({ field: { onChange, value } }) => (
               <SelectLocation
                 setSelectedLocation={onChange}
                 selectedLocation={value}
+                errorText={errors.coordinates?.message}
               />
             )}
           />
@@ -179,12 +205,18 @@ export function ReportForm({ style }: ViewProps) {
               <Controller
                 control={control}
                 name="reportLocationDetails.indoorDetails.buildingName"
+                rules={VALIDATION_RULES.buildingName}
                 render={({ field: { onChange, value } }) => (
                   <ThemedTextInput
                     label="Building Name"
                     onChangeText={onChange}
                     value={value}
                     placeholder="Enter building name"
+                    errorText={
+                      errors.reportLocationDetails?.indoorDetails?.buildingName
+                        ?.message
+                    }
+                    required
                   />
                 )}
               />
@@ -193,6 +225,7 @@ export function ReportForm({ style }: ViewProps) {
               <Controller
                 control={control}
                 name="reportLocationDetails.indoorDetails.floorNumber"
+                rules={VALIDATION_RULES.floorNumber}
                 render={({ field: { onChange, value } }) => (
                   <ThemedTextInput
                     label="Floor Number"
@@ -200,6 +233,11 @@ export function ReportForm({ style }: ViewProps) {
                     onChangeText={(text) => onChange(Number(text) || text)}
                     keyboardType="numeric"
                     placeholder="Enter floor number"
+                    errorText={
+                      errors.reportLocationDetails?.indoorDetails?.floorNumber
+                        ?.message
+                    }
+                    required
                   />
                 )}
               />
@@ -219,8 +257,13 @@ export function ReportForm({ style }: ViewProps) {
           <Controller
             control={control}
             name="images"
+            rules={VALIDATION_RULES.images}
             render={({ field: { onChange, value } }) => (
-              <ImageUpload value={value} onChange={onChange} />
+              <ImageUpload
+                value={value}
+                onChange={onChange}
+                errorText={errors.images?.message}
+              />
             )}
           />
         </ThemedView>
@@ -229,12 +272,15 @@ export function ReportForm({ style }: ViewProps) {
           <Controller
             control={control}
             name="title"
+            rules={VALIDATION_RULES.title}
             render={({ field: { onChange, value } }) => (
               <ThemedTextInput
                 label="Title"
                 onChangeText={onChange}
                 value={value}
                 placeholder="Enter title"
+                errorText={errors.title?.message}
+                required
               />
             )}
           />
@@ -244,6 +290,7 @@ export function ReportForm({ style }: ViewProps) {
           <Controller
             control={control}
             name="description"
+            rules={VALIDATION_RULES.description}
             render={({ field: { onChange, value } }) => (
               <ThemedTextInput
                 label="Description"
@@ -252,9 +299,18 @@ export function ReportForm({ style }: ViewProps) {
                 placeholder="Enter details about the issue here"
                 multiline
                 numberOfLines={4}
+                errorText={errors.description?.message}
+                required
               />
             )}
           />
+        </ThemedView>
+        <ThemedView style={[styles.errorContainer]}>
+          {submissionError && (
+            <ThemedText type="error" style={[Typography.textRight]}>
+              {submissionError}
+            </ThemedText>
+          )}
         </ThemedView>
         <ThemedView style={[styles.submitContainer]}>
           <TextButton
@@ -279,6 +335,12 @@ export function ReportForm({ style }: ViewProps) {
 const styles = StyleSheet.create({
   input: {
     marginBottom: Spacing.large
+  },
+  errorContainer: {
+    ...Layout.flex,
+    ...Layout.alignEnd,
+    gap: Spacing.medium,
+    marginBottom: Spacing.medium
   },
   submitContainer: {
     ...Layout.row,

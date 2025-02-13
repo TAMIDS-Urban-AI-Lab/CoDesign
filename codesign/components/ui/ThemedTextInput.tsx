@@ -20,6 +20,8 @@ export type ThemedTextInputProps = TextInputProps & {
   onChangeText: ((text: string) => void) | undefined;
   value?: string | number;
   placeholder: string;
+  errorText?: string;
+  required?: boolean;
 };
 
 export function ThemedTextInput({
@@ -31,6 +33,8 @@ export function ThemedTextInput({
   onChangeText,
   value,
   placeholder,
+  errorText,
+  required,
   ...rest
 }: ThemedTextInputProps) {
   const backgroundColor = useThemeColor({}, 'background');
@@ -39,7 +43,11 @@ export function ThemedTextInput({
 
   return (
     <ThemedView>
-      <ThemedText type={'formText'}>{label}</ThemedText>
+      <ThemedText type={'formText'}>
+        {label}
+        {required && <ThemedText type="error">*</ThemedText>}
+      </ThemedText>
+      {errorText && <ThemedText type={'error'}>{errorText}</ThemedText>}
       <TextInput
         style={[
           styles.textInput,
@@ -52,6 +60,7 @@ export function ThemedTextInput({
         onChangeText={onChangeText}
         value={value?.toString()}
         placeholder={placeholder}
+        accessibilityLabel={required ? `${label} (required)` : label}
         {...rest}
       />
     </ThemedView>

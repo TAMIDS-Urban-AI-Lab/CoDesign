@@ -62,6 +62,11 @@ export const Typography = {
     lineHeight: 21,
     fontFamily: 'OpenSansItalic'
   },
+  error: {
+    fontSize: 14,
+    lineHeight: 21,
+    fontFamily: 'OpenSansItalic'
+  },
   formText: {
     fontSize: 16,
     lineHeight: 24,

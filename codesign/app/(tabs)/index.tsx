@@ -33,7 +33,7 @@ const CLOSE_ZOOM = 16;
 export default function HomeScreen() {
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
 
-  const { reports } = useCodesignData();
+  const { reports, setReports } = useCodesignData();
   const isReportsEmpty = reports.length === 0;
 
   const { isVisible, closeModal } = useModal('success');
@@ -52,12 +52,24 @@ export default function HomeScreen() {
     setSheetExpanded(true);
 
     if (displayedReport?.getId() !== report.getId()) {
-      // retrieve images from the server by id
-      getImageById(report.getId()).then((data) => {
-        report.images = data;
+      if (!report.images.length) {
+        getImageById(report.getId()).then((imageList) => {
+          if (imageList.length) {
+            const reportsCopy = [
+              ...reports.filter((r) => r.getId() !== report.getId())
+            ];
+            setReports([
+              ...reportsCopy,
+              new Report({ ...report, images: imageList })
+            ]);
+          }
+          rerenderSheet((prev) => prev + 1);
+          setDisplayedReport(report);
+        });
+      } else {
         rerenderSheet((prev) => prev + 1);
         setDisplayedReport(report);
-      });
+      }
     }
   };
 

@@ -1,6 +1,5 @@
+import { ROUTES, constructQueryString } from '@/constants/api/routes';
 import { ImageDetails } from '@/types/Report';
-import axios from 'axios';
-import Constants from 'expo-constants';
 
 /**
  * Convert json response to ImageDetails type
@@ -22,11 +21,15 @@ const convertToImageDetails = (imageData: any[]): ImageDetails[] => {
  * @returns
  */
 export async function getImageById(id: number) {
-  try {
-    const query = `${Constants.expoConfig?.extra?.baseUrl ?? ''}/get_image?id=${id}`;
-    const response = await axios.get<object>(query);
-    return convertToImageDetails(response.data['image_data']);
-  } catch {
-    return [];
-  }
+  const query = constructQueryString(ROUTES.REPORT_IMAGE, { id });
+
+  return fetch(query)
+    .then((res) => {
+      if (!res.ok) throw new Error(`Error ${res.status}`);
+      return res.json();
+    })
+    .then((res) => {
+      const imageDetails = convertToImageDetails(res.data['image_data']);
+      return imageDetails;
+    });
 }

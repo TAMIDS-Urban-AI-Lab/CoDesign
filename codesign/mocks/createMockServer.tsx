@@ -4,6 +4,7 @@ import Constants from 'expo-constants';
 import { ROUTES } from '@/constants/api/routes';
 import { getMockImage } from '@/mocks/Image';
 import { reportFactory } from '@/mocks/Report';
+import { ReportFormDetails } from '@/types/Report';
 
 declare global {
   interface Window {
@@ -34,22 +35,23 @@ function createMockServer() {
       this.urlPrefix = Constants.expoConfig?.extra?.baseUrl;
 
       this.get(ROUTES.REPORT_LOCATION, () => {
-        return { data: this.schema.all('report').models };
+        return JSON.stringify({ data: this.schema.all('report').models });
       });
 
       this.post(ROUTES.REPORT_LOCATION, (schema, request) => {
-        const attrs = JSON.parse(request.requestBody);
-        attrs.id = Math.floor(Math.random() * 1000);
-        return attrs;
+        const report: ReportFormDetails = JSON.parse(request.requestBody)[0];
+        report.id = Math.floor(Math.random() * 1000);
+        report.createdAt = new Date();
+        return JSON.stringify({ data: report });
       });
 
       this.get(ROUTES.REPORT_IMAGE, () => {
         return getMockImage()
           .then((image) => {
-            return { data: { image_data: image } };
+            return JSON.stringify({ data: { image_data: image } });
           })
           .catch(() => {
-            return { image_data: [] };
+            return JSON.stringify({ image_data: [] });
           });
       });
     }

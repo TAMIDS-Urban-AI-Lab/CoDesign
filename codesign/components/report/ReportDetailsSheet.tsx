@@ -123,6 +123,7 @@ export function ReportDetailsSheet({
 
         <ThemedView style={styles.contentContainer}>
           <Animated.View style={[styles.header, { height }]}>
+            {/* TO DO: Add image loading and error states */}
             <Animated.Image
               source={getImageSrc(report.getImages())}
               style={[styles.headerImage, { height }]}

@@ -5,7 +5,7 @@
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
-    "ios": "expo run:ios --device",
+    "ios": "USE_MIRAGE=true expo run:ios --device",
     "clean-ios": "expo install && npx expo prebuild --clean",
     "web": "expo start --web",
     "test": "jest --watchAll",

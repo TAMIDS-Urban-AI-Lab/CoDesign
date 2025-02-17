@@ -19,7 +19,10 @@ import { ModalProvider } from '@/components/provider/ModalProvider';
 import { startMockBackendServer } from '@/mocks/createMockServer';
 
 // When no backend connected in development mode, start the mock server
-if (process.env.NODE_ENV === 'development') {
+if (
+  process.env.NODE_ENV === 'development' &&
+  Constants.expoConfig?.extra?.useMirage
+) {
   startMockBackendServer();
 }
 

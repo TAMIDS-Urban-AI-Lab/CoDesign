@@ -33,7 +33,7 @@ const CLOSE_ZOOM = 16;
 export default function HomeScreen() {
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
 
-  const { reports, setReports } = useCodesignData();
+  const { reports } = useCodesignData();
   const isReportsEmpty = reports.length === 0;
 
   const { isVisible, closeModal } = useModal('success');
@@ -48,27 +48,19 @@ export default function HomeScreen() {
 
   const zoomLevel = displayedReport ? CLOSE_ZOOM : FAR_ZOOM;
 
-  const expandSheet = (report: Report) => {
+  const expandSheet = async (report: Report) => {
     setSheetExpanded(true);
 
     if (displayedReport?.getId() !== report.getId()) {
+      rerenderSheet((prev) => prev + 1);
+      setDisplayedReport(report);
+
       if (!report.images.length) {
+        // TO DO: Add a loading animation while image is being fetched
         getImageById(report.getId()).then((imageList) => {
-          if (imageList.length) {
-            const reportsCopy = [
-              ...reports.filter((r) => r.getId() !== report.getId())
-            ];
-            setReports([
-              ...reportsCopy,
-              new Report({ ...report, images: imageList })
-            ]);
-          }
-          rerenderSheet((prev) => prev + 1);
-          setDisplayedReport(report);
+          const reportCopy = new Report({ ...report, images: imageList });
+          setDisplayedReport(reportCopy);
         });
-      } else {
-        rerenderSheet((prev) => prev + 1);
-        setDisplayedReport(report);
       }
     }
   };

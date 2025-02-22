@@ -1,10 +1,20 @@
-import { StyleSheet, type ViewProps, Image } from 'react-native';
+import {
+  StyleSheet,
+  type ViewProps,
+  Image,
+  useColorScheme
+} from 'react-native';
 import { useState } from 'react';
 import {
   launchImageLibraryAsync,
   useMediaLibraryPermissions,
-  type ImagePickerAsset
+  type ImagePickerAsset,
+  type ImagePickerResult,
+  useCameraPermissions,
+  launchCameraAsync,
+  ImagePickerOptions
 } from 'expo-image-picker';
+import { useActionSheet } from '@expo/react-native-action-sheet';
 
 import { ThemedView } from '@/components/ThemedView';
 import { TextButton } from '@/components/shared/TextButton';
@@ -37,44 +47,121 @@ export function ImageUpload({
   value: images,
   errorText
 }: ImageUploadProps) {
-  const [status, requestPermission] = useMediaLibraryPermissions();
+  const [libraryStatus, requestLibraryPermission] =
+    useMediaLibraryPermissions();
+  const [cameraStatus, requestCameraPermission] = useCameraPermissions();
   const [uploadErrorText, setUploadErrorText] = useState<string | null>(null);
+  const { showActionSheetWithOptions } = useActionSheet();
+  const userInterfaceStyle = (useColorScheme() ?? 'light') as 'light' | 'dark';
+
+  const imagePickerOptions: ImagePickerOptions = {
+    mediaTypes: ['images'],
+    allowsEditing: true,
+    selectionLimit: 1,
+    base64: true // access base64 encoded image data
+  };
+
+  const addSelectedImage = (selectedImage: ImagePickerAsset) => {
+    const newImages = [...images];
+
+    if ((selectedImage.fileSize ?? 0) > MAX_IMAGE_SIZE) {
+      throw new Error(`Image size exceeds ${MAX_MB} MB`);
+    }
+    if (selectedImage.uri && selectedImage.base64) {
+      newImages.push({
+        uri: selectedImage.uri,
+        base64: selectedImage.base64
+      } as ImageDetails);
+
+      return newImages;
+    }
+    throw new Error('Failed to upload image. Please try again.');
+  };
 
   const pickImage = async () => {
-    if (!status?.granted) {
-      requestPermission();
+    if (!libraryStatus?.granted) {
+      await requestLibraryPermission();
     }
 
-    launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      allowsEditing: true,
-      selectionLimit: 1,
-      base64: true // access base64 encoded image data
-    })
-      .then((result) => {
-        if (!result.canceled) {
-          const newImages = [...images];
+    launchImageLibraryAsync(imagePickerOptions)
+      .then((result: ImagePickerResult) => {
+        const isResultValid =
+          result &&
+          !result.canceled &&
+          result.assets &&
+          result.assets.length > 0;
 
-          const imagePickerAsset: ImagePickerAsset = result.assets[0];
-
-          if ((imagePickerAsset.fileSize ?? 0) > MAX_IMAGE_SIZE) {
-            throw new Error(`Image size exceeds ${MAX_MB} MB`);
-          }
-          if (imagePickerAsset.uri && imagePickerAsset.base64) {
-            newImages.push({
-              uri: imagePickerAsset.uri,
-              base64: imagePickerAsset.base64
-            } as ImageDetails);
-            updateForm(newImages);
-            setUploadErrorText(null);
-          } else {
-            throw new Error('Failed to upload image. Please try again.');
-          }
+        if (isResultValid) {
+          const newImages = addSelectedImage(result.assets[0]);
+          updateForm(newImages);
+          setUploadErrorText(null);
+        } else if (result?.canceled) {
+          setUploadErrorText(null);
+        } else {
+          throw new Error('Failed to upload image. Please try again.');
         }
       })
       .catch((error) => {
         setUploadErrorText(error.message);
       });
+  };
+
+  const openCamera = async () => {
+    if (!cameraStatus?.granted) {
+      await requestCameraPermission();
+    }
+
+    launchCameraAsync(imagePickerOptions)
+      .then((result: ImagePickerResult) => {
+        const isResultValid =
+          result &&
+          !result.canceled &&
+          result.assets &&
+          result.assets.length > 0;
+
+        if (isResultValid) {
+          const newImages = addSelectedImage(result.assets[0]);
+          updateForm(newImages);
+          setUploadErrorText(null);
+        } else if (result?.canceled) {
+          setUploadErrorText(null);
+        } else {
+          throw new Error('Failed to upload image. Please try again.');
+        }
+      })
+      .catch((error) => {
+        setUploadErrorText(error.message);
+      });
+  };
+
+  const showOptionsMenu = () => {
+    const options = ['Use Camera', 'Upload from Library', 'Cancel'];
+    const cameraIndex = 0;
+    const libraryIndex = 1;
+    const cancelButtonIndex = 2;
+
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+        userInterfaceStyle
+      },
+      (selectedIndex?: number) => {
+        if (selectedIndex === undefined) return;
+        switch (selectedIndex) {
+          case cameraIndex:
+            openCamera();
+            break;
+
+          case libraryIndex:
+            pickImage();
+            break;
+
+          case cancelButtonIndex:
+            break;
+        }
+      }
+    );
   };
 
   const maxImagesUploaded = images.length >= IMAGE_UPLOAD_LIMIT;
@@ -128,7 +215,11 @@ export function ImageUpload({
         })}
       </ThemedView>
       {!maxImagesUploaded && (
-        <TextButton type="secondary" text="Add Photos" onPress={pickImage} />
+        <TextButton
+          type="secondary"
+          text="Add Photos"
+          onPress={showOptionsMenu}
+        />
       )}
       {maxImagesUploaded && (
         <ThemedText

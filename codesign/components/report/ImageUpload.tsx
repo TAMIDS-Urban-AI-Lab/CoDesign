@@ -15,6 +15,7 @@ import {
   ImagePickerOptions
 } from 'expo-image-picker';
 import { useActionSheet } from '@expo/react-native-action-sheet';
+import { saveToLibraryAsync } from 'expo-media-library';
 
 import { ThemedView } from '@/components/ThemedView';
 import { TextButton } from '@/components/shared/TextButton';
@@ -123,6 +124,7 @@ export function ImageUpload({
           const newImages = addSelectedImage(result.assets[0]);
           updateForm(newImages);
           setUploadErrorText(null);
+          saveToLibraryAsync(result.assets[0].uri);
         } else if (result?.canceled) {
           setUploadErrorText(null);
         } else {

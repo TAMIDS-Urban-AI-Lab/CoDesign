@@ -9,7 +9,7 @@ import {
 
 import { Spacing } from '@/constants/styles/Spacing';
 import { Layout } from '@/constants/styles/Layout';
-import { ThemedView } from '../ThemedView';
+import { ThemedView } from '@/components/ui/ThemedView';
 import { Border } from '@/constants/styles/Border';
 
 type ImageButtonProps = PressableProps & {

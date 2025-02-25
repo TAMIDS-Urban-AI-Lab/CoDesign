@@ -2,7 +2,7 @@ import { type ViewProps, Pressable, StyleSheet } from 'react-native';
 import MapboxGL from '@rnmapbox/maps';
 import { PropsWithChildren } from 'react';
 
-import { ThemedView } from '@/components/ThemedView';
+import { ThemedView } from '@/components/ui/ThemedView';
 import { tamuColors } from '@/constants/Colors';
 
 type MarkerViewProps = PropsWithChildren<{

@@ -1,12 +1,12 @@
 import { PropsWithChildren } from 'react';
 import { StyleSheet, type ViewProps } from 'react-native';
 
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { ThemedText } from '@/components/ui/ThemedText';
+import { ThemedView } from '@/components/ui/ThemedView';
 import { Border } from '@/constants/styles/Border';
 import { Layout } from '@/constants/styles/Layout';
 import { Spacing } from '@/constants/styles/Spacing';
-import { ThemedScrollView } from '@/components/ThemedScrollView';
+import { ThemedScrollView } from '@/components/ui/ThemedScrollView';
 import { tamuColors } from '@/constants/Colors';
 
 const styles = StyleSheet.create({

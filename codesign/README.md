@@ -1,59 +1,97 @@
 # Welcome to Codesign
 
-Codesign enables students and faculty to provide feedback reports about Texas A&M's on-site facilities.
+Codesign enables students and faculty to provide feedback reports about Texas A&M's on-site facilities and use Augmented Reality to design and imagine a better community space.
 
-Features:
+## Current Features
 
 - View all reports on a map
 - Submit a new feedback report
   - Include photos from Photo Library
   - Select report location on a map
 
-## Get started
+## Getting started
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-1. Install dependencies
+### 1. Install dependencies
 
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
-2. Build and Run the App (iOS)
+### 2. Set up Mapbox Access Key
 
-   ```bash
-    npm run ios
-   ```
+In order to use Mapbox's API, you must sign up for a Mapbox account and configure the access key in the project:
 
-   What happens next?
+- Create an account at [mapbox.com](https://www.mapbox.com/)
+- In Mapbox Account page, there will be a default public token (starts with 'pk')
+- Create a .env file in /codesign project folder (the folder that contains the app.config.ts file) and add the following line:
 
-   - You'll see a prompt to select a device (either an iOS Simulator or a physical device).
-   - Once selected, Expo will build Codesign and launch it on the device.
-   - Fast Refresh will be enabled, so any code changes you make will immediately reflect in the app.
+```
+MAPBOX_ACCESS_TOKEN="your.token.here"
+```
 
-3. Set up Physical Device (iOS)
+### 3. Build and Run the App (iOS)
 
-   - Trust your Development Profile
-     - Go to `Settings > General > VPN & Device Management > {Development Profile} > Select 'Trust' option`
-   - Enable Local Network Access
-     - When opening Codesign, select `Allow device to access Local Network`
+```bash
+ npm run ios
+```
 
-4. Adding new Dependencies or Assets
-   When you add images, fonts, or install new dependencies (e.g., a new library), you need to create a new build. Follow these steps:
+What happens next?
 
-   ```bash
-      npm run clean-ios // Clean cached files
-      npm run ios // Rebuild the iOS app
-   ```
+- You'll see a prompt to select a device (either an iOS Simulator or a physical device).
+- Once selected, Expo will build Codesign and launch it on the device.
+- Fast Refresh will be enabled, so any code changes you make will immediately reflect in the app.
+
+### 4. Set up Physical Device (iOS)
+
+- Trust your Development Profile
+  - Go to `Settings > General > VPN & Device Management > {Development Profile} > Select 'Trust' option`
+- Enable Local Network Access
+  - When opening Codesign, select `Allow device to access Local Network`
+
+### 5. Adding new Dependencies or Assets
+
+When you add images, fonts, or install new dependencies (e.g., a new library), you need to create a new build. Follow these steps:
+
+```bash
+   npm run clean-ios // Clean cached files
+   npm run ios // Rebuild the iOS app
+```
+
+# Git Best Practices
+
+To ensure consistency, collaboration, and code quality, please follow these guidelines when contributing to this repository:
+
+## 1. Branching Strategy
+
+- Do NOT directly change the main branch.
+- Always create a new branch for your work.
+- Use a meaningful branch name.
+  Example:
+  ```bash
+  git checkout -b username/<your-feature-name>
+  ```
+
+## 2. Commit
+
+- Use a meaningful commit message for every commit
+
+## 3. Pull Request
+
+- Clearly document your steps.
+- Expand on complex code snippets in the PR description.
+- Ensure to include an explanation and demo of testing completed.
+- Your code must be reviewed by atleast one other reviewer.
+
+# Expo Resources
 
 Options for running the app:
 
-- [Development build](https://docs.expo.dev/develop/development-builds/introduction/) <- Used by this project
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+- [Development build](https://docs.expo.dev/develop/development-builds/introduction/) <- Used by Codesign
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-## Expo Resources
+- [Info on Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [Info on iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
 
 To learn more about developing your project with Expo, look at the following resources:
 

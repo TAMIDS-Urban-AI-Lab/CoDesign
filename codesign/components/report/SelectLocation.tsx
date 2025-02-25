@@ -16,15 +16,15 @@ import { MapView } from '@/components/map/MapView';
 import { Coordinates } from '@/types/Report';
 import { Border } from '@/constants/styles/Border';
 import { Layout } from '@/constants/styles/Layout';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { ThemedText } from '@/components/ui/ThemedText';
+import { ThemedView } from '@/components/ui/ThemedView';
 import { MarkerView } from '@/components/map/MarkerView';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Spacing } from '@/constants/styles/Spacing';
 import { useModal } from '@/components/provider/ModalProvider';
 import { ImageButton } from '@/components/ui/ImageButton';
 import { ThemedModal } from '@/components/ui/ThemedModal';
-import { TextButton } from '@/components/shared/TextButton';
+import { TextButton } from '@/components/ui/TextButton';
 import { Typography } from '@/constants/styles/Typography';
 import { DefaultIndoorReport } from '@/constants/report/Report';
 

@@ -6,14 +6,14 @@ import {
   type ImagePickerAsset
 } from 'expo-image-picker';
 
-import { ThemedView } from '@/components/ThemedView';
-import { TextButton } from '@/components/shared/TextButton';
+import { ThemedView } from '@/components/ui/ThemedView';
+import { TextButton } from '@/components/ui/TextButton';
 import { Layout } from '@/constants/styles/Layout';
 import { Spacing } from '@/constants/styles/Spacing';
 import { Border } from '@/constants/styles/Border';
 import { tamuColors } from '@/constants/Colors';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { ThemedText } from '@/components/ThemedText';
+import { ThemedText } from '@/components/ui/ThemedText';
 import { ImageButton } from '@/components/ui/ImageButton';
 import { ImageDetails } from '@/types/Report';
 

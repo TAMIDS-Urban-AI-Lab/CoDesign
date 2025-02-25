@@ -2,7 +2,7 @@ import { StyleSheet, Image } from 'react-native';
 import { Camera } from '@rnmapbox/maps';
 import { useState } from 'react';
 
-import { ThemedView } from '@/components/ThemedView';
+import { ThemedView } from '@/components/ui/ThemedView';
 import { MapView } from '@/components/map/MapView';
 import { Layout } from '@/constants/styles/Layout';
 import { useCodesignData } from '@/components/provider/CodesignDataProvider';
@@ -10,7 +10,7 @@ import { MarkerView } from '@/components/map/MarkerView';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { FloatingModal } from '@/components/ui/FloatingModal';
 import { useModal } from '@/components/provider/ModalProvider';
-import { ThemedText } from '@/components/ThemedText';
+import { ThemedText } from '@/components/ui/ThemedText';
 import { Spacing } from '@/constants/styles/Spacing';
 import { Coordinates, Report } from '@/types/Report';
 import { ReportDetailsSheet } from '@/components/report/ReportDetailsSheet';

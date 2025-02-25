@@ -6,7 +6,7 @@ import {
   type PressableProps
 } from 'react-native';
 
-import { ThemedText } from '@/components/ThemedText';
+import { ThemedText } from '@/components/ui/ThemedText';
 import { Spacing } from '@/constants/styles/Spacing';
 import { Typography } from '@/constants/styles/Typography';
 import { useThemeColor } from '@/hooks/useThemeColor';

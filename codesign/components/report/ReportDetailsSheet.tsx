@@ -11,14 +11,14 @@ import Animated, {
 
 import { Report, ImageDetails } from '@/types/Report';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { ThemedView } from '@/components/ThemedView';
-import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ui/ThemedView';
+import { ThemedText } from '@/components/ui/ThemedText';
 import { Border } from '@/constants/styles/Border';
 import { Layout } from '@/constants/styles/Layout';
 import { Spacing } from '@/constants/styles/Spacing';
 import { tamuColors } from '@/constants/Colors';
 import { ImageButton } from '@/components/ui/ImageButton';
-import { ThemedScrollView } from '../ThemedScrollView';
+import { ThemedScrollView } from '../ui/ThemedScrollView';
 
 const HALF_SCREEN = '30%';
 const FULL_SCREEN = '100%';

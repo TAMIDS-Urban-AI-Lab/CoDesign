@@ -123,6 +123,7 @@ export function ReportDetailsSheet({
 
         <ThemedView style={styles.contentContainer}>
           <Animated.View style={[styles.header, { height }]}>
+            {/* TO DO: Add image loading and error states */}
             <Animated.Image
               source={getImageSrc(report.getImages())}
               style={[styles.headerImage, { height }]}
@@ -167,10 +168,10 @@ function ReportDetails({ report }: { report: Report }) {
 
 const getImageSrc = (images: ImageDetails[]) => {
   if (!images || images.length === 0) return DEFAULT_IMAGE_SRC;
-  if (typeof images[0].uri === "string") {
+  if (typeof images[0].uri === 'string') {
     return { uri: images[0].uri };
-  } else if (typeof images[0].base64 === "string") {
-    return { uri: "data:image/png;base64," + images[0].base64 }
+  } else if (typeof images[0].base64 === 'string') {
+    return { uri: 'data:image/png;base64,' + images[0].base64 };
   } else {
     return images[0].uri;
   }

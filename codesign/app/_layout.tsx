@@ -16,8 +16,17 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { useFonts } from '@/hooks/useFonts';
 import { CodesignDataProvider } from '@/components/provider/CodesignDataProvider';
 import { ModalProvider } from '@/components/provider/ModalProvider';
+import { startMockBackendServer } from '@/mocks/createMockServer';
 
-// Set the access token from app.json
+// When no backend connected in development mode, start the mock server
+if (
+  process.env.NODE_ENV === 'development' &&
+  Constants.expoConfig?.extra?.useMirage
+) {
+  startMockBackendServer();
+}
+
+// Token allows access to Mapbox services
 MapboxGL.setAccessToken(Constants.expoConfig?.extra?.mapboxAccessToken ?? '');
 MapboxGL.setTelemetryEnabled(false);
 

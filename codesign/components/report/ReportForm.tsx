@@ -58,15 +58,16 @@ export function ReportForm({ style }: ViewProps) {
   const reportLocation = watch('reportLocation');
 
   const onSubmit = (data: ReportFormDetails) => {
-    // TO DO: Add form validation before submitting report
-
+    // TO DO: Add loading animation to submit button while submitting report
     uploadReport(data)
       .then((success) => {
         // Update reports locally
         const newReport = new Report({
           ...data,
           id: success.id,
-          createdAt: new Date()
+          createdAt: success.createdAt
+            ? new Date(success.createdAt)
+            : new Date()
         });
         setReports([...reports, newReport]);
 
@@ -80,7 +81,7 @@ export function ReportForm({ style }: ViewProps) {
       })
       .catch(() => {
         setSubmissionError(
-          'An error occurred when submitting report. Please try again.'
+          'An error occurred while submitting report. Please try again.'
         );
       });
   };

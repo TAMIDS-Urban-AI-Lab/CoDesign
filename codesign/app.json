@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "codesign",
+    "name": "CoDesign",
     "slug": "codesign",
+    "owner": "tamids-urban-ai-lab",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -10,15 +11,21 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.codesign"
+      "bundleIdentifier": "com.tamids.urbanailab.codesign",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff",
-        "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
+        "permissions": [
+          "ACCESS_FINE_LOCATION",
+          "ACCESS_COARSE_LOCATION"
+        ]
       },
-      "package": "com.anonymous.codesign"
+      "package": "com.tamids.urbanailab.codesign"
     },
     "web": {
       "bundler": "metro",
@@ -52,14 +59,14 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Allow Codesign to access current location while app is in use"
+          "locationWhenInUsePermission": "Allow CoDesign to access current location while app is in use"
         }
       ],
       [
         "expo-image-picker",
         {
-          "photosPermission": "Allow Codesign to access your photos",
-          "cameraPermission": "Allow Codesign to access your camera"
+          "photosPermission": "Allow CoDesign to access your photos",
+          "cameraPermission": "Allow CoDesign to access your camera"
         }
       ]
     ],
@@ -67,8 +74,16 @@
       "typedRoutes": true
     },
     "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "84c38a1a-048d-4e17-bb40-56b5f553affe"
+      },
+      "_comment": "environment variables are inserted into fields below in app.config.ts",
       "mapboxAccessToken": "",
-      "baseUrl": ""
+      "baseUrl": "http://localhost:5000",
+      "useMirage": false
     }
   }
 }

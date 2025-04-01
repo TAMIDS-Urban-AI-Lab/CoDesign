@@ -1,4 +1,5 @@
 import { ROUTES, constructQueryString } from '@/constants/api/routes';
+import { ApiResponse, ImageData } from '@/types/api';
 import { ImageDetails } from '@/types/Report';
 
 /**
@@ -24,11 +25,13 @@ export async function getImageById(id: number) {
   const query = constructQueryString(ROUTES.REPORT_IMAGE, { id });
 
   return fetch(query)
-    .then((res) => {
-      if (!res.ok) throw new Error(`Error ${res.status}`);
+    .then((res: Response) => {
+      if (!res.ok) {
+        throw new Error(`Error ${res.status}`);
+      }
       return res.json();
     })
-    .then((res) => {
+    .then((res: ApiResponse<ImageData>) => {
       const imageDetails = convertToImageDetails(res.data['image_data']);
       return imageDetails;
     });

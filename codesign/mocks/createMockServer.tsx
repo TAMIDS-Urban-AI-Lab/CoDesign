@@ -51,7 +51,7 @@ function createMockServer() {
             return JSON.stringify({ data: { image_data: image } });
           })
           .catch(() => {
-            return JSON.stringify({ image_data: [] });
+            return JSON.stringify({ data: { image_data: [] } });
           });
       });
     }

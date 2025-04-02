@@ -4,7 +4,7 @@ export type ApiResponse<T> = {
   data: T;
 };
 
-export type ImageData = {
+export type ImageDataSuccess = {
   id: number;
   image_data: string[];
 };

@@ -1,5 +1,5 @@
 import { mockFetchSuccess, mockFetchError } from '@/mocks/mockFetch';
-import { ApiResponse, ImageData } from '@/types/api';
+import { ApiResponse, ImageDataSuccess } from '@/types/api';
 import { getImageById } from '@/api/report/getImageById';
 import { ROUTES } from '@/constants/api/routes';
 
@@ -8,7 +8,7 @@ describe('getImageById', () => {
 
   describe('when the fetch is successful', () => {
     beforeAll(() => {
-      const successResponse: ApiResponse<ImageData> = {
+      const successResponse: ApiResponse<ImageDataSuccess> = {
         status: 200,
         message: 'Success',
         data: {

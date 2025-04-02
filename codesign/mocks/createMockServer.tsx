@@ -3,7 +3,7 @@ import Constants from 'expo-constants';
 
 import { ROUTES } from '@/constants/api/routes';
 import { getMockImage } from '@/mocks/Image';
-import { reportFactory } from '@/mocks/Report';
+import { reportFactory } from '@/mocks/mockReport';
 import { ReportFormDetails } from '@/types/Report';
 
 declare global {

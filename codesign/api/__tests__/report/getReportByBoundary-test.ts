@@ -3,7 +3,7 @@ import { ApiResponse } from '@/types/api';
 import { getReportByBoundary } from '@/api/report/getReportByBoundary';
 import { ROUTES } from '@/constants/api/routes';
 import { ReportFormDetails, Report } from '@/types/Report';
-import { createReportFormDetails } from '@/mocks/Report';
+import { createReportFormDetails } from '@/mocks/mockReport';
 
 describe('getReportByBoundary', () => {
   const testProps = {

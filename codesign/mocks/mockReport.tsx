@@ -10,6 +10,42 @@ import {
 } from '@/types/Report';
 import { ReportFormDetails } from '@/types/Report';
 
+export const createReportFormDetails = (
+  overrideData: Partial<ReportFormDetails> = {}
+): ReportFormDetails => {
+  const id = faker.number.int({ min: 10000, max: 1000000 });
+  const reportLocation = faker.helpers.arrayElement(
+    Object.values(ReportLocationType)
+  );
+  const reportLocationDetails: ReportLocationDetails =
+    createReportLocationDetails(reportLocation);
+  return {
+    id: id,
+    createdAt: faker.date.recent(),
+    reportType: faker.helpers.arrayElement(Object.values(ReportType)),
+    reportLocation: reportLocation,
+    reportLocationDetails: reportLocationDetails,
+    coordinates: createRandomCoordinates(),
+    images: [],
+    title: createReportTitle(id),
+    description: createReportDescription(id),
+    ...overrideData
+  };
+};
+
+export const createReportLocationDetails = (
+  reportLocation: ReportLocationType
+) => {
+  if (reportLocation === ReportLocationType.INDOOR) {
+    const indoorDetails: IndoorDetails = {
+      buildingName: faker.company.name(),
+      floorNumber: faker.number.int({ min: 1, max: 10 })
+    };
+    return { indoorDetails };
+  }
+  return {};
+};
+
 /**
  * @returns random coordinates on Texas A&M University campus
  * @example [-96.35119602985726, 30.617351074711575]
@@ -28,40 +64,27 @@ export const createRandomCoordinates = (): Coordinates => {
   return [longitude, latitude] as Coordinates;
 };
 
-export const createReportFormDetails = (
-  overrideData: Partial<ReportFormDetails> = {}
-): ReportFormDetails => {
-  const reportLocation = faker.helpers.arrayElement(
-    Object.values(ReportLocationType)
-  );
-  const reportLocationDetails: ReportLocationDetails =
-    createReportLocationDetails(reportLocation);
-  return {
-    id: faker.number.int({ min: 10000, max: 1000000 }),
-    createdAt: faker.date.recent(),
-    reportType: faker.helpers.arrayElement(Object.values(ReportType)),
-    reportLocation: reportLocation,
-    reportLocationDetails: reportLocationDetails,
-    coordinates: createRandomCoordinates(),
-    images: [],
-    title: faker.lorem.sentence(),
-    description: faker.lorem.paragraph(),
-    ...overrideData
-  };
-};
+function createReportTitle(i?: number) {
+  const mockData: string[] = [
+    'Pipe is leaking by sidewalk',
+    'Broken street light near bus stop',
+    'Check for broken window on 2nd floor'
+  ];
+  return i
+    ? mockData[i % mockData.length]
+    : faker.helpers.arrayElement(mockData);
+}
 
-export const createReportLocationDetails = (
-  reportLocation: ReportLocationType
-) => {
-  if (reportLocation === ReportLocationType.INDOOR) {
-    const indoorDetails: IndoorDetails = {
-      buildingName: faker.company.name(),
-      floorNumber: faker.number.int({ min: 1, max: 10 })
-    };
-    return { indoorDetails };
-  }
-  return {};
-};
+function createReportDescription(i?: number) {
+  const mockData: string[] = [
+    'I was walking to the library and noticed a pipe leaking water. The water was pooling on the sidewalk, making it slippery and dangerous for pedestrians.',
+    'While waiting for the bus, I noticed that the street light near the bus stop was broken. It was dark and made it difficult to see.',
+    'There is a broken window on the 2nd floor of the building. It looks like it has been broken for a while and needs to be fixed.'
+  ];
+  return i
+    ? mockData[i % mockData.length]
+    : faker.helpers.arrayElement(mockData);
+}
 
 export const reportFactory = Factory.extend({
   id() {
@@ -90,10 +113,10 @@ export const reportFactory = Factory.extend({
   images() {
     return [];
   },
-  title() {
-    return faker.lorem.sentence();
+  title(i: number) {
+    return createReportTitle(i);
   },
-  description() {
-    return faker.lorem.paragraph();
+  description(i: number) {
+    return createReportDescription(i);
   }
 });

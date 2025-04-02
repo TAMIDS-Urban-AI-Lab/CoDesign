@@ -5,7 +5,7 @@ import {
   ImageSourcePropType
 } from 'react-native';
 import { useRef, useState } from 'react';
-import MapGL, { Camera } from '@rnmapbox/maps';
+import { MapView as MapboxMapView, Camera } from '@rnmapbox/maps';
 import {
   LocationObject,
   requestForegroundPermissionsAsync,
@@ -55,7 +55,7 @@ export function SelectLocation({
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
   const pinImageSrc = PIN_ICON_SRC[colorScheme];
 
-  const modalMapRef = useRef<MapGL.MapView>(null);
+  const modalMapRef = useRef<MapboxMapView>(null);
   const [currentLocation, setCurrentLocation] = useState<Coordinates | null>(
     null
   );
@@ -121,13 +121,17 @@ export function SelectLocation({
       />
 
       <ThemedModal animationType="slide" visible={isVisible}>
-        <ThemedView style={styles.modalContainer}>
+        <ThemedView
+          style={styles.modalContainer}
+          testID="select-location-modal"
+        >
           <ImageButton
             source={require('@/assets/images/back-arrow.png')}
             size={24}
             onPress={handleBackButton}
             elevated={true}
             style={styles.backButton}
+            testID="close-modal-button"
           />
           <ThemedView
             style={styles.pinAbsoluteContainer}
@@ -197,7 +201,7 @@ function LocationPreview({
 
   return (
     <ThemedView>
-      <ThemedView style={[styles.previewContainer]}>
+      <ThemedView style={[styles.previewContainer]} testID="location-preview">
         <Pressable style={[styles.roundCorner]} onPress={onPress}>
           <MapView style={[styles.previewMap]}>
             <Camera

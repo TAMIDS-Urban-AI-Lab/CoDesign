@@ -13,5 +13,12 @@ module.exports = {
     eqeqeq: 'error',
     'prefer-const': 'error',
     'no-unused-vars': 'error'
-  }
+  },
+  overrides: [
+    {
+      // Test files only
+      files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+      extends: ['plugin:testing-library/react']
+    }
+  ]
 };

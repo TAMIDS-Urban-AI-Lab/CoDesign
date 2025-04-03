@@ -51,7 +51,7 @@ export function ThemedText({
         style={[Layout.row, Layout.center, { gap: Spacing.small }, style]}
       >
         <Text style={[{ color: textColor }, typography]} {...rest} />
-        <ThemedView style={[styles.divider]} />
+        <ThemedView style={[styles.divider]} testID="themed-text-divider" />
       </ThemedView>
     );
   }

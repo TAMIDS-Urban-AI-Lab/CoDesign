@@ -9,20 +9,8 @@ Resolve # Issue Number
 ## Description
 <!-- Provide a short summary of your changes and the problem they address. -->
 
-## Type of Change
-<!-- Mark the appropriate box with an 'x' -->
-- [ ] Bug fix 🐛
-- [ ] New feature 🚀
-- [ ] Documentation update 📖
-- [ ] Refactoring 🔧
-- [ ] Other (please specify):
-
-## Demo
+## Testing
 <!-- Upload a photo/video to demonstrate the changes. -->
-
-## Checklist
-- [ ] Code follows the project's style guidelines 📝
-- [ ] Relevant documentation has been updated 🖊️
 
 ## Additional Notes
 <!-- Add any other relevant context about the PR. -->

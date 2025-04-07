@@ -19,7 +19,7 @@ describe('getReportByBoundary', () => {
   ];
 
   describe('when the fetch is successful', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       const successResponse: ApiResponse<ReportFormDetails[]> = {
         status: 200,
         message: 'Success',
@@ -27,7 +27,7 @@ describe('getReportByBoundary', () => {
       };
       global.fetch = mockFetchSuccess(successResponse);
     });
-    afterAll(() => {
+    afterEach(() => {
       jest.resetAllMocks();
     });
 
@@ -41,6 +41,7 @@ describe('getReportByBoundary', () => {
         testProps.east,
         testProps.north
       );
+      expect(fetchSpy).toHaveBeenCalledTimes(1);
       expect(fetchSpy.mock.calls[0][0]).toMatch(expectedUrl);
     });
 
@@ -65,10 +66,10 @@ describe('getReportByBoundary', () => {
     });
   });
   describe('when the fetch fails', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       global.fetch = mockFetchError();
     });
-    afterAll(() => {
+    afterEach(() => {
       jest.resetAllMocks();
     });
     test('should throw an error', async () => {

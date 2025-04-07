@@ -7,7 +7,7 @@ describe('getImageById', () => {
   const testId = 1;
 
   describe('when the fetch is successful', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       const successResponse: ApiResponse<ImageDataSuccess> = {
         status: 200,
         message: 'Success',
@@ -18,7 +18,7 @@ describe('getImageById', () => {
       };
       global.fetch = mockFetchSuccess(successResponse);
     });
-    afterAll(() => {
+    afterEach(() => {
       jest.resetAllMocks();
     });
 
@@ -27,6 +27,7 @@ describe('getImageById', () => {
 
       const expectedUrl = `${ROUTES.REPORT_IMAGE}?id=${testId}`;
       await getImageById(testId);
+      expect(fetchSpy).toHaveBeenCalledTimes(1);
       expect(fetchSpy.mock.calls[0][0]).toMatch(expectedUrl);
     });
 

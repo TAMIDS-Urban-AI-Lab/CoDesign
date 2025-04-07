@@ -9,6 +9,7 @@ import {
   IndoorDetails
 } from '@/types/Report';
 import { ReportFormDetails } from '@/types/Report';
+import { TAMU_CAMPUS_BOUNDS } from '@/constants/map/Coordinates';
 
 export const createMockedReportFormDetails = (
   overrideData: Partial<ReportFormDetails> = {}
@@ -52,13 +53,13 @@ export const createMockedReportLocationDetails = (
  */
 export const createMockedCoordinates = (): Coordinates => {
   const longitude = faker.number.float({
-    min: -96.35119602985726,
-    max: -96.33890180386302,
+    min: TAMU_CAMPUS_BOUNDS.MIN_LONGITUDE,
+    max: TAMU_CAMPUS_BOUNDS.MAX_LONGITUDE,
     fractionDigits: 15
   });
   const latitude = faker.number.float({
-    min: 30.607255922217114,
-    max: 30.617351074711575,
+    min: TAMU_CAMPUS_BOUNDS.MIN_LATITUDE,
+    max: TAMU_CAMPUS_BOUNDS.MAX_LATITUDE,
     fractionDigits: 15
   });
   return [longitude, latitude] as Coordinates;

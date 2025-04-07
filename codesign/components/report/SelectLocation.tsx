@@ -120,11 +120,12 @@ export function SelectLocation({
         pinImageSrc={pinImageSrc}
       />
 
-      <ThemedModal animationType="slide" visible={isVisible}>
-        <ThemedView
-          style={styles.modalContainer}
-          testID="select-location-modal"
-        >
+      <ThemedModal
+        animationType="slide"
+        visible={isVisible}
+        testID="select-location-modal"
+      >
+        <ThemedView style={styles.modalContainer}>
           <ImageButton
             source={require('@/assets/images/back-arrow.png')}
             size={24}
@@ -146,6 +147,7 @@ export function SelectLocation({
               <Image
                 source={PIN_ICON_SRC[colorScheme]}
                 style={[styles.pinImage]}
+                testID="select-location-pin-image"
               />
             </ThemedView>
           </ThemedView>
@@ -173,7 +175,8 @@ export function SelectLocation({
               <TextButton
                 type="primary"
                 text="Set Location"
-                onPress={() => updateSelectedLocation()}
+                onPress={updateSelectedLocation}
+                testID="set-location-button"
               />
             </ThemedView>
           </ThemedView>
@@ -202,7 +205,11 @@ function LocationPreview({
   return (
     <ThemedView>
       <ThemedView style={[styles.previewContainer]} testID="location-preview">
-        <Pressable style={[styles.roundCorner]} onPress={onPress}>
+        <Pressable
+          style={[styles.roundCorner]}
+          onPress={onPress}
+          testID="location-preview-pressable"
+        >
           <MapView style={[styles.previewMap]}>
             <Camera
               zoomLevel={CAMERA_ZOOM}

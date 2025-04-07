@@ -1,52 +1,40 @@
-import { render, screen, fireEvent } from '@testing-library/react-native';
-import { View } from 'react-native';
-
+import {
+  render,
+  screen,
+  fireEvent,
+  waitForElementToBeRemoved,
+  waitFor
+} from '@testing-library/react-native';
 import { Coordinates } from '@/types/Report';
 import { ModalProvider } from '@/components/provider/ModalProvider';
+import { mockMapbox } from '@/mocks/mockMapbox';
+import {
+  ALBRITTON_BELL_TOWER,
+  MEMORIAL_STUDENT_CENTER
+} from '@/constants/map/Coordinates';
 
 describe('<SelectLocation />', () => {
-  const mockSelectedLocation: Coordinates = [
-    -96.35119602985726, 30.607255922217114
-  ];
-  const mockSetSelectedLocation = jest.fn();
+  mockMapbox();
+
+  /* Must mock mapbox components prior to importing SelectLocation */
+  const SelectLocation =
+    require('@/components/report/SelectLocation').SelectLocation;
+  const initComponent = (
+    selectedLocation: Coordinates,
+    setSelectedLocation: CallableFunction
+  ) => (
+    <ModalProvider>
+      <SelectLocation
+        selectedLocation={selectedLocation}
+        setSelectedLocation={setSelectedLocation}
+      />
+    </ModalProvider>
+  );
+
+  const mockSelectedLocation: Coordinates = ALBRITTON_BELL_TOWER;
 
   test('it initially renders a preview of the map', () => {
-    const mockMapView = ({ children }: any) => (
-      <View testID="mapview-mock"> MapView Mock {children}</View>
-    );
-    const mockCamera = (props: any) => (
-      <View testID="camera-mock"> Camera Mock</View>
-    );
-    const mockMarkerView = (props: any) => (
-      <View testID="marker-mock"> MarkerView Mock</View>
-    );
-
-    jest.mock('@rnmapbox/maps', () => {
-      return {
-        __esModule: true,
-        default: {
-          setAccessToken: jest.fn()
-        },
-        MapView: mockMapView,
-        Camera: mockCamera,
-        MarkerView: mockMarkerView,
-        StyleURL: {
-          Light: 'mapbox://styles/mapbox/light-v10',
-          Dark: 'mapbox://styles/mapbox/dark-v10'
-        }
-      };
-    });
-
-    const SelectLocation =
-      require('@/components/report/SelectLocation').SelectLocation;
-    const COMPONENT = (
-      <ModalProvider>
-        <SelectLocation
-          selectedLocation={mockSelectedLocation}
-          setSelectedLocation={mockSetSelectedLocation}
-        />
-      </ModalProvider>
-    );
+    const COMPONENT = initComponent(mockSelectedLocation, jest.fn());
     render(COMPONENT);
 
     expect(screen.getByTestId('location-preview')).toBeVisible();
@@ -58,59 +46,65 @@ describe('<SelectLocation />', () => {
     expect(screen.getByText('Tap to select location')).toBeVisible();
   });
 
-  test.skip('it opens the modal when the preview is pressed', () => {
+  test('it opens the modal and closes the modal successfully', async () => {
+    const COMPONENT = initComponent(mockSelectedLocation, jest.fn());
     render(COMPONENT);
 
     // When click on the preview
-    fireEvent.press(screen.getByTestId('location-preview'));
+    const previewPressable = await screen.findByTestId(
+      'location-preview-pressable'
+    );
+    fireEvent.press(previewPressable);
 
-    // Cover the preview with the modal and mapbox map
-    expect(screen.getByTestId('location-preview')).not.toBeVisible();
+    // then cover the preview with the modal and mapbox map
     expect(screen.getByTestId('select-location-modal')).toBeVisible();
-    expect(screen.getByTestId('mapbox-mapview')).toBeVisible();
-    // Pin icon is a static image over the map, not a marker
-    expect(screen.getByTestId('mapbox-marker')).not.toBeVisible();
-    // There are two buttons
+    expect(screen.getAllByTestId('mapview-mock')).toHaveLength(2);
+
+    // and pin icon is a static image over the map, not a marker
+    expect(screen.getByTestId('select-location-pin-image')).toBeVisible();
+
+    // and there are two buttons
     expect(screen.getByText('Use Current Location')).toBeVisible();
     expect(screen.getByText('Set Location')).toBeVisible();
+
+    // When close the modal to go back
+    const backButton = await screen.findByTestId('close-modal-button');
+    fireEvent.press(backButton);
+
+    // then the modal should not be visible anymore
+    expect(screen.queryByTestId('select-location-modal')).toBeNull();
   });
 
-  test.skip('it closes the modal when the close button is pressed', () => {
+  test('it saves the location when the "Set Location" button is pressed', async () => {
+    const mockSetSelectedLocation = jest.fn();
+    const COMPONENT = initComponent(
+      mockSelectedLocation,
+      mockSetSelectedLocation
+    );
     render(COMPONENT);
 
     // When click on the preview
-    fireEvent.press(screen.getByTestId('location-preview'));
+    const previewPressable = await screen.findByTestId('location-preview');
+    fireEvent.press(previewPressable);
+    // the modal with full screen map appears
+    expect(screen.getByTestId('select-location-modal')).toBeVisible();
 
-    // Close the modal
-    fireEvent.press(screen.getByTestId('close-modal-button'));
+    // When press button to set new location
+    const setLocationButton = await screen.findByTestId('set-location-button');
+    fireEvent.press(setLocationButton);
 
-    // The modal should not be visible anymore
-    expect(screen.getByTestId('select-location-modal')).not.toBeVisible();
-  });
+    await waitForElementToBeRemoved(() =>
+      screen.queryByTestId('select-location-modal')
+    );
 
-  test.skip('it saves the location when the "Set Location" button is pressed', () => {
-    render(COMPONENT);
-
-    // When click on the preview
-    fireEvent.press(screen.getByTestId('location-preview'));
-
-    // Set the location
-    fireEvent.press(screen.getByText('Set Location'));
-
-    // The location should be set
-    expect(mockSetSelectedLocation).toHaveBeenCalled();
-  });
-
-  test.skip('it centers the map on the current location when the "Use Current Location" button is pressed', () => {
-    render(COMPONENT);
-
-    // When click on the preview
-    fireEvent.press(screen.getByTestId('location-preview'));
-
-    // Use the current location
-    fireEvent.press(screen.getByText('Use Current Location'));
-
-    // The current location should be set
-    expect(mockSetSelectedLocation).toHaveBeenCalled();
+    // Component should save with correct location
+    await waitFor(() => {
+      expect(mockSetSelectedLocation).toHaveBeenCalledTimes(1);
+    });
+    await waitFor(() => {
+      expect(mockSetSelectedLocation).toHaveBeenCalledWith(
+        MEMORIAL_STUDENT_CENTER
+      );
+    });
   });
 });

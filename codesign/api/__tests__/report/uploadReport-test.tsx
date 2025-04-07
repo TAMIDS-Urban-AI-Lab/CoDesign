@@ -2,11 +2,11 @@ import { mockFetchSuccess, mockFetchError } from '@/mocks/mockFetch';
 import { ApiResponse, ReportUploadSuccess } from '@/types/api';
 import { ROUTES } from '@/constants/api/routes';
 import { uploadReport } from '@/api/report/uploadReport';
-import { createReportFormDetails } from '@/mocks/mockReport';
+import { createMockedReportFormDetails } from '@/mocks/mockReport';
 import { ReportFormDetails } from '@/types/Report';
 
 describe('uploadReport', () => {
-  const testReportData: ReportFormDetails = createReportFormDetails();
+  const testReportData: ReportFormDetails = createMockedReportFormDetails();
   const testId = 123;
 
   describe('when the fetch is successful', () => {

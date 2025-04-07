@@ -3,7 +3,7 @@ import { ApiResponse } from '@/types/api';
 import { getReportByBoundary } from '@/api/report/getReportByBoundary';
 import { ROUTES } from '@/constants/api/routes';
 import { ReportFormDetails, Report } from '@/types/Report';
-import { createReportFormDetails } from '@/mocks/mockReport';
+import { createMockedReportFormDetails } from '@/mocks/mockReport';
 
 describe('getReportByBoundary', () => {
   const testProps = {
@@ -13,9 +13,9 @@ describe('getReportByBoundary', () => {
     north: 4
   };
   const reportData: ReportFormDetails[] = [
-    createReportFormDetails(),
-    createReportFormDetails(),
-    createReportFormDetails()
+    createMockedReportFormDetails(),
+    createMockedReportFormDetails(),
+    createMockedReportFormDetails()
   ];
 
   describe('when the fetch is successful', () => {

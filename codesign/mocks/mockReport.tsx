@@ -10,7 +10,7 @@ import {
 } from '@/types/Report';
 import { ReportFormDetails } from '@/types/Report';
 
-export const createReportFormDetails = (
+export const createMockedReportFormDetails = (
   overrideData: Partial<ReportFormDetails> = {}
 ): ReportFormDetails => {
   const id = faker.number.int({ min: 10000, max: 1000000 });
@@ -18,22 +18,22 @@ export const createReportFormDetails = (
     Object.values(ReportLocationType)
   );
   const reportLocationDetails: ReportLocationDetails =
-    createReportLocationDetails(reportLocation);
+    createMockedReportLocationDetails(reportLocation);
   return {
     id: id,
     createdAt: faker.date.recent(),
     reportType: faker.helpers.arrayElement(Object.values(ReportType)),
     reportLocation: reportLocation,
     reportLocationDetails: reportLocationDetails,
-    coordinates: createRandomCoordinates(),
+    coordinates: createMockedCoordinates(),
     images: [],
-    title: createReportTitle(id),
-    description: createReportDescription(id),
+    title: createMockedReportTitle(id),
+    description: createMockedReportDescription(id),
     ...overrideData
   };
 };
 
-export const createReportLocationDetails = (
+export const createMockedReportLocationDetails = (
   reportLocation: ReportLocationType
 ) => {
   if (reportLocation === ReportLocationType.INDOOR) {
@@ -50,7 +50,7 @@ export const createReportLocationDetails = (
  * @returns random coordinates on Texas A&M University campus
  * @example [-96.35119602985726, 30.617351074711575]
  */
-export const createRandomCoordinates = (): Coordinates => {
+export const createMockedCoordinates = (): Coordinates => {
   const longitude = faker.number.float({
     min: -96.35119602985726,
     max: -96.33890180386302,
@@ -64,7 +64,7 @@ export const createRandomCoordinates = (): Coordinates => {
   return [longitude, latitude] as Coordinates;
 };
 
-function createReportTitle(i?: number) {
+function createMockedReportTitle(i?: number) {
   const mockData: string[] = [
     'Pipe is leaking by sidewalk',
     'Broken street light near bus stop',
@@ -75,7 +75,7 @@ function createReportTitle(i?: number) {
     : faker.helpers.arrayElement(mockData);
 }
 
-function createReportDescription(i?: number) {
+function createMockedReportDescription(i?: number) {
   const mockData: string[] = [
     'I was walking to the library and noticed a pipe leaking water. The water was pooling on the sidewalk, making it slippery and dangerous for pedestrians.',
     'While waiting for the bus, I noticed that the street light near the bus stop was broken. It was dark and made it difficult to see.',
@@ -108,15 +108,15 @@ export const reportFactory = Factory.extend({
       : {};
   },
   coordinates() {
-    return createRandomCoordinates();
+    return createMockedCoordinates();
   },
   images() {
     return [];
   },
   title(i: number) {
-    return createReportTitle(i);
+    return createMockedReportTitle(i);
   },
   description(i: number) {
-    return createReportDescription(i);
+    return createMockedReportDescription(i);
   }
 });

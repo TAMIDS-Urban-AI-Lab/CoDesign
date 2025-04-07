@@ -13,9 +13,9 @@ describe('getReportByBoundary', () => {
     north: 4
   };
   const reportData: ReportFormDetails[] = [
-    createMockedReportFormDetails(),
-    createMockedReportFormDetails(),
-    createMockedReportFormDetails()
+    createMockedReportFormDetails({ id: 1 }),
+    createMockedReportFormDetails({ id: 2 }),
+    createMockedReportFormDetails({ id: 3 })
   ];
 
   describe('when the fetch is successful', () => {
@@ -55,7 +55,13 @@ describe('getReportByBoundary', () => {
         testProps.north
       );
 
+      // response is formatted as Report objects
       expect(actualResponse).toEqual(expectedResponse);
+      expect(actualResponse[0]).toBeInstanceOf(Report);
+      // and provided in the same order
+      expect(actualResponse[0].getId()).toEqual(reportData[0].id);
+      expect(actualResponse[1].getId()).toEqual(reportData[1].id);
+      expect(actualResponse[2].getId()).toEqual(reportData[2].id);
     });
   });
   describe('when the fetch fails', () => {

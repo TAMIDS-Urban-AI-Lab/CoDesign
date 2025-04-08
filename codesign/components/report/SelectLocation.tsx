@@ -5,7 +5,7 @@ import {
   ImageSourcePropType
 } from 'react-native';
 import { useRef, useState } from 'react';
-import MapGL, { Camera } from '@rnmapbox/maps';
+import { MapView as MapboxMapView, Camera } from '@rnmapbox/maps';
 import {
   LocationObject,
   requestForegroundPermissionsAsync,
@@ -55,7 +55,7 @@ export function SelectLocation({
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
   const pinImageSrc = PIN_ICON_SRC[colorScheme];
 
-  const modalMapRef = useRef<MapGL.MapView>(null);
+  const modalMapRef = useRef<MapboxMapView>(null);
   const [currentLocation, setCurrentLocation] = useState<Coordinates | null>(
     null
   );
@@ -92,7 +92,7 @@ export function SelectLocation({
         if (response.status !== 'granted') {
           throw new Error('Location permission not granted');
         }
-        getCurrentPositionAsync({}).then((location: LocationObject) => {
+        getCurrentPositionAsync().then((location: LocationObject) => {
           setCurrentLocation(locationToCoordinates(location));
           forceMapRerender((prevKey) => prevKey + 1);
         });
@@ -120,7 +120,11 @@ export function SelectLocation({
         pinImageSrc={pinImageSrc}
       />
 
-      <ThemedModal animationType="slide" visible={isVisible}>
+      <ThemedModal
+        animationType="slide"
+        visible={isVisible}
+        testID="select-location-modal"
+      >
         <ThemedView style={styles.modalContainer}>
           <ImageButton
             source={require('@/assets/images/back-arrow.png')}
@@ -128,6 +132,7 @@ export function SelectLocation({
             onPress={handleBackButton}
             elevated={true}
             style={styles.backButton}
+            testID="close-modal-button"
           />
           <ThemedView
             style={styles.pinAbsoluteContainer}
@@ -142,6 +147,7 @@ export function SelectLocation({
               <Image
                 source={PIN_ICON_SRC[colorScheme]}
                 style={[styles.pinImage]}
+                testID="select-location-pin-image"
               />
             </ThemedView>
           </ThemedView>
@@ -169,7 +175,8 @@ export function SelectLocation({
               <TextButton
                 type="primary"
                 text="Set Location"
-                onPress={() => updateSelectedLocation()}
+                onPress={updateSelectedLocation}
+                testID="set-location-button"
               />
             </ThemedView>
           </ThemedView>
@@ -197,8 +204,12 @@ function LocationPreview({
 
   return (
     <ThemedView>
-      <ThemedView style={[styles.previewContainer]}>
-        <Pressable style={[styles.roundCorner]} onPress={onPress}>
+      <ThemedView style={[styles.previewContainer]} testID="location-preview">
+        <Pressable
+          style={[styles.roundCorner]}
+          onPress={onPress}
+          testID="location-preview-pressable"
+        >
           <MapView style={[styles.previewMap]}>
             <Camera
               zoomLevel={CAMERA_ZOOM}

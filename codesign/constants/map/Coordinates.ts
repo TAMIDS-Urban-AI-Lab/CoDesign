@@ -7,3 +7,7 @@ export const ALBRITTON_BELL_TOWER: Coordinates = [
 export const MEMORIAL_STUDENT_CENTER: Coordinates = [
   -96.34156322663094, 30.612451964741343
 ];
+
+export const SBISA_DINING_HALL: Coordinates = [
+  -96.34381375866194, 30.61695861119733
+];

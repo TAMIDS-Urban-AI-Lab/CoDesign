@@ -92,7 +92,7 @@ export function SelectLocation({
         if (response.status !== 'granted') {
           throw new Error('Location permission not granted');
         }
-        getCurrentPositionAsync({}).then((location: LocationObject) => {
+        getCurrentPositionAsync().then((location: LocationObject) => {
           setCurrentLocation(locationToCoordinates(location));
           forceMapRerender((prevKey) => prevKey + 1);
         });

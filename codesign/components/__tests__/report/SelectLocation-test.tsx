@@ -3,18 +3,27 @@ import {
   screen,
   fireEvent,
   waitForElementToBeRemoved,
-  waitFor
+  waitFor,
+  within
 } from '@testing-library/react-native';
+
 import { Coordinates } from '@/types/Report';
 import { ModalProvider } from '@/components/provider/ModalProvider';
 import { mockMapbox } from '@/mocks/mockMapbox';
+import { mockExpoLocation } from '@/mocks/mockExpoLocation';
 import {
   ALBRITTON_BELL_TOWER,
-  MEMORIAL_STUDENT_CENTER
+  MEMORIAL_STUDENT_CENTER,
+  SBISA_DINING_HALL
 } from '@/constants/map/Coordinates';
 
 describe('<SelectLocation />', () => {
-  mockMapbox();
+  const mockedCurrentLocation: Coordinates = SBISA_DINING_HALL;
+
+  const { renderCameraCenter } = mockMapbox({
+    centerCoordinate: MEMORIAL_STUDENT_CENTER
+  });
+  mockExpoLocation({ currentPosition: mockedCurrentLocation });
 
   /* Must mock mapbox components prior to importing SelectLocation */
   const SelectLocation =
@@ -31,10 +40,8 @@ describe('<SelectLocation />', () => {
     </ModalProvider>
   );
 
-  const mockSelectedLocation: Coordinates = ALBRITTON_BELL_TOWER;
-
   test('it initially renders a preview of the map', () => {
-    const COMPONENT = initComponent(mockSelectedLocation, jest.fn());
+    const COMPONENT = initComponent(ALBRITTON_BELL_TOWER, jest.fn());
     render(COMPONENT);
 
     expect(screen.getByTestId('location-preview')).toBeVisible();
@@ -47,7 +54,7 @@ describe('<SelectLocation />', () => {
   });
 
   test('it opens the modal and closes the modal successfully', async () => {
-    const COMPONENT = initComponent(mockSelectedLocation, jest.fn());
+    const COMPONENT = initComponent(ALBRITTON_BELL_TOWER, jest.fn());
     render(COMPONENT);
 
     // When click on the preview
@@ -76,7 +83,11 @@ describe('<SelectLocation />', () => {
   });
 
   test('it saves the location when the "Set Location" button is pressed', async () => {
-    const mockSetSelectedLocation = jest.fn();
+    // At first, map centers on Bell Tower
+    let mockSelectedLocation = ALBRITTON_BELL_TOWER;
+    const mockSetSelectedLocation = jest.fn(
+      (location) => (mockSelectedLocation = location)
+    );
     const COMPONENT = initComponent(
       mockSelectedLocation,
       mockSetSelectedLocation
@@ -89,7 +100,7 @@ describe('<SelectLocation />', () => {
     // the modal with full screen map appears
     expect(screen.getByTestId('select-location-modal')).toBeVisible();
 
-    // When press button to set new location
+    // When press button to set location to Memorial Student Center
     const setLocationButton = await screen.findByTestId('set-location-button');
     fireEvent.press(setLocationButton);
 
@@ -97,13 +108,37 @@ describe('<SelectLocation />', () => {
       screen.queryByTestId('select-location-modal')
     );
 
-    // Component should save with correct location
+    // Map should save location as Memorial Student Center
     await waitFor(() => {
       expect(mockSetSelectedLocation).toHaveBeenCalledTimes(1);
     });
     await waitFor(() => {
-      expect(mockSetSelectedLocation).toHaveBeenCalledWith(
-        MEMORIAL_STUDENT_CENTER
+      expect(mockSelectedLocation).toEqual(MEMORIAL_STUDENT_CENTER);
+    });
+  });
+
+  test('it centers the map on the current location when the "Use Current Location" button is pressed', async () => {
+    // At first, map centers on Bell Tower
+    const COMPONENT = initComponent(ALBRITTON_BELL_TOWER, jest.fn());
+    render(COMPONENT);
+
+    // When click on the preview
+    fireEvent.press(screen.getByTestId('location-preview'));
+    // the modal with full screen map appears
+    expect(screen.getByTestId('select-location-modal')).toBeVisible();
+
+    // When click the 'Use Current Location' button'
+    const useCurrentLocationButton = await screen.findByText(
+      'Use Current Location'
+    );
+    fireEvent.press(useCurrentLocationButton);
+
+    // then the map should center on Sbisa Dining Hall
+    await waitFor(() => {
+      const selectLocationModal = screen.getByTestId('select-location-modal');
+      const cameraMock = within(selectLocationModal).getByTestId('camera-mock');
+      expect(cameraMock).toHaveTextContent(
+        renderCameraCenter(SBISA_DINING_HALL)
       );
     });
   });

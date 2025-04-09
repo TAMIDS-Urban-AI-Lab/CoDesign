@@ -14,6 +14,7 @@ import {
 import { mockExpoImagePicker } from '@/mocks/mockExpoImagePicker';
 import { mockExpoImageManipulator } from '@/mocks/mockExpoImageManipulator';
 import { mockExpoMediaLibrary } from '@/mocks/mockExpoMediaLibrary';
+import { ImageDetails } from '@/types/Report';
 
 describe('<ImageUpload />', () => {
   // Set up action sheet mocks
@@ -71,8 +72,10 @@ describe('<ImageUpload />', () => {
     // When view the Image Upload component
     render(initComponent({ onChange: jest.fn(), value: [], errorText: null }));
 
-    // show preview row
-    expect(screen.getByTestId('image-upload-preview-row')).toBeVisible();
+    // show three default images
+    expect(
+      screen.queryAllByTestId('image-upload-default-preview')
+    ).toHaveLength(3);
 
     // and show the "Add Photos" button
     const addPhotosButton = await screen.findByText('Add Photos');
@@ -192,5 +195,58 @@ describe('<ImageUpload />', () => {
 
     // Then show the error text above the preview row
     expect(screen.getByText(errorText)).toBeVisible();
+  });
+
+  test('renders images uploaded by the user', () => {
+    // When view the Image Upload component
+    const image: ImageDetails = {
+      uri: 'https://example.com/image.jpg',
+      base64: 'base64string'
+    };
+    render(
+      initComponent({
+        onChange: jest.fn(),
+        value: [image, image],
+        errorText: null
+      })
+    );
+
+    // Then show the two uploaded images
+    expect(screen.queryAllByTestId('user-submitted-image-upload')).toHaveLength(
+      2
+    );
+
+    // and one default image
+    expect(screen.queryByTestId('image-upload-default-preview')).toBeVisible();
+  });
+
+  test('shows an error if selecting a photo fails', async () => {
+    // Mock the image picker to return no valid image
+    mockLaunchImageLibraryAsync.mockImplementation(() => {
+      return Promise.resolve({
+        canceled: false,
+        assets: []
+      });
+    });
+
+    // When view the Image Upload component
+    render(initComponent({ onChange: jest.fn(), value: [], errorText: null }));
+
+    // and click on the "Add Photos" button to show options menu
+    const addPhotosButton = screen.getByText('Add Photos');
+    fireEvent.press(addPhotosButton);
+
+    // When select the "Upload from Library" option
+    const actionSheetCallback: ActionSheetCallback =
+      mockShowActionSheetWithOptions.mock
+        .calls[0][1] as unknown as ActionSheetCallback;
+    actionSheetCallback(expectedMenuOptions.uploadFromLibrary);
+
+    // Then an error message is shown when it fails
+    await waitFor(() => {
+      expect(
+        screen.getByText('Failed to upload image. Please try again.')
+      ).toBeVisible();
+    });
   });
 });

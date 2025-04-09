@@ -16,7 +16,7 @@ export function mockExpoImagePicker({
   ];
 
   type ImagePickerResult = {
-    canceled: false;
+    canceled: boolean;
     assets: ImagePickerAsset[];
   };
 

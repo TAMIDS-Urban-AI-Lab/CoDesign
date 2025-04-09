@@ -229,11 +229,7 @@ export function ImageUpload({
           {uploadErrorText}
         </ThemedText>
       )}
-      <ThemedView
-        style={styles.imagePreviewRow}
-        key="image_previews"
-        testID="image-upload-preview-row"
-      >
+      <ThemedView style={styles.imagePreviewRow} key="image_previews">
         {images.map((image, index) => {
           return (
             <ThemedView

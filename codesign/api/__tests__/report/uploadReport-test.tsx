@@ -27,6 +27,7 @@ describe('uploadReport', () => {
 
       await uploadReport(testReportData);
 
+      expect(fetchSpy).toHaveBeenCalledTimes(1);
       expect(fetchSpy.mock.calls[0][0]).toMatch(ROUTES.REPORT_LOCATION);
       expect(fetchSpy.mock.calls[0][1]).toMatchObject({
         method: 'POST',
@@ -52,6 +53,9 @@ describe('uploadReport', () => {
 
     test('should throw an error', async () => {
       await expect(uploadReport(testReportData)).rejects.toThrow();
+      await expect(uploadReport(testReportData)).rejects.toThrow(
+        'An error occurred while uploading the report.'
+      );
     });
   });
 });

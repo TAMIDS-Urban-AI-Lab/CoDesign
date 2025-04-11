@@ -54,6 +54,9 @@ describe('getImageById', () => {
     });
     test('should throw an error', async () => {
       await expect(getImageById(testId)).rejects.toThrow();
+      await expect(getImageById(testId)).rejects.toThrow(
+        'An error occurred while fetching the image.'
+      );
     });
   });
 });

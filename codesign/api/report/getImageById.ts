@@ -34,5 +34,8 @@ export async function getImageById(id: number) {
     .then((res: ApiResponse<ImageDataSuccess>) => {
       const imageDetails = convertToImageDetails(res.data['image_data']);
       return imageDetails;
+    })
+    .catch(() => {
+      throw new Error('An error occurred while fetching the image.');
     });
 }

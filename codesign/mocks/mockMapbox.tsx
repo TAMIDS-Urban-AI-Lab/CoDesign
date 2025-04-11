@@ -33,8 +33,8 @@ export function mockMapbox({
     );
   });
 
-  const mockMarkerView = jest.fn(function (props: any) {
-    return <View testID="marker-mock">MarkerView Mock</View>;
+  const mockMarkerView = jest.fn(function ({ children }: any) {
+    return <View testID="marker-mock">MarkerView Mock {children} </View>;
   });
 
   jest.mock('@rnmapbox/maps', () => {
@@ -54,5 +54,5 @@ export function mockMapbox({
     };
   });
 
-  return { renderCameraCenter, mockMapView };
+  return { renderCameraCenter, mockMapView, mockMarkerView };
 }

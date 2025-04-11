@@ -62,5 +62,8 @@ export async function getReportByBoundary(
     .then((res) => {
       const reports = convertToReportArray(res.data);
       return reports;
+    })
+    .catch(() => {
+      throw new Error(`An error occurred while fetching reports.`);
     });
 }

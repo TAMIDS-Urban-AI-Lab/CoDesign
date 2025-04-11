@@ -51,8 +51,8 @@ export function ImageUpload({
   value: images,
   errorText
 }: ImageUploadProps) {
-  const [libraryStatus, requestLibraryPermission] =
-    useMediaLibraryPermissions();
+  const testData = useMediaLibraryPermissions();
+  const [libraryStatus, requestLibraryPermission] = testData;
   const [cameraStatus, requestCameraPermission] = useCameraPermissions();
   const [uploadErrorText, setUploadErrorText] = useState<string | null>(null);
   const { showActionSheetWithOptions } = useActionSheet();
@@ -69,14 +69,14 @@ export function ImageUpload({
     image: ImagePickerAsset
   ): Promise<ImagePickerAsset> => {
     if (image.width <= MAX_RESOLUTION) {
-      return image;
+      return Promise.resolve(image);
     }
     try {
-      const resized = await ImageManipulator.manipulate(image.uri)
-        .resize({ width: MAX_RESOLUTION })
-        .renderAsync();
+      const manipulated = ImageManipulator.manipulate(image.uri);
+      const resized = manipulated.resize({ width: MAX_RESOLUTION });
+      const rendered = await resized.renderAsync();
 
-      const newImage = await resized.saveAsync({
+      const newImage = await rendered.saveAsync({
         format: SaveFormat.JPEG,
         compress: 0.5,
         base64: true
@@ -232,7 +232,11 @@ export function ImageUpload({
       <ThemedView style={styles.imagePreviewRow} key="image_previews">
         {images.map((image, index) => {
           return (
-            <ThemedView key={`uploaded_${index}`} style={styles.imageContainer}>
+            <ThemedView
+              key={`uploaded_${index}`}
+              style={styles.imageContainer}
+              testID="user-submitted-image-upload"
+            >
               <ImageButton
                 source={REMOVE_IMAGE_SRC}
                 size={24}
@@ -253,6 +257,7 @@ export function ImageUpload({
           type="secondary"
           text="Add Photos"
           onPress={showOptionsMenu}
+          testID="image-upload-add-photos"
         />
       )}
       {maxImagesUploaded && (
@@ -274,6 +279,7 @@ function DefaultImage() {
       lightColor={tamuColors.gray300}
       darkColor={tamuColors.gray800}
       style={styles.defaultContainer}
+      testID="image-upload-default-preview"
     >
       <IconSymbol name="photo.fill" size={28} color={tamuColors.gray500} />
     </ThemedView>

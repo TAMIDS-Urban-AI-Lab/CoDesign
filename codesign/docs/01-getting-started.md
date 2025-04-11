@@ -55,6 +55,13 @@ Once you have cloned a copy of the repository and opened it in the IDE of your c
     - Find your default public token (starts with `pk`)
     - Add it to the `MAPBOX_ACCESS_TOKEN` variable in the .env file
 
+    Later on, if you'd like to connect CoDesign with the backend, you can update the .env file to the following: 
+    ```
+    MAPBOX_ACCESS_TOKEN="your.token.here"
+    USE_MIRAGE=false
+    BASE_URL="backend.url.here"
+    ```
+
 3. **Build CoDesign**
         
     To build and launch the app, run:

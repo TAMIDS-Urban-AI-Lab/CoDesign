@@ -1,5 +1,5 @@
 import { type ViewProps } from 'react-native';
-import MapboxGL, { StyleURL } from '@rnmapbox/maps';
+import { MapView as MapboxMapView, StyleURL } from '@rnmapbox/maps';
 import { forwardRef } from 'react';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -11,20 +11,20 @@ type LocalMapViewProps = {
 
 function MapView(
   { style, children }: LocalMapViewProps,
-  ref: React.ForwardedRef<MapboxGL.MapView>
+  ref: React.ForwardedRef<MapboxMapView>
 ) {
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
   const styleURL = colorScheme === 'light' ? StyleURL.Light : StyleURL.Dark;
 
   return (
-    <MapboxGL.MapView
+    <MapboxMapView
       style={[style]}
       styleURL={styleURL}
       logoEnabled={false}
       ref={ref}
     >
       {children}
-    </MapboxGL.MapView>
+    </MapboxMapView>
   );
 }
 

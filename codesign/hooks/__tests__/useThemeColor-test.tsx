@@ -1,8 +1,8 @@
 import { tamuColors } from '@/constants/Colors';
-import { mockUseThemeColor } from '@/mocks/mockUseThemeColor';
+import { mockUseColorScheme } from '@/mocks/mockUseColorScheme';
 
 describe('useThemeColor()', () => {
-  const { mockedUseColorScheme } = mockUseThemeColor();
+  const { mockedUseColorScheme } = mockUseColorScheme();
 
   beforeEach(() => {
     mockedUseColorScheme.mockClear();

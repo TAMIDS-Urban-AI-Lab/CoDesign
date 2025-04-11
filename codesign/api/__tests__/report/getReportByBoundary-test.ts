@@ -80,14 +80,6 @@ describe('getReportByBoundary', () => {
           testProps.east,
           testProps.north
         )
-      ).rejects.toThrow();
-      await expect(
-        getReportByBoundary(
-          testProps.west,
-          testProps.south,
-          testProps.east,
-          testProps.north
-        )
       ).rejects.toThrow('An error occurred while fetching reports.');
     });
   });

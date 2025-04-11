@@ -52,7 +52,6 @@ describe('uploadReport', () => {
     });
 
     test('should throw an error', async () => {
-      await expect(uploadReport(testReportData)).rejects.toThrow();
       await expect(uploadReport(testReportData)).rejects.toThrow(
         'An error occurred while uploading the report.'
       );

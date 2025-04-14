@@ -19,7 +19,10 @@ const styles = StyleSheet.create({
 export default function ProfileScreen() {
   return (
     <HeaderLayout title="Profile">
-      <EditProfile style={styles.profileContainer} />
+      <EditProfile
+        style={styles.profileContainer}
+        displayName="Scott Banazone"
+      />
 
       <ThemedView style={styles.actionContainer}>
         <TextButton text="Log Out" type="secondary" />

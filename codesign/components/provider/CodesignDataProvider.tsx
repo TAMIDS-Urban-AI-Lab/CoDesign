@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { Report } from '@/types/Report';
 import { getReportByBoundary } from '@/api/report/getReportByBoundary';
 
-type CodesignDataContextType = {
+export type CodesignDataContextType = {
   reports: Report[];
   setReports: (reports: Report[]) => void;
   isLoading: boolean;
@@ -17,7 +17,9 @@ const CodesignDataContext = createContext<CodesignDataContextType | undefined>(
 export const useCodesignData = () => {
   const context = useContext(CodesignDataContext);
   if (!context) {
-    throw new Error('useData must be used within a CodesignDataProvider');
+    throw new Error(
+      'useCodesignData must be used within a CodesignDataProvider component'
+    );
   }
   return context;
 };

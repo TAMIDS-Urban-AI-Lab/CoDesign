@@ -1,7 +1,6 @@
 import { Coordinates, ImageDetails } from '@/types/Report';
 import { IMAGE_UPLOAD_LIMIT } from '@/components/report/ImageUpload';
 import { ReportLocationType } from '@/types/Report';
-import { areCoordinatesEqual } from '../Equality';
 import { DefaultIndoorReport } from '@/constants/report/Report';
 
 export const VALIDATION_RULES = {
@@ -74,6 +73,13 @@ function validateCoordinates(coords: Coordinates) {
   }
   return true;
 }
+
+export const areCoordinatesEqual = (
+  a: Coordinates,
+  b: Coordinates
+): boolean => {
+  return a[0] === b[0] && a[1] === b[1];
+};
 
 function validateImages(images: ImageDetails[]) {
   if (images.length === 0) {

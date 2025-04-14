@@ -29,7 +29,7 @@ import { TAB_ROUTE_PATH, TAB_ROUTES } from '@/constants/Routes';
 import { ImageUpload } from '@/components/report/ImageUpload';
 import { useModal } from '@/components/provider/ModalProvider';
 import { SelectLocation } from '@/components/report/SelectLocation';
-import { VALIDATION_RULES } from '@/utils/report/validateForm';
+import { VALIDATION_RULES } from '@/utils/ReportValidation';
 import { uploadReport } from '@/api/report/uploadReport';
 import { ReportUploadSuccess } from '@/types/api';
 

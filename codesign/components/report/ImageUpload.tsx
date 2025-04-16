@@ -41,7 +41,7 @@ const MAX_RESOLUTION = 1080;
 type ImageUploadProps = {
   style?: ViewProps['style'];
   onChange: (...event: any[]) => void;
-  value: ImageDetails[];
+  value?: ImageDetails[];
   errorText?: string;
 };
 
@@ -96,7 +96,7 @@ export function ImageUpload({
   };
 
   const addSelectedImage = (selectedImage: ImagePickerAsset) => {
-    const newImages = [...images];
+    const newImages = images ? [...images] : [];
 
     if ((selectedImage.fileSize ?? 0) > MAX_IMAGE_SIZE) {
       throw new Error(`Image size exceeds ${MAX_MB} MB`);
@@ -209,8 +209,12 @@ export function ImageUpload({
     updateForm(newImages);
   };
 
-  const maxImagesUploaded = images.length >= IMAGE_UPLOAD_LIMIT;
-  const defaultCount = IMAGE_UPLOAD_LIMIT - images.length;
+  const maxImagesUploaded = images
+    ? images.length >= IMAGE_UPLOAD_LIMIT
+    : false;
+  const defaultCount = images
+    ? IMAGE_UPLOAD_LIMIT - images.length
+    : IMAGE_UPLOAD_LIMIT;
 
   const keyName = 'default';
   const defaultImages: string[] = Array.from({
@@ -230,20 +234,24 @@ export function ImageUpload({
         </ThemedText>
       )}
       <ThemedView style={styles.imagePreviewRow} key="image_previews">
-        {images.map((image, index) => {
-          return (
-            <ThemedView key={`uploaded_${index}`} style={styles.imageContainer}>
-              <ImageButton
-                source={REMOVE_IMAGE_SRC}
-                size={24}
-                transparent={true}
-                style={styles.removeImageButton}
-                onPress={() => removeImage(index)}
-              />
-              <Image source={{ uri: image.uri }} style={styles.image} />
-            </ThemedView>
-          );
-        })}
+        {images &&
+          images.map((image, index) => {
+            return (
+              <ThemedView
+                key={`uploaded_${index}`}
+                style={styles.imageContainer}
+              >
+                <ImageButton
+                  source={REMOVE_IMAGE_SRC}
+                  size={24}
+                  transparent={true}
+                  style={styles.removeImageButton}
+                  onPress={() => removeImage(index)}
+                />
+                <Image source={{ uri: image.uri }} style={styles.image} />
+              </ThemedView>
+            );
+          })}
         {defaultImages.map((keyName, index) => {
           return <DefaultImage key={`${keyName}_${index}`} />;
         })}
@@ -274,6 +282,7 @@ function DefaultImage() {
       lightColor={tamuColors.gray300}
       darkColor={tamuColors.gray800}
       style={styles.defaultContainer}
+      testID="image-upload-default-preview"
     >
       <IconSymbol name="photo.fill" size={28} color={tamuColors.gray500} />
     </ThemedView>

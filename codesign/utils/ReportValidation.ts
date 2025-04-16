@@ -1,12 +1,11 @@
 import { Coordinates, ImageDetails } from '@/types/Report';
 import { IMAGE_UPLOAD_LIMIT } from '@/components/report/ImageUpload';
 import { ReportLocationType } from '@/types/Report';
-import { areCoordinatesEqual } from '../Equality';
 import { DefaultIndoorReport } from '@/constants/report/Report';
+import { LATITUDE_BOUNDS, LONGITUDE_BOUNDS } from '@/constants/map/Coordinates';
 
 export const VALIDATION_RULES = {
   reportLocation: {
-    required: 'Floor Number is required',
     validate: (value: ReportLocationType) => {
       return validateLocationType(value);
     }
@@ -20,7 +19,7 @@ export const VALIDATION_RULES = {
     required: 'Building Name is required'
   },
   floorNumber: {
-    validate: (value: number) => {
+    validate: (value: number | string) => {
       return validateFloorNumber(value);
     }
   },
@@ -66,14 +65,21 @@ function validateCoordinates(coords: Coordinates) {
   if (!coords || isDefaultLocation) {
     return 'Please choose a location on map';
   }
-  if (coords[0] < -180 || coords[0] > 180) {
+  if (coords[0] < LONGITUDE_BOUNDS.MIN || coords[0] > LONGITUDE_BOUNDS.MAX) {
     return 'Longitude must be between -180 and 180';
   }
-  if (coords[1] < -90 || coords[1] > 90) {
+  if (coords[1] < LATITUDE_BOUNDS.MIN || coords[1] > LATITUDE_BOUNDS.MAX) {
     return 'Latitude must be between -90 and 90';
   }
   return true;
 }
+
+export const areCoordinatesEqual = (
+  a: Coordinates,
+  b: Coordinates
+): boolean => {
+  return a[0] === b[0] && a[1] === b[1];
+};
 
 function validateImages(images: ImageDetails[]) {
   if (images.length === 0) {

@@ -18,8 +18,12 @@ export function MarkerView({
   onPress
 }: MarkerViewProps) {
   return (
-    <MapboxMarkerView coordinate={coordinates} testID="mapbox-marker">
-      <Pressable style={[styles.markerContainer, style]} onPress={onPress}>
+    <MapboxMarkerView coordinate={coordinates}>
+      <Pressable
+        style={[styles.markerContainer, style]}
+        onPress={onPress}
+        testID="marker-view-pressable"
+      >
         <ThemedView style={styles.marker}>{children}</ThemedView>
       </Pressable>
     </MapboxMarkerView>

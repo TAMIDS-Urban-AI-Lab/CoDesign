@@ -22,6 +22,7 @@ function MapView(
       styleURL={styleURL}
       logoEnabled={false}
       ref={ref}
+      testID="mapbox-mapview"
     >
       {children}
     </MapboxMapView>

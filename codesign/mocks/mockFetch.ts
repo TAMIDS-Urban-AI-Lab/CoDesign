@@ -1,17 +1,24 @@
-export function mockFetchSuccess(data: any) {
-  return jest.fn(() =>
-    Promise.resolve({
-      ok: true,
-      json: () => Promise.resolve(data)
-    })
-  ) as jest.Mock;
+export function mockFetchSuccess(data: any, delay = 0) {
+  return jest.fn(() => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          ok: true,
+          json: () => Promise.resolve(data)
+        });
+      }, delay);
+    });
+  }) as jest.Mock;
 }
-export function mockFetchError(errorMessage?: string) {
-  return jest.fn(() =>
-    Promise.resolve({
-      ok: false,
-      json: () =>
-        Promise.reject(new Error(errorMessage ?? 'Network response was not ok'))
-    })
-  ) as jest.Mock;
+export function mockFetchError(errorMessage: string, delay = 0) {
+  return jest.fn(() => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          ok: true,
+          json: () => Promise.reject(new Error(errorMessage))
+        });
+      }, delay);
+    });
+  }) as jest.Mock;
 }

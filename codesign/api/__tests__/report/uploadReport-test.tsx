@@ -45,13 +45,13 @@ describe('uploadReport', () => {
 
   describe('when the fetch fails', () => {
     beforeAll(() => {
-      global.fetch = mockFetchError('Failed to upload report');
+      global.fetch = mockFetchError('Backend error message');
     });
     afterAll(() => {
       jest.resetAllMocks();
     });
 
-    test('should throw an error', async () => {
+    test('should throw the correct error message', async () => {
       await expect(uploadReport(testReportData)).rejects.toThrow(
         'An error occurred while uploading the report.'
       );

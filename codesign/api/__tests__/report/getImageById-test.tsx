@@ -47,12 +47,12 @@ describe('getImageById', () => {
   });
   describe('when the fetch fails', () => {
     beforeAll(() => {
-      global.fetch = mockFetchError('Fetching image failed');
+      global.fetch = mockFetchError('Backend error message');
     });
     afterAll(() => {
       jest.resetAllMocks();
     });
-    test('should throw an error', async () => {
+    test('should throw the correct error message', async () => {
       await expect(getImageById(testId)).rejects.toThrow(
         'An error occurred while fetching the image.'
       );

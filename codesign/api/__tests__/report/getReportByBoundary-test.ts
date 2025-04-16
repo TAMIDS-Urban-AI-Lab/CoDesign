@@ -1,9 +1,9 @@
-import { mockFetchSuccess, mockFetchError } from '@/mocks/mockFetch';
-import { ApiResponse } from '@/types/api';
+import { mockFetchError } from '@/mocks/mockFetch';
 import { getReportByBoundary } from '@/api/report/getReportByBoundary';
 import { ROUTES } from '@/constants/api/routes';
 import { ReportFormDetails, Report } from '@/types/Report';
 import { createMockedReportFormDetails } from '@/mocks/mockReport';
+import { mockGetReportByBoundarySuccess } from '@/mocks/api/mockGetReportByBoundary';
 
 describe('getReportByBoundary', () => {
   const testProps = {
@@ -20,12 +20,7 @@ describe('getReportByBoundary', () => {
 
   describe('when the fetch is successful', () => {
     beforeEach(() => {
-      const successResponse: ApiResponse<ReportFormDetails[]> = {
-        status: 200,
-        message: 'Success',
-        data: reportData
-      };
-      global.fetch = mockFetchSuccess(successResponse);
+      mockGetReportByBoundarySuccess({ reportData });
     });
     afterEach(() => {
       jest.resetAllMocks();

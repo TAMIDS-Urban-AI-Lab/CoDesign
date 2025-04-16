@@ -7,6 +7,7 @@ import {
   SBISA_DINING_HALL,
   LATITUDE_BOUNDS
 } from '@/constants/map/Coordinates';
+import { ImageDetails } from '@/types/Report';
 
 describe('ReportValidation', () => {
   test('title should be required', () => {
@@ -54,6 +55,7 @@ describe('ReportValidation', () => {
     expect(validate('INDOOR' as any)).toBe(true);
     expect(validate('OUTDOOR' as any)).toBe(true);
   });
+
   test('coordinates should be different from default location and in the correct coordinate range', () => {
     expect(VALIDATION_RULES.coordinates.validate).toBeTruthy();
     const { validate } = VALIDATION_RULES.coordinates;
@@ -91,5 +93,26 @@ describe('ReportValidation', () => {
     expect(validate(MEMORIAL_STUDENT_CENTER)).toBe(true);
     expect(validate([LONGITUDE_BOUNDS.MIN, LATITUDE_BOUNDS.MIN])).toBe(true);
     expect(validate([LONGITUDE_BOUNDS.MAX, LATITUDE_BOUNDS.MAX])).toBe(true);
+  });
+
+  test('between 1 and 3 images are required', () => {
+    expect(VALIDATION_RULES.coordinates.validate).toBeTruthy();
+    const { validate } = VALIDATION_RULES.images;
+
+    // No images should fail
+    expect(validate([])).toBe('At least one image is required');
+
+    // More than 3 images should fail
+    const mockedImage: ImageDetails = {
+      uri: 'mockedUri',
+      base64: 'mockedBase64'
+    };
+    expect(validate(new Array(4).fill(mockedImage))).toBe(
+      'Maximum of 3 images can be uploaded'
+    );
+    // Valid number of images should pass
+    expect(validate(new Array(1).fill(mockedImage))).toBe(true);
+    expect(validate(new Array(2).fill(mockedImage))).toBe(true);
+    expect(validate(new Array(3).fill(mockedImage))).toBe(true);
   });
 });

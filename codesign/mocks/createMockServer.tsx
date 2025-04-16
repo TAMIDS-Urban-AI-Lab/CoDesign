@@ -2,7 +2,7 @@ import { Server, Model } from 'miragejs';
 import Constants from 'expo-constants';
 
 import { ROUTES } from '@/constants/api/routes';
-import { getMockImage } from '@/mocks/Image';
+import { getMockImage } from '@/mocks/mockImage';
 import { reportFactory } from '@/mocks/mockReport';
 import { ReportFormDetails } from '@/types/Report';
 

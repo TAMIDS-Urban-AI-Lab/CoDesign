@@ -31,6 +31,7 @@ import { useModal } from '@/components/provider/ModalProvider';
 import { SelectLocation } from '@/components/report/SelectLocation';
 import { VALIDATION_RULES } from '@/utils/report/validateForm';
 import { uploadReport } from '@/api/report/uploadReport';
+import { ReportUploadSuccess } from '@/types/api';
 
 const BOTTOM_SPACE_HEIGHT = 148;
 
@@ -60,7 +61,7 @@ export function ReportForm({ style }: ViewProps) {
   const onSubmit = (data: ReportFormDetails) => {
     // TO DO: Add loading animation to submit button while submitting report
     uploadReport(data)
-      .then((success) => {
+      .then((success: ReportUploadSuccess) => {
         // Update reports locally
         const newReport = new Report({
           ...data,

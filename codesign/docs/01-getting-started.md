@@ -14,17 +14,20 @@ In this guide, you will learn how to:
 1. (Required) Download [XCode](https://developer.apple.com/xcode/)
 
     Currently, CoDesign supports only the iOS platform. This requires having a Mac with XCode installed. Once downloaded, no additional configuration is required- Expo will handle the rest!
-    
+
 
 2. Download [VSCode](https://code.visualstudio.com/) + Extensions
 
-     CoDesign configures ESLint and Prettier to enforce formatting and syntax rules. Add VSCode extensions to autoformat your code and make your life easy:
+    When opening the project in VSCode, ensure to open the folder that has package.json in it --> CoDesign/codesign
+
+    CoDesign configures ESLint and Prettier to enforce formatting and syntax rules. Add VSCode extensions to autoformat your code and make your life easy:
     - [ ] ESLint formatter
     - [ ] Prettier formatter
 
-    Other useful extensions: 
-    - [ ] Git Blame
-    - [ ] GiLens - Git Supercharged
+    Other useful extensions:
+    - [ ] Git Blame - See history of each line
+    - [ ] GitLens - Git Supercharged - Visualize git history
+    - [ ] Jest - Provides tools for running jest tests
 
 
 ## Preparing for your First Build
@@ -55,7 +58,7 @@ Once you have cloned a copy of the repository and opened it in the IDE of your c
     - Find your default public token (starts with `pk`)
     - Add it to the `MAPBOX_ACCESS_TOKEN` variable in the .env file
 
-    Later on, if you'd like to connect CoDesign with the backend, you can update the .env file to the following: 
+    Later on, if you'd like to connect CoDesign with the backend, you can update the .env file to the following:
     ```
     MAPBOX_ACCESS_TOKEN="your.token.here"
     USE_MIRAGE=false
@@ -63,7 +66,7 @@ Once you have cloned a copy of the repository and opened it in the IDE of your c
     ```
 
 3. **Build CoDesign**
-        
+
     To build and launch the app, run:
 
     ```bash
@@ -85,11 +88,11 @@ Once you have cloned a copy of the repository and opened it in the IDE of your c
 When CoDesign is built with XCode, it is automatically signed by your own development profile. After CoDesign launches on your phone, your phone will not trust the development profile by default.
 
 
-1. Trust your Development Profile  
-   Go to:  
+1. Trust your Development Profile
+   Go to:
    `Settings > General > VPN & Device Management > {Your Development Profile} > Trust`
 
-2. Enable Local Network Access  
+2. Enable Local Network Access
    When launching CoDesign, grant permission to access the local network.
 
 

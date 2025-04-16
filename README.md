@@ -11,5 +11,5 @@ Codesign enables students and faculty to provide feedback reports about Texas A&
 
 ## Getting started
 
-Clone a copy of the repo and follow the guide at [docs/01-getting-started.md](docs/01-getting-started.md)
+Clone a copy of the repo and follow the guide at [docs/01-getting-started.md](codesign/docs/01-getting-started.md)
 

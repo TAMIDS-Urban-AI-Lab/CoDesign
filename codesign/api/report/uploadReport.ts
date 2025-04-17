@@ -1,11 +1,14 @@
 import { ReportFormDetails } from '@/types/Report';
 import { constructQueryString, ROUTES } from '@/constants/api/routes';
+import { ApiResponse, ReportUploadSuccess } from '@/types/api';
 
 /**
  * Upload report to the server
  * @param reports
  */
-export async function uploadReport(reportData: ReportFormDetails) {
+export async function uploadReport(
+  reportData: ReportFormDetails
+): Promise<ReportUploadSuccess> {
   try {
     const query = constructQueryString(ROUTES.REPORT_LOCATION);
 
@@ -21,7 +24,7 @@ export async function uploadReport(reportData: ReportFormDetails) {
       throw new Error(`Error ${response.status}`);
     }
 
-    const result = await response.json();
+    const result: ApiResponse<ReportUploadSuccess> = await response.json();
 
     return result.data;
   } catch {

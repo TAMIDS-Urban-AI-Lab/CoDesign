@@ -288,4 +288,29 @@ describe('<ReportForm />', () => {
       expect(mockedOpenModal).toHaveBeenCalled();
     });
   });
+
+  test('should show error message when submission fails', async () => {
+    mockedUploadReport.mockImplementationOnce(() =>
+      Promise.reject(new Error('Submission failed'))
+    );
+
+    // When Report Form renders
+    render(<ReportForm />);
+
+    // and Submit button is clicked
+    const submitButton = await screen.findByText('Submit');
+    fireEvent.press(submitButton);
+
+    // When form rerenders
+    screen.rerender(<ReportForm />);
+
+    // Then error message should be shown
+    await waitFor(() => {
+      expect(
+        screen.getByText(
+          'An error occurred while submitting report. Please try again.'
+        )
+      ).toBeVisible();
+    });
+  });
 });

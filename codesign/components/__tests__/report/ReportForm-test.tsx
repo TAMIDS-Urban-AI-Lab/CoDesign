@@ -1,21 +1,50 @@
-import { render, screen, waitFor } from '@testing-library/react-native';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor
+} from '@testing-library/react-native';
 
-import { CodesignDataProvider } from '@/components/provider/CodesignDataProvider';
-import { ModalProvider } from '@/components/provider/ModalProvider';
-import { ALBRITTON_BELL_TOWER } from '@/constants/map/Coordinates';
-import { mockGetReportByBoundarySuccess } from '@/mocks/api/mockGetReportByBoundary';
+import { MEMORIAL_STUDENT_CENTER } from '@/constants/map/Coordinates';
 import { mockMapbox } from '@/mocks/mockMapbox';
 import { mockReactHookForm } from '@/mocks/mockReactHookForm';
+import { ReportLocationType } from '@/types/Report';
+import { DefaultOutdoorReport } from '@/constants/report/Report';
+import { mockExpoRouter } from '@/mocks/mockExpoRouter';
+import { TAB_ROUTE_PATH, TAB_ROUTES } from '@/constants/Routes';
+import { mockUploadReport } from '@/mocks/api/mockUploadReport';
 
 describe('<ReportForm />', () => {
   // Mock 3rd party libraries
-  const { mockFormState, resetFormStateToDefault } = mockReactHookForm();
+  const { mockFormState, resetFormStateToDefault, mockFormData } =
+    mockReactHookForm();
   mockMapbox({
-    centerCoordinate: ALBRITTON_BELL_TOWER
+    centerCoordinate: MEMORIAL_STUDENT_CENTER
   });
+  const { mockedRouterReplace } = mockExpoRouter();
+  const { mockedUploadReport } = mockUploadReport();
 
-  // getReportByBoundary to return mocked report data in CodesignDataProvider
-  mockGetReportByBoundarySuccess();
+  // Mock CodesignDataProvider and ModalProvider
+  const mockedOpenModal = jest.fn();
+  jest.mock('@/components/provider/ModalProvider', () => {
+    return {
+      useModal: jest.fn(() => {
+        return {
+          openModal: mockedOpenModal
+        };
+      })
+    };
+  });
+  jest.mock('@/components/provider/CodesignDataProvider', () => {
+    return {
+      useCodesignData: jest.fn(() => {
+        return {
+          reports: [],
+          setReports: jest.fn()
+        };
+      })
+    };
+  });
 
   afterEach(() => {
     // Avoid sharing mock state betweeen tests
@@ -27,22 +56,9 @@ describe('<ReportForm />', () => {
 
   const { ReportForm } = require('@/components/report/ReportForm');
 
-  // ReportForm uses context from CodesignDataProvider and ModalProvider
-  function TestContext({ children }: { children: React.ReactNode }) {
-    return (
-      <CodesignDataProvider>
-        <ModalProvider>{children}</ModalProvider>
-      </CodesignDataProvider>
-    );
-  }
-
   test('should render all form elements', async () => {
     // When Report Form renders
-    render(
-      <TestContext>
-        <ReportForm />
-      </TestContext>
-    );
+    render(<ReportForm />);
 
     // Location section should be visible
     await waitFor(() => {
@@ -148,11 +164,7 @@ describe('<ReportForm />', () => {
     mockFormState({ errors: mockedFormErrors });
 
     // When Report Form renders
-    render(
-      <TestContext>
-        <ReportForm />
-      </TestContext>
-    );
+    render(<ReportForm />);
 
     // Then form should show validation error messages
     await waitFor(() => {
@@ -191,6 +203,89 @@ describe('<ReportForm />', () => {
       expect(
         screen.getByText(mockedFormErrors.description.message)
       ).toBeVisible();
+    });
+  });
+
+  test('form should hide building name and floor number when outdoor radio button is selected', async () => {
+    // When Outdoor location is chosen
+    mockFormData(DefaultOutdoorReport);
+
+    render(<ReportForm />);
+
+    // Then Indoor fields should not be visible
+    await waitFor(() => {
+      expect(screen.queryByText('Building Name*')).not.toBeVisible();
+    });
+    await waitFor(() => {
+      expect(screen.queryByText('Floor Number*')).not.toBeVisible();
+    });
+  });
+
+  test('should reset all form data except location when Reset Form button is clicked', async () => {
+    // Report has outdoor location chosen
+    mockFormData({
+      reportLocation: ReportLocationType.OUTDOOR,
+      coordinates: MEMORIAL_STUDENT_CENTER,
+      reportLocationDetails: {},
+      images: ['test-image'],
+      title: 'Test Title',
+      description: 'Test Description'
+    });
+    // When Report Form renders
+    render(<ReportForm />);
+
+    // and Reset Form button is clicked
+    const resetButton = await screen.findByText('Reset Form');
+    fireEvent.press(resetButton);
+
+    // Then outdoor location should be still selected
+    await waitFor(() => {
+      expect(screen.getByTestId('themed-radio-button-Outdoor')).toBeChecked();
+    });
+
+    // But other fields should be reset
+    await waitFor(() => {
+      expect(
+        screen.getByTestId('report-form-description-input')
+      ).toHaveTextContent('');
+    });
+    await waitFor(() => {
+      expect(screen.getByTestId('report-form-title-input')).toHaveTextContent(
+        ''
+      );
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.queryAllByTestId('image-upload-default-preview')
+      ).toHaveLength(3);
+    });
+
+    // TO DO: Add check for location to be on default
+  });
+
+  test('should switch tabs and open modal when submitting report is successful', async () => {
+    mockedUploadReport.mockImplementationOnce(() =>
+      Promise.resolve({ id: 123 })
+    );
+
+    // When Report Form renders
+    render(<ReportForm />);
+
+    // and Submit button is clicked and successful submission
+    const submitButton = await screen.findByText('Submit');
+    fireEvent.press(submitButton);
+
+    // Then router should navigate to map tab
+    await waitFor(() => {
+      expect(mockedRouterReplace).toHaveBeenCalledWith({
+        pathname: TAB_ROUTE_PATH[TAB_ROUTES.INDEX]
+      });
+    });
+
+    // And open success modal
+    await waitFor(() => {
+      expect(mockedOpenModal).toHaveBeenCalled();
     });
   });
 });

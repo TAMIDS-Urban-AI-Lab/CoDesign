@@ -24,6 +24,10 @@ export function mockReactHookForm() {
     mockedFormState.dirtyFields = {};
   };
 
+  const mockFormData = (newData: any) => {
+    Object.keys(newData).forEach((key) => (formData[key] = newData[key]));
+  };
+
   const mockedUseForm = jest.fn(function <T>({
     defaultValues
   }: {
@@ -46,11 +50,15 @@ export function mockReactHookForm() {
       watch: jest.fn((formField: FormValues) => {
         return formData[formField];
       }),
-      reset: jest.fn((newValues: T) => {
-        Object.keys(newValues as object).forEach((key) => {
-          const formKey = key as FormValues;
-          formData[formKey] = newValues[formKey];
-        });
+      reset: jest.fn((newValues?: T) => {
+        if (newValues) {
+          Object.keys(newValues as object).forEach((key) => {
+            const formKey = key as FormValues;
+            formData[formKey] = newValues[formKey];
+          });
+        } else {
+          formData = defaultValues;
+        }
       }),
       formState: mockedFormState
     };
@@ -67,7 +75,7 @@ export function mockReactHookForm() {
     control: T;
     name: keyof T;
   }) {
-    const inputValue = defaultValue ?? null;
+    const inputValue = defaultValue ? control[name] : null;
     const onChange = jest.fn((newValue: any) => {
       control[name] = newValue;
     });
@@ -88,6 +96,7 @@ export function mockReactHookForm() {
     mockedUseForm,
     mockedController,
     mockFormState,
-    resetFormStateToDefault
+    resetFormStateToDefault,
+    mockFormData
   };
 }

@@ -1,13 +1,13 @@
-import { ReportUploadSuccess } from '@/types/api';
-
-export function mockUploadReportSuccess(returnData: ReportUploadSuccess) {
-  const mockedUploadReportSuccess = jest.fn(() => {
-    return Promise.resolve(returnData);
-  });
+export function mockUploadReport() {
+  const mockedUploadReport = jest.fn(() => Promise.resolve({}));
 
   jest.mock('@/api/report/uploadReport', () => {
     return {
-      uploadReport: mockedUploadReportSuccess
+      uploadReport: mockedUploadReport
     };
   });
+
+  return {
+    mockedUploadReport
+  };
 }

@@ -13,10 +13,11 @@ import { DefaultOutdoorReport } from '@/constants/report/Report';
 import { mockExpoRouter } from '@/mocks/mockExpoRouter';
 import { TAB_ROUTE_PATH, TAB_ROUTES } from '@/constants/Routes';
 import { mockUploadReport } from '@/mocks/api/mockUploadReport';
+import { createMockedReportFormDetails } from '@/mocks/mockReport';
 
 describe('<ReportForm />', () => {
   // Mock 3rd party libraries
-  const { mockFormState, resetFormStateToDefault, mockFormData } =
+  const { mockFormState, mockFormData, resetFormToDefault } =
     mockReactHookForm();
   mockMapbox({
     centerCoordinate: MEMORIAL_STUDENT_CENTER
@@ -50,8 +51,8 @@ describe('<ReportForm />', () => {
     // Avoid sharing mock state betweeen tests
     jest.clearAllMocks();
 
-    // Reset report form's state between tests
-    resetFormStateToDefault();
+    // Reset report form state between tests
+    resetFormToDefault();
   });
 
   const { ReportForm } = require('@/components/report/ReportForm');
@@ -223,14 +224,15 @@ describe('<ReportForm />', () => {
 
   test('should reset all form data except location when Reset Form button is clicked', async () => {
     // Report has outdoor location chosen
-    mockFormData({
-      reportLocation: ReportLocationType.OUTDOOR,
-      coordinates: MEMORIAL_STUDENT_CENTER,
-      reportLocationDetails: {},
-      images: ['test-image'],
-      title: 'Test Title',
-      description: 'Test Description'
-    });
+    mockFormData(
+      createMockedReportFormDetails({
+        reportLocation: ReportLocationType.OUTDOOR,
+        coordinates: MEMORIAL_STUDENT_CENTER,
+        reportLocationDetails: {},
+        title: 'Test Title',
+        description: 'Test Description'
+      })
+    );
     // When Report Form renders
     render(<ReportForm />);
 

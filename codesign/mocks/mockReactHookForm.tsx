@@ -1,5 +1,11 @@
 export function mockReactHookForm() {
-  let formData: any;
+  const mockedFormData: any = {};
+  let isFormMocked = false;
+  const mockFormData = (newData: any) => {
+    Object.keys(newData).forEach((key) => (mockedFormData[key] = newData[key]));
+    isFormMocked = true;
+  };
+
   const mockedFormState = {
     errors: {},
     isSubmitting: false,
@@ -15,26 +21,28 @@ export function mockReactHookForm() {
     );
   };
 
-  const resetFormStateToDefault = () => {
+  const resetFormToDefault = () => {
     mockedFormState.errors = {};
     mockedFormState.isSubmitting = false;
     mockedFormState.isValidating = false;
     mockedFormState.isDirty = false;
     mockedFormState.isValid = true;
     mockedFormState.dirtyFields = {};
-  };
-
-  const mockFormData = (newData: any) => {
-    Object.keys(newData).forEach((key) => (formData[key] = newData[key]));
+    Object.keys(mockedFormData).forEach((key) => {
+      delete mockedFormData[key];
+    });
+    isFormMocked = false;
   };
 
   const mockedUseForm = jest.fn(function <T>({
     defaultValues
   }: {
-    defaultValues?: T;
+    defaultValues: T;
   }) {
-    formData = defaultValues ?? ({} as T);
-    type FormValues = keyof typeof formData;
+    type FormValues = keyof typeof defaultValues;
+    const formData = isFormMocked
+      ? { ...mockedFormData }
+      : { ...defaultValues };
 
     return {
       control: formData,
@@ -57,7 +65,10 @@ export function mockReactHookForm() {
             formData[formKey] = newValues[formKey];
           });
         } else {
-          formData = defaultValues;
+          Object.keys(defaultValues as object).forEach((key) => {
+            const formKey = key as FormValues;
+            formData[formKey] = defaultValues[formKey];
+          });
         }
       }),
       formState: mockedFormState
@@ -96,7 +107,7 @@ export function mockReactHookForm() {
     mockedUseForm,
     mockedController,
     mockFormState,
-    resetFormStateToDefault,
-    mockFormData
+    mockFormData,
+    resetFormToDefault
   };
 }

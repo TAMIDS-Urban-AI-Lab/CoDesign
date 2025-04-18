@@ -1,8 +1,9 @@
 export function mockReactHookForm() {
-  const mockedFormData: any = {};
+  const getMockedForm = jest.fn().mockReturnValue({});
   let isFormMocked = false;
-  const mockFormData = (newData: any) => {
-    Object.keys(newData).forEach((key) => (mockedFormData[key] = newData[key]));
+
+  const mockFormData = (mockData: any) => {
+    getMockedForm.mockReturnValueOnce(mockData);
     isFormMocked = true;
   };
 
@@ -28,9 +29,6 @@ export function mockReactHookForm() {
     mockedFormState.isDirty = false;
     mockedFormState.isValid = true;
     mockedFormState.dirtyFields = {};
-    Object.keys(mockedFormData).forEach((key) => {
-      delete mockedFormData[key];
-    });
     isFormMocked = false;
   };
 
@@ -41,8 +39,14 @@ export function mockReactHookForm() {
   }) {
     type FormValues = keyof typeof defaultValues;
     const formData = isFormMocked
-      ? { ...mockedFormData }
+      ? { ...getMockedForm() }
       : { ...defaultValues };
+
+    if (isFormMocked && Object.keys(formData).length === 0) {
+      throw new Error(
+        'Unexpected behavior. Check for leaks between tests. Ensure to call resetFormToDefault() after each test.'
+      );
+    }
 
     return {
       control: formData,

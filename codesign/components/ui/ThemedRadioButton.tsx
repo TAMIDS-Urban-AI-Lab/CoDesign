@@ -42,6 +42,7 @@ export function ThemedRadioButton({
 
   return (
     <CheckBox
+      testID={`themed-radio-button-${title}`}
       containerStyle={[
         { backgroundColor: backgroundColor },
         styles.radioButtonContainer

@@ -36,7 +36,7 @@ import { ReportUploadSuccess } from '@/types/api';
 const BOTTOM_SPACE_HEIGHT = 148;
 
 export function ReportForm({ style }: ViewProps) {
-  const router = useRouter();
+  const { replace } = useRouter();
   const { reports, setReports } = useCodesignData();
   const [submissionError, setSubmissionError] = useState<string | null>(null);
 
@@ -73,7 +73,7 @@ export function ReportForm({ style }: ViewProps) {
         setReports([...reports, newReport]);
 
         // Navigate to the Map tab on success
-        router.replace({ pathname: TAB_ROUTE_PATH[TAB_ROUTES.INDEX] });
+        replace({ pathname: TAB_ROUTE_PATH[TAB_ROUTES.INDEX] });
         successModal.openModal();
 
         // Clear form state
@@ -282,6 +282,7 @@ export function ReportForm({ style }: ViewProps) {
                 value={value}
                 placeholder="Enter title"
                 errorText={errors.title?.message}
+                testID="report-form-title-input"
                 required
               />
             )}
@@ -302,6 +303,7 @@ export function ReportForm({ style }: ViewProps) {
                 multiline
                 numberOfLines={4}
                 errorText={errors.description?.message}
+                testID="report-form-description-input"
                 required
               />
             )}

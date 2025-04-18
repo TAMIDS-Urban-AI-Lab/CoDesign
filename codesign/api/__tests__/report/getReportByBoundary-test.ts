@@ -1,9 +1,10 @@
-import { mockFetchSuccess, mockFetchError } from '@/mocks/mockFetch';
-import { ApiResponse } from '@/types/api';
+import { mockFetchError } from '@/mocks/mockFetch';
 import { getReportByBoundary } from '@/api/report/getReportByBoundary';
 import { ROUTES } from '@/constants/api/routes';
 import { ReportFormDetails, Report } from '@/types/Report';
 import { createMockedReportFormDetails } from '@/mocks/mockReport';
+import { ApiResponse } from '@/types/api';
+import { mockFetchSuccess } from '@/mocks/mockFetch';
 
 describe('getReportByBoundary', () => {
   const testProps = {

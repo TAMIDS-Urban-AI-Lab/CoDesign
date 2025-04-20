@@ -46,6 +46,12 @@ export function IconSymbol({
   weight?: SymbolWeight;
 }) {
   return (
-    <Ionicons color={color} size={size} name={MAPPING[name]} style={style} />
+    <Ionicons
+      testID="icon-symbol"
+      color={color}
+      size={size}
+      name={MAPPING[name]}
+      style={style}
+    />
   );
 }

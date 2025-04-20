@@ -17,9 +17,20 @@ export function FloatingModal({
   ...otherProps
 }: FloatingModalProps) {
   return (
-    <ThemedModal transparent={true} animationType="fade" {...otherProps}>
-      <Pressable onPress={closeModal} style={styles.modalContainer}>
-        <ThemedView style={styles.modal}>{children}</ThemedView>
+    <ThemedModal
+      testID="floating-modal"
+      transparent={true}
+      animationType="fade"
+      {...otherProps}
+    >
+      <Pressable
+        testID="modal-background"
+        onPress={closeModal}
+        style={styles.modalContainer}
+      >
+        <ThemedView testID="modal-content" style={styles.modal}>
+          {children}
+        </ThemedView>
       </Pressable>
     </ThemedModal>
   );

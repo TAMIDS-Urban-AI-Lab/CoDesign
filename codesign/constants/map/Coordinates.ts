@@ -18,3 +18,13 @@ export const TAMU_CAMPUS_BOUNDS = {
   MIN_LATITUDE: 30.607255922217114,
   MAX_LATITUDE: 30.617351074711575
 };
+
+export const LATITUDE_BOUNDS = {
+  MIN: -90,
+  MAX: 90
+};
+
+export const LONGITUDE_BOUNDS = {
+  MIN: -180,
+  MAX: 180
+};

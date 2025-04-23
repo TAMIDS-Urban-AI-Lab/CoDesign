@@ -68,7 +68,7 @@ describe('<ImageUpload />', () => {
     mockSaveToLibraryAsync.mockClear();
   });
 
-  test('renders the preview row and "Add Photos" button', async () => {
+  test('renders 3 default images and "Add Photos" button', async () => {
     // When view the Image Upload component
     render(initComponent({ onChange: jest.fn(), value: [], errorText: null }));
 
@@ -80,14 +80,20 @@ describe('<ImageUpload />', () => {
     // and show the "Add Photos" button
     const addPhotosButton = await screen.findByText('Add Photos');
     expect(addPhotosButton).toBeVisible();
+  });
 
-    // When click on the "Add Photos" button
+  test('shows and hides "Options Menu"', async () => {
+    // When view the Image Upload component
+    render(initComponent({ onChange: jest.fn(), value: [], errorText: null }));
+
+    // and click on the "Add Photos" button
+    const addPhotosButton = await screen.findByText('Add Photos');
     fireEvent.press(addPhotosButton);
 
     // Then show the options menu
     expect(mockShowActionSheetWithOptions).toHaveBeenCalled();
 
-    // and correct options are provided
+    // and menu shows expected options
     const actionSheetConfig: ActionSheetOptions = mockShowActionSheetWithOptions
       .mock.calls[0][0] as unknown as ActionSheetOptions;
     expect(actionSheetConfig.options).toEqual([
@@ -102,10 +108,10 @@ describe('<ImageUpload />', () => {
         .calls[0][1] as unknown as ActionSheetCallback;
     actionSheetCallback(expectedMenuOptions.cancel);
 
-    // Then the options menu is closed
+    // Then the options menu is closed and no action is taken
     expect(mockShowActionSheetWithOptions).toHaveBeenCalledTimes(1);
     expect(mockLaunchCameraAsync).not.toHaveBeenCalled();
-    expect(mockResize).not.toHaveBeenCalled();
+    expect(mockLaunchImageLibraryAsync).not.toHaveBeenCalled();
   });
 
   test('opens the camera when selecting Use Camera option', async () => {
@@ -129,7 +135,7 @@ describe('<ImageUpload />', () => {
         .calls[0][1] as unknown as ActionSheetCallback;
     actionSheetCallback(expectedMenuOptions.useCamera);
 
-    // Then show the camera to the user
+    // Then opens the camera
     await waitFor(() => {
       expect(mockLaunchCameraAsync).toHaveBeenCalledTimes(1);
     });

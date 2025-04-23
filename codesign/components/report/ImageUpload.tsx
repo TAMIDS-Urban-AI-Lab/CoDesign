@@ -114,7 +114,13 @@ export function ImageUpload({
 
   const pickImage = async () => {
     if (!libraryStatus?.granted) {
-      await requestLibraryPermission();
+      const { status } = await requestLibraryPermission();
+      if (status && status !== 'granted') {
+        setUploadErrorText(
+          'Library permission is required to choose a photo. Please enable access in device settings.'
+        );
+        return;
+      }
     }
 
     launchImageLibraryAsync(imagePickerOptions)
@@ -144,7 +150,13 @@ export function ImageUpload({
 
   const openCamera = async () => {
     if (!cameraStatus?.granted) {
-      await requestCameraPermission();
+      const { status } = await requestCameraPermission();
+      if (status && status !== 'granted') {
+        setUploadErrorText(
+          'Camera permission is required to take a photo. Please enable access in device settings.'
+        );
+        return;
+      }
     }
 
     launchCameraAsync(imagePickerOptions)
@@ -298,7 +310,7 @@ function DefaultImage() {
 
 const styles = StyleSheet.create({
   errorText: {
-    marginBottom: Spacing.small
+    marginBottom: Spacing.medium
   },
   imagePreviewRow: {
     ...Layout.row,

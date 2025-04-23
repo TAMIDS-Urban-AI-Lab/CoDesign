@@ -32,10 +32,9 @@ describe('<ImageUpload />', () => {
     mockLaunchImageLibraryAsync,
     mockMediaLibraryPermissions,
     mockCameraPermissions,
-    grantPermission
+    grantPermission,
+    denyPermission
   } = mockExpoImagePicker(mockedImageSize);
-  mockCameraPermissions.mockImplementation(grantPermission);
-  mockMediaLibraryPermissions.mockImplementation(grantPermission);
 
   // Set up mocks to resize and compress images
   const { mockResize } = mockExpoImageManipulator(mockedImageSize);
@@ -63,6 +62,63 @@ describe('<ImageUpload />', () => {
     mockMediaLibraryPermissions.mockClear();
     mockResize.mockClear();
     mockSaveToLibraryAsync.mockClear();
+  });
+
+  describe('when permissions fail', () => {
+    test('shows error message when camera permission is denied', async () => {
+      mockCameraPermissions.mockImplementation(denyPermission);
+      // When view the Image Upload component
+      render(
+        initComponent({ onChange: jest.fn(), value: [], errorText: null })
+      );
+
+      // and click on the "Add Photos" button
+      const addPhotosButton = await screen.findByText('Add Photos');
+      fireEvent.press(addPhotosButton);
+
+      // When select the "Use Camera" option
+      selectMockedMenuOption(expectedMenuOptions.useCamera);
+
+      // When image upload rerenders
+      screen.rerender(
+        initComponent({ onChange: jest.fn(), value: [], errorText: null })
+      );
+
+      // Then error message should be shown
+      await waitFor(() => {
+        expect(
+          screen.getByText('Camera permission is required to take a photo.')
+        ).toBeVisible();
+      });
+    });
+
+    test('shows error message when media library permission is denied', async () => {
+      mockMediaLibraryPermissions.mockImplementation(denyPermission);
+
+      // When view the Image Upload component
+      render(
+        initComponent({ onChange: jest.fn(), value: [], errorText: null })
+      );
+
+      // and click on the "Add Photos" button
+      const addPhotosButton = await screen.findByText('Add Photos');
+      fireEvent.press(addPhotosButton);
+
+      // When select the "Upload from Library" option
+      selectMockedMenuOption(expectedMenuOptions.uploadFromLibrary);
+
+      // When image upload rerenders
+      screen.rerender(
+        initComponent({ onChange: jest.fn(), value: [], errorText: null })
+      );
+
+      // Then error message should be shown
+      await waitFor(() => {
+        expect(
+          screen.getByText('Library permission is required to choose a photo.')
+        ).toBeVisible();
+      });
+    });
   });
 
   test('renders 3 default images and "Add Photos" button', async () => {
@@ -109,6 +165,8 @@ describe('<ImageUpload />', () => {
   });
 
   test('Use Camera option successfully opens camera, resizes the image and saves it', async () => {
+    mockCameraPermissions.mockImplementation(grantPermission);
+
     // When view the Image Upload component
     const mockUpdateForm = jest.fn();
     render(
@@ -148,6 +206,8 @@ describe('<ImageUpload />', () => {
   });
 
   test('Upload from Library option successfully opens photo library and saves image', async () => {
+    mockMediaLibraryPermissions.mockImplementation(grantPermission);
+
     // When view the Image Upload component
     const mockUpdateForm = jest.fn();
     render(
@@ -214,7 +274,9 @@ describe('<ImageUpload />', () => {
     expect(screen.queryAllByTestId('remove-image-button')).toHaveLength(2);
 
     // and one default image
-    expect(screen.queryByTestId('image-upload-default-preview')).toBeVisible();
+    expect(
+      screen.queryAllByTestId('image-upload-default-preview')
+    ).toHaveLength(1);
   });
 
   test('shows an error if selecting a photo fails', async () => {

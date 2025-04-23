@@ -36,6 +36,8 @@ describe('ReportValidation', () => {
     // Negative values should fail
     expect(validate('-1')).toBe('Floor Number must be greater than 0');
     expect(validate(-1)).toBe('Floor Number must be greater than 0');
+    // Non-numeric values should fail
+    expect(validate('invalid')).toBe('Floor Number must be a number');
 
     expect(validate(1)).toBe(true);
     expect(validate(25)).toBe(true);

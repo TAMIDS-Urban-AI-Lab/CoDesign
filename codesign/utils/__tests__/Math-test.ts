@@ -15,4 +15,12 @@ describe('getRandomInt()', () => {
     const result = getRandomInt(min, max);
     expect(result).toBe(5);
   });
+
+  test('should throw an error when min is greater than max', () => {
+    const min = 10;
+    const max = 5;
+    expect(() => getRandomInt(min, max)).toThrow(
+      'Min should be less than or equal to max'
+    );
+  });
 });

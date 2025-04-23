@@ -1,6 +1,6 @@
 # Welcome to Codesign
 
-Codesign enables students and faculty to provide feedback reports about Texas A&M's on-site facilities and eventually, use Augmented Reality to design and imagine a better community space.
+Codesign enables students and faculty to provide feedback reports about Texas A&M's on-site facilities to help improve and imagine a better community space.
 
 ## Current Features
 

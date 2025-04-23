@@ -240,7 +240,6 @@ export function ImageUpload({
               <ThemedView
                 key={`uploaded_${index}`}
                 style={styles.imageContainer}
-                testID="user-submitted-image-upload"
               >
                 <ImageButton
                   source={REMOVE_IMAGE_SRC}
@@ -248,8 +247,14 @@ export function ImageUpload({
                   transparent={true}
                   style={styles.removeImageButton}
                   onPress={() => removeImage(index)}
+                  testID="remove-image-button"
                 />
-                <Image source={{ uri: image.uri }} style={styles.image} />
+                <Image
+                  source={{ uri: image.uri }}
+                  style={styles.image}
+                  testID="user-submitted-image-upload"
+                  accessibilityLabel={`Uploaded image ${index + 1} of ${images.length}`}
+                />
               </ThemedView>
             );
           })}

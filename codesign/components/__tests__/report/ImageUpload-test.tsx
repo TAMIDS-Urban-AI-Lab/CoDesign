@@ -210,6 +210,9 @@ describe('<ImageUpload />', () => {
       2
     );
 
+    // with their remove buttons
+    expect(screen.queryAllByTestId('remove-image-button')).toHaveLength(2);
+
     // and one default image
     expect(screen.queryByTestId('image-upload-default-preview')).toBeVisible();
   });

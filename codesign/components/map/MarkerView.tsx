@@ -1,5 +1,5 @@
 import { type ViewProps, Pressable, StyleSheet } from 'react-native';
-import MapboxGL from '@rnmapbox/maps';
+import { MarkerView as MapboxMarkerView } from '@rnmapbox/maps';
 import { PropsWithChildren } from 'react';
 
 import { ThemedView } from '@/components/ui/ThemedView';
@@ -18,11 +18,15 @@ export function MarkerView({
   onPress
 }: MarkerViewProps) {
   return (
-    <MapboxGL.MarkerView coordinate={coordinates}>
-      <Pressable style={[styles.markerContainer, style]} onPress={onPress}>
+    <MapboxMarkerView coordinate={coordinates}>
+      <Pressable
+        style={[styles.markerContainer, style]}
+        onPress={onPress}
+        testID="marker-view-pressable"
+      >
         <ThemedView style={styles.marker}>{children}</ThemedView>
       </Pressable>
-    </MapboxGL.MarkerView>
+    </MapboxMarkerView>
   );
 }
 

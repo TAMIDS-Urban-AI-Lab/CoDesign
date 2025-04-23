@@ -9,7 +9,7 @@ import Animated, {
   ReduceMotion
 } from 'react-native-reanimated';
 
-import { Report, ImageDetails } from '@/types/Report';
+import { Report } from '@/types/Report';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { ThemedText } from '@/components/ui/ThemedText';
@@ -19,6 +19,7 @@ import { Spacing } from '@/constants/styles/Spacing';
 import { tamuColors } from '@/constants/Colors';
 import { ImageButton } from '@/components/ui/ImageButton';
 import { ThemedScrollView } from '../ui/ThemedScrollView';
+import { getImageSrc } from '@/utils/Image';
 
 const HALF_SCREEN = '30%';
 const FULL_SCREEN = '100%';
@@ -98,6 +99,7 @@ export function ReportDetailsSheet({
       handleStyle={styles.handleContainer}
       onChange={handleSheetChange}
       onClose={afterCloseCallback}
+      accessibilityLabel={'Report details sheet'}
     >
       <BottomSheetView
         style={{
@@ -118,6 +120,8 @@ export function ReportDetailsSheet({
             size={24}
             transparent={true}
             onPress={closeSheet}
+            accessibilityLabel="Close report details sheet"
+            testID="report-details-sheet-close-button"
           />
         </Animated.View>
 
@@ -125,8 +129,10 @@ export function ReportDetailsSheet({
           <Animated.View style={[styles.header, { height }]}>
             {/* TO DO: Add image loading and error states */}
             <Animated.Image
-              source={getImageSrc(report.getImages())}
+              source={getImageSrc(DEFAULT_IMAGE_SRC, report.getImages())}
               style={[styles.headerImage, { height }]}
+              testID={'report-details-sheet-header-image'}
+              accessibilityLabel={'Report details header image'}
             />
           </Animated.View>
           {isFullScreen ? (
@@ -146,7 +152,7 @@ export function ReportDetailsSheet({
 
 function ReportDetails({ report }: { report: Report }) {
   return (
-    <ThemedView style={styles.content}>
+    <ThemedView style={styles.content} testID="report-details-sheet-content">
       <ThemedView style={styles.contentSection}>
         <ThemedText type="title2" style={[styles.titleText]}>
           {report.getTitle()}
@@ -165,17 +171,6 @@ function ReportDetails({ report }: { report: Report }) {
     </ThemedView>
   );
 }
-
-const getImageSrc = (images: ImageDetails[]) => {
-  if (!images || images.length === 0) return DEFAULT_IMAGE_SRC;
-  if (typeof images[0].uri === 'string') {
-    return { uri: images[0].uri };
-  } else if (typeof images[0].base64 === 'string') {
-    return { uri: 'data:image/png;base64,' + images[0].base64 };
-  } else {
-    return images[0].uri;
-  }
-};
 
 const styles = StyleSheet.create({
   closeButtonContainer: {

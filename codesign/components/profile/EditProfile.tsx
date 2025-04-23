@@ -22,20 +22,33 @@ const styles = StyleSheet.create({
   }
 });
 
-export function EditProfile({ style }: ViewProps) {
+type EditProfileProps = {
+  style?: ViewProps['style'];
+  displayName: string;
+  profileImageSrc?: string;
+};
+
+export function EditProfile({
+  style,
+  displayName,
+  profileImageSrc
+}: EditProfileProps) {
   return (
     <ThemedView style={[styles.profileContainer, style]}>
-      <ThemedText type="title3">Scott Banazone</ThemedText>
+      <ThemedText type="title3">{displayName}</ThemedText>
       <ThemedView style={[styles.actionContainer]}>
         <ThemedView style={[Layout.row, { gap: Spacing.medium }]}>
           <Image
-            source={require('@/assets/images/react-logo.png')}
+            source={
+              profileImageSrc ?? require('@/assets/images/react-logo.png')
+            }
             style={{
               width: PROFILE_IMAGE_SIZE,
               height: PROFILE_IMAGE_SIZE,
               ...Border.roundedSmall,
               backgroundColor: tamuColors.primaryBrandDark
             }}
+            testID="profile-image"
           />
           <ThemedView style={[Layout.col, { gap: Spacing.small }]}>
             <Pressable style={[Layout.row, { gap: Spacing.small }]}>

@@ -1,5 +1,30 @@
 import { Coordinates } from '@/types/Report';
 
-export const ALBRITTON_BELL_TOWER = [
+export const ALBRITTON_BELL_TOWER: Coordinates = [
   -96.3446075505438, 30.613381329387035
-] as Coordinates;
+];
+
+export const MEMORIAL_STUDENT_CENTER: Coordinates = [
+  -96.34156322663094, 30.612451964741343
+];
+
+export const SBISA_DINING_HALL: Coordinates = [
+  -96.34381375866194, 30.61695861119733
+];
+
+export const TAMU_CAMPUS_BOUNDS = {
+  MIN_LONGITUDE: -96.35119602985726,
+  MAX_LONGITUDE: -96.33890180386302,
+  MIN_LATITUDE: 30.607255922217114,
+  MAX_LATITUDE: 30.617351074711575
+};
+
+export const LATITUDE_BOUNDS = {
+  MIN: -90,
+  MAX: 90
+};
+
+export const LONGITUDE_BOUNDS = {
+  MIN: -180,
+  MAX: 180
+};

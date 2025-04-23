@@ -16,7 +16,7 @@ export type ReportLocationDetails = {
   indoorDetails?: IndoorDetails;
 };
 
-type IndoorDetails = {
+export type IndoorDetails = {
   buildingName: string;
   floorNumber: number;
 };

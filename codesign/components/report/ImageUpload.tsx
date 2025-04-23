@@ -51,8 +51,8 @@ export function ImageUpload({
   value: images,
   errorText
 }: ImageUploadProps) {
-  const testData = useMediaLibraryPermissions();
-  const [libraryStatus, requestLibraryPermission] = testData;
+  const [libraryStatus, requestLibraryPermission] =
+    useMediaLibraryPermissions();
   const [cameraStatus, requestCameraPermission] = useCameraPermissions();
   const [uploadErrorText, setUploadErrorText] = useState<string | null>(null);
   const { showActionSheetWithOptions } = useActionSheet();

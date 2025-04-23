@@ -6,11 +6,7 @@ import {
 } from '@testing-library/react-native';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 
-import {
-  ActionSheetCallback,
-  ActionSheetOptions,
-  mockActionSheet
-} from '@/mocks/mockActionSheet';
+import { ActionSheetOptions, mockActionSheet } from '@/mocks/mockActionSheet';
 import { mockExpoImagePicker } from '@/mocks/mockExpoImagePicker';
 import { mockExpoImageManipulator } from '@/mocks/mockExpoImageManipulator';
 import { mockExpoMediaLibrary } from '@/mocks/mockExpoMediaLibrary';
@@ -18,7 +14,8 @@ import { ImageDetails } from '@/types/Report';
 
 describe('<ImageUpload />', () => {
   // Set up action sheet mocks
-  const { mockShowActionSheetWithOptions } = mockActionSheet();
+  const { mockShowActionSheetWithOptions, selectMockedMenuOption } =
+    mockActionSheet();
   const expectedMenuOptions = {
     useCamera: 0,
     uploadFromLibrary: 1,
@@ -82,7 +79,7 @@ describe('<ImageUpload />', () => {
     expect(addPhotosButton).toBeVisible();
   });
 
-  test('shows and hides "Options Menu"', async () => {
+  test('shows Action Sheet Menu and selecting Cancel option does nothing', async () => {
     // When view the Image Upload component
     render(initComponent({ onChange: jest.fn(), value: [], errorText: null }));
 
@@ -91,7 +88,7 @@ describe('<ImageUpload />', () => {
     fireEvent.press(addPhotosButton);
 
     // Then show the options menu
-    expect(mockShowActionSheetWithOptions).toHaveBeenCalled();
+    expect(mockShowActionSheetWithOptions).toHaveBeenCalledTimes(1);
 
     // and menu shows expected options
     const actionSheetConfig: ActionSheetOptions = mockShowActionSheetWithOptions
@@ -103,18 +100,15 @@ describe('<ImageUpload />', () => {
     ]);
 
     // When select the "Cancel" option
-    const actionSheetCallback: ActionSheetCallback =
-      mockShowActionSheetWithOptions.mock
-        .calls[0][1] as unknown as ActionSheetCallback;
-    actionSheetCallback(expectedMenuOptions.cancel);
+    selectMockedMenuOption(expectedMenuOptions.cancel);
 
-    // Then the options menu is closed and no action is taken
+    // Then no action is taken
     expect(mockShowActionSheetWithOptions).toHaveBeenCalledTimes(1);
     expect(mockLaunchCameraAsync).not.toHaveBeenCalled();
     expect(mockLaunchImageLibraryAsync).not.toHaveBeenCalled();
   });
 
-  test('opens the camera when selecting Use Camera option', async () => {
+  test('Use Camera option successfully opens camera, resizes the image and saves it', async () => {
     // When view the Image Upload component
     const mockUpdateForm = jest.fn();
     render(
@@ -130,10 +124,7 @@ describe('<ImageUpload />', () => {
     fireEvent.press(addPhotosButton);
 
     // When select the "Use Camera" option
-    const actionSheetCallback: ActionSheetCallback =
-      mockShowActionSheetWithOptions.mock
-        .calls[0][1] as unknown as ActionSheetCallback;
-    actionSheetCallback(expectedMenuOptions.useCamera);
+    selectMockedMenuOption(expectedMenuOptions.useCamera);
 
     // Then opens the camera
     await waitFor(() => {
@@ -156,7 +147,7 @@ describe('<ImageUpload />', () => {
     });
   });
 
-  test('opens the photo library when selecting Upload from Library option', async () => {
+  test('Upload from Library option successfully opens photo library and saves image', async () => {
     // When view the Image Upload component
     const mockUpdateForm = jest.fn();
     render(
@@ -168,12 +159,9 @@ describe('<ImageUpload />', () => {
     fireEvent.press(addPhotosButton);
 
     // When select the "Upload from Library" option
-    const actionSheetCallback: ActionSheetCallback =
-      mockShowActionSheetWithOptions.mock
-        .calls[0][1] as unknown as ActionSheetCallback;
-    actionSheetCallback(expectedMenuOptions.uploadFromLibrary);
+    selectMockedMenuOption(expectedMenuOptions.uploadFromLibrary);
 
-    // Then show the camera to the user
+    // Then show the photo library to the user
     await waitFor(() => {
       expect(mockLaunchImageLibraryAsync).toHaveBeenCalledTimes(1);
     });
@@ -188,7 +176,7 @@ describe('<ImageUpload />', () => {
       expect(mockUpdateForm).toHaveBeenCalledTimes(1);
     });
 
-    // and it should not be saved to the library (because it was selected from the library)
+    // and it should not be saved to the photo library (because it was selected from the library)
     await waitFor(() => {
       expect(mockSaveToLibraryAsync).not.toHaveBeenCalled();
     });
@@ -243,10 +231,7 @@ describe('<ImageUpload />', () => {
     fireEvent.press(addPhotosButton);
 
     // When select the "Upload from Library" option
-    const actionSheetCallback: ActionSheetCallback =
-      mockShowActionSheetWithOptions.mock
-        .calls[0][1] as unknown as ActionSheetCallback;
-    actionSheetCallback(expectedMenuOptions.uploadFromLibrary);
+    selectMockedMenuOption(expectedMenuOptions.uploadFromLibrary);
 
     // Then an error message is shown when it fails
     await waitFor(() => {

@@ -237,23 +237,22 @@ export function ImageUpload({
         {images &&
           images.map((image, index) => {
             return (
-              <ThemedView
+              <UploadedImage
                 key={`uploaded_${index}`}
-                style={styles.imageContainer}
-              >
-                <ImageButton
-                  source={REMOVE_IMAGE_SRC}
-                  size={24}
-                  transparent={true}
-                  style={styles.removeImageButton}
-                  onPress={() => removeImage(index)}
-                />
-                <Image source={{ uri: image.uri }} style={styles.image} />
-              </ThemedView>
+                accessibilityLabel={`Uploaded image ${index + 1} of ${images.length}`}
+                image={image}
+                removeImage={removeImage}
+                index={index}
+              />
             );
           })}
         {defaultImages.map((keyName, index) => {
-          return <DefaultImage key={`${keyName}_${index}`} />;
+          return (
+            <DefaultImage
+              key={`${keyName}_${index}`}
+              accessibilityLabel={`Image Placeholder ${index + 1} of ${defaultImages.length}`}
+            />
+          );
         })}
       </ThemedView>
       {!maxImagesUploaded && (
@@ -276,15 +275,47 @@ export function ImageUpload({
   );
 }
 
-function DefaultImage() {
+function DefaultImage({ accessibilityLabel }: { accessibilityLabel: string }) {
   return (
     <ThemedView
       lightColor={tamuColors.gray300}
       darkColor={tamuColors.gray800}
       style={styles.defaultContainer}
       testID="image-upload-default-preview"
+      accessibilityLabel={accessibilityLabel}
     >
       <IconSymbol name="photo.fill" size={28} color={tamuColors.gray500} />
+    </ThemedView>
+  );
+}
+
+function UploadedImage({
+  accessibilityLabel,
+  index,
+  removeImage,
+  image
+}: {
+  accessibilityLabel: string;
+  index: number;
+  removeImage: CallableFunction;
+  image: ImageDetails;
+}) {
+  return (
+    <ThemedView key={`uploaded_${index}`} style={styles.imageContainer}>
+      <ImageButton
+        source={REMOVE_IMAGE_SRC}
+        size={24}
+        transparent={true}
+        style={styles.removeImageButton}
+        onPress={() => removeImage(index)}
+        accessibilityLabel={`Remove image ${index + 1}`}
+      />
+      <Image
+        source={{ uri: image.uri }}
+        style={styles.image}
+        accessibilityLabel={accessibilityLabel}
+        testID={`uploaded-image-${index}`}
+      />
     </ThemedView>
   );
 }

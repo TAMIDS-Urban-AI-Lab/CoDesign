@@ -59,7 +59,7 @@ appId: com.urbanailab.codesign
 # and swipe to view Report Details section
 - swipe:
     start: 50%, 60%
-    end: 50%, 40%
+    end: 50%, 35%
 
 # And open photo library
 - tapOn: ADD PHOTOS
@@ -76,10 +76,14 @@ appId: com.urbanailab.codesign
 - assertVisible: Image Placeholder 1 of 2
 - assertVisible: Image Placeholder 2 of 2
 
-# Fill out the fields
+# Fill out title field
 - tapOn: Enter title
 - inputText: "Test Title"
 
+# View description field and fill it out
+- swipe:
+    start: 50%, 60%
+    end: 50%, 45%
 - tapOn: "Description (required) Enter details about the issue here"
 - inputText: "Test Details"
 

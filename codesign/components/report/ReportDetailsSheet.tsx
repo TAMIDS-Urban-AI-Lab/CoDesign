@@ -19,7 +19,7 @@ import { Layout } from '@/constants/styles/Layout';
 import { Spacing } from '@/constants/styles/Spacing';
 import { tamuColors } from '@/constants/Colors';
 import { ImageButton } from '@/components/ui/ImageButton';
-import { ThemedScrollView } from '../ui/ThemedScrollView';
+import { ThemedScrollView } from '@/components/ui/ThemedScrollView';
 import { getImageSrc } from '@/utils/Image';
 
 const HALF_SCREEN = '30%';

@@ -103,8 +103,12 @@ export function ReportDetailsSheet({
       accessibilityLabel={'Report details sheet'}
       accessible={Platform.select({
         /**
+         * Accessible = false so e2e tests (Maestro) can read the contents of the sheet
+         *
          * setting it to false on iOS allows Voicover to read the contents of the sheet
-         * do not set to false on Android, it will cause issues with TalkBack */
+         * do not set to false on Android, it will cause issues with TalkBack
+         * Reference: https://github.com/mobile-dev-inc/Maestro/issues/1493#issuecomment-2146007118
+         * */
         ios: false
       })}
     >

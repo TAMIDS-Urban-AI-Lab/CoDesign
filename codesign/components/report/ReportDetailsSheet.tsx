@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { Platform } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { format } from 'date-fns';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
@@ -100,6 +101,12 @@ export function ReportDetailsSheet({
       onChange={handleSheetChange}
       onClose={afterCloseCallback}
       accessibilityLabel={'Report details sheet'}
+      accessible={Platform.select({
+        /**
+         * setting it to false on iOS allows Voicover to read the contents of the sheet
+         * do not set to false on Android, it will cause issues with TalkBack */
+        ios: false
+      })}
     >
       <BottomSheetView
         style={{
@@ -154,17 +161,24 @@ function ReportDetails({ report }: { report: Report }) {
   return (
     <ThemedView style={styles.content} testID="report-details-sheet-content">
       <ThemedView style={styles.contentSection}>
-        <ThemedText type="title2" style={[styles.titleText]}>
+        <ThemedText
+          type="title2"
+          style={[styles.titleText]}
+          testID="report-details-sheet-title"
+        >
           {report.getTitle()}
         </ThemedText>
-        <ThemedText type="feedback">
+        <ThemedText type="feedback" testID="report-details-sheet-date">
           {format(report.getCreatedAt(), 'MMMM dd, yyyy')}
         </ThemedText>
       </ThemedView>
 
       <ThemedView style={styles.contentSection}>
         <ThemedText type="title3">Details</ThemedText>
-        <ThemedText style={styles.description}>
+        <ThemedText
+          style={styles.description}
+          testID="report-details-sheet-description"
+        >
           {report.getDescription()}
         </ThemedText>
       </ThemedView>

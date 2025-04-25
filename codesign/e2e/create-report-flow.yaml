@@ -12,7 +12,7 @@ appId: com.urbanailab.codesign
       - tapOn: 'Continue'
       - tapOn: 'Reload'
 
-# FLOW: Report Submission
+# FLOW 1: Report Submission
 
 # When tap on the "Create Report" tab
 - tapOn: Create Report, tab, 2 of 3
@@ -97,3 +97,36 @@ appId: com.urbanailab.codesign
 # And a success message should be shown
 - assertVisible: Report Submitted
 - tapOn: Report Submitted
+
+# FLOW 2: View Reports
+
+# When select a report on the map
+- tapOn:
+    id: marker-view-pressable
+    index: 0
+- waitForAnimationToEnd
+
+# When swipe up to view full report
+- swipe:
+    start: 50%, 60%
+    end: 50%, 30%
+- waitForAnimationToEnd
+
+# Then view report title and description
+- assertVisible: Details
+- assertVisible:
+    id: report-details-sheet-title
+- assertVisible:
+    id: report-details-sheet-date
+- assertVisible:
+    id: report-details-sheet-description
+
+
+# When close the report details sheet
+- tapOn:
+    id: report-details-sheet-close-button
+- waitForAnimationToEnd
+
+# Then the report details sheet should be closed
+- assertNotVisible:
+    id: report-details-sheet-header-image

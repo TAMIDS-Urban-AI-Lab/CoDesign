@@ -4,14 +4,6 @@ appId: com.urbanailab.codesign
 - launchApp
 - waitForAnimationToEnd
 
-# If app opens with Dev Tools Menu open, then reload app to close it
-- runFlow:
-    when:
-      visible: 'Continue'
-    commands:
-      - tapOn: 'Continue'
-      - tapOn: 'Reload'
-
 # FLOW 1: Report Submission
 
 # When tap on the "Create Report" tab
@@ -88,9 +80,6 @@ appId: com.urbanailab.codesign
 - inputText: "Test Details"
 
 # and close keyboard (avoiding flakey hideKeyboard)
-- swipe:
-    start: 50%, 60%
-    end: 50%, 50%
 - tapOn: "Description*"
 
 # When submit the report

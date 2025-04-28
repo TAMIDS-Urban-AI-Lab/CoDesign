@@ -93,11 +93,9 @@ describe('component that uses expo-location', () => {
 
 # E2E Tests
 
-Codesign uses Maestro for end-to-end testing. Maestro only uses the iOS simulator/android emulator and not the physical device for testing.
+Codesign uses [Maestro](https://docs.maestro.dev/) for end-to-end testing, which uses yaml formatting. Maestro only uses the iOS simulator/android emulator for testing. Locate E2E tests in the e2e/ folder.
 
 ## Environment Setup
-
-To run e2e tests for iOS:
 
 - Ensure to have [XCode and the iOS Simulator installed](https://docs.expo.dev/workflow/ios-simulator/)
 - Download Maestro by running the following command: 
@@ -110,8 +108,11 @@ To run e2e tests for iOS:
 
 
 # How to Run E2E Tests
-Run `npm run e2e` to build and run Codesign on the iOS Simulator (device will be iPhone 15).
-Next, in a seperate terminal, run: ``
+
+  - **Pre-requisite: Build Codesign and install to Simulator** - In terminal, run `npm run sim-ios` to build and run Codesign on the iOS Simulator (device will be iPhone 15).
+
+  - **Run Maestro test:** `maestro test e2e/create-and-view-report.yaml` Maestro run the test using the simulator that was opened in the previous step and output each step.
+
 
 # Debugging
 [Maestro Studio](https://docs.maestro.dev/getting-started/maestro-studio) provides helpful tools to run test commands and for debugging. Ensure to have Codesign open on the iOS Simulator, then in a separate terminal, run:

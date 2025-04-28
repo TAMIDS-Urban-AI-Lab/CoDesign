@@ -13,7 +13,7 @@
     "lint-staged": "lint-staged",
     "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx}\"",
     "prepare": "cd .. && husky codesign/.husky",
-    "e2e": "USE_MIRAGE=true expo run:ios --device 'iPhone 15'"
+    "sim-ios": "USE_MIRAGE=true expo run:ios --device 'iPhone 15'"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

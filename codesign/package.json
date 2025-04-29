@@ -9,6 +9,7 @@
     "clean-ios": "expo install && npx expo prebuild --clean",
     "web": "expo start --web",
     "test": "jest --watchAll",
+    "test-quick": "jest",
     "lint": "expo lint",
     "lint-staged": "lint-staged",
     "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx}\"",

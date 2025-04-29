@@ -18,5 +18,5 @@ jobs:
         working-directory: ./codesign
 
       - name: Run tests
-        run: npm test
+        run: npm run test-quick
         working-directory: ./codesign

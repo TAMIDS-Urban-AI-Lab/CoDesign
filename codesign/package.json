@@ -5,15 +5,14 @@
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
-    "ios": "USE_MIRAGE=true expo run:ios --device",
+    "ios": "USE_MIRAGE=true expo run:ios",
     "clean-ios": "expo install && npx expo prebuild --clean",
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
     "lint-staged": "lint-staged",
     "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx}\"",
-    "prepare": "cd .. && husky codesign/.husky",
-    "sim-ios": "USE_MIRAGE=true expo run:ios --device 'iPhone 15'"
+    "prepare": "cd .. && husky codesign/.husky"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

@@ -10,7 +10,7 @@
 
 
 # Unit and Component Testing
-CoDesign leverages 2 testing libraries for unit and component testing: 
+CoDesign leverages 2 testing libraries for unit and component testing:
 
   - [Jest](https://jestjs.io/docs/getting-started)
   - [React Native Testing Library](https://testing-library.com/docs/react-native-testing-library/intro/)
@@ -98,8 +98,8 @@ Codesign uses [Maestro](https://docs.maestro.dev/) for end-to-end testing, which
 ## Environment Setup
 
 - Ensure to have [XCode and the iOS Simulator installed](https://docs.expo.dev/workflow/ios-simulator/)
-- Download Maestro by running the following command: 
-  ``` 
+- Download Maestro by running the following command:
+  ```
   curl -fsSL "https://get.maestro.mobile.dev" | bash
   ```
   For more details, refer to [Installing Maestro](https://docs.maestro.dev/getting-started/installing-maestro)
@@ -109,7 +109,7 @@ Codesign uses [Maestro](https://docs.maestro.dev/) for end-to-end testing, which
 
 # How to Run E2E Tests
 
-  - **Pre-requisite: Build Codesign and install to Simulator** - In terminal, run `npm run sim-ios` to build and run Codesign on the iOS Simulator (device will be iPhone 15).
+  - **Pre-requisite: Build Codesign and install to Simulator** - In terminal, run `npm run ios` to build and run Codesign on the iOS Simulator.
 
   - **Run Maestro test:** `maestro test e2e/create-and-view-report.yaml` Maestro run the test using the simulator that was opened in the previous step and output each step.
 

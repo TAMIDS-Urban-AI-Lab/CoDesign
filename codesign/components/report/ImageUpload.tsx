@@ -69,14 +69,14 @@ export function ImageUpload({
     image: ImagePickerAsset
   ): Promise<ImagePickerAsset> => {
     if (image.width <= MAX_RESOLUTION) {
-      return image;
+      return Promise.resolve(image);
     }
     try {
-      const resized = await ImageManipulator.manipulate(image.uri)
-        .resize({ width: MAX_RESOLUTION })
-        .renderAsync();
+      const manipulated = ImageManipulator.manipulate(image.uri);
+      const resized = manipulated.resize({ width: MAX_RESOLUTION });
+      const rendered = await resized.renderAsync();
 
-      const newImage = await resized.saveAsync({
+      const newImage = await rendered.saveAsync({
         format: SaveFormat.JPEG,
         compress: 0.5,
         base64: true
@@ -114,7 +114,13 @@ export function ImageUpload({
 
   const pickImage = async () => {
     if (!libraryStatus?.granted) {
-      await requestLibraryPermission();
+      const { status } = await requestLibraryPermission();
+      if (status && status !== 'granted') {
+        setUploadErrorText(
+          'Library permission is required to choose a photo. Please enable access in device settings.'
+        );
+        return;
+      }
     }
 
     launchImageLibraryAsync(imagePickerOptions)
@@ -144,7 +150,13 @@ export function ImageUpload({
 
   const openCamera = async () => {
     if (!cameraStatus?.granted) {
-      await requestCameraPermission();
+      const { status } = await requestCameraPermission();
+      if (status && status !== 'granted') {
+        setUploadErrorText(
+          'Camera permission is required to take a photo. Please enable access in device settings.'
+        );
+        return;
+      }
     }
 
     launchCameraAsync(imagePickerOptions)
@@ -260,6 +272,7 @@ export function ImageUpload({
           type="secondary"
           text="Add Photos"
           onPress={showOptionsMenu}
+          testID="image-upload-add-photos"
         />
       )}
       {maxImagesUploaded && (
@@ -309,6 +322,7 @@ function UploadedImage({
         style={styles.removeImageButton}
         onPress={() => removeImage(index)}
         accessibilityLabel={`Remove image ${index + 1}`}
+        testID="remove-image-button"
       />
       <Image
         source={{ uri: image.uri }}
@@ -322,7 +336,7 @@ function UploadedImage({
 
 const styles = StyleSheet.create({
   errorText: {
-    marginBottom: Spacing.small
+    marginBottom: Spacing.medium
   },
   imagePreviewRow: {
     ...Layout.row,

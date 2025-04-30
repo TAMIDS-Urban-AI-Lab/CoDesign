@@ -87,7 +87,9 @@ describe('<ImageUpload />', () => {
       // Then error message should be shown
       await waitFor(() => {
         expect(
-          screen.getByText('Camera permission is required to take a photo.')
+          screen.getByText(
+            'Camera permission is required to take a photo.  Please enable access in device settings.'
+          )
         ).toBeVisible();
       });
     });
@@ -115,7 +117,9 @@ describe('<ImageUpload />', () => {
       // Then error message should be shown
       await waitFor(() => {
         expect(
-          screen.getByText('Library permission is required to choose a photo.')
+          screen.getByText(
+            'Library permission is required to choose a photo. Please enable access in device settings.'
+          )
         ).toBeVisible();
       });
     });
@@ -266,9 +270,8 @@ describe('<ImageUpload />', () => {
     );
 
     // Then show the two uploaded images
-    expect(screen.queryAllByTestId('user-submitted-image-upload')).toHaveLength(
-      2
-    );
+    expect(screen.getByTestId('uploaded-image-1')).toBeVisible();
+    expect(screen.getByTestId('uploaded-image-2')).toBeVisible();
 
     // with their remove buttons
     expect(screen.queryAllByTestId('remove-image-button')).toHaveLength(2);

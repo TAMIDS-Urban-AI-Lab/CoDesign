@@ -46,7 +46,7 @@ export function HeaderLayout({ title, style, children }: HeaderLayoutProps) {
       </ThemedView>
       <ThemedScrollView
         style={styles.childrenContainer}
-        scrollToOverflowEnabled={true}
+        scrollToOverflowEnabled={false}
       >
         {children}
       </ThemedScrollView>

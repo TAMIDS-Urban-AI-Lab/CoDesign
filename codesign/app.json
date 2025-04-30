@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.codesign"
+      "bundleIdentifier": "com.urbanailab.codesign"
     },
     "android": {
       "adaptiveIcon": {
@@ -18,7 +18,7 @@
         "backgroundColor": "#ffffff",
         "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
       },
-      "package": "com.anonymous.codesign"
+      "package": "com.urbanailab.codesign"
     },
     "web": {
       "bundler": "metro",

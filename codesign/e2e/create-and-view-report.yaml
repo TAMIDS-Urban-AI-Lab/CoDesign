@@ -1,0 +1,125 @@
+appId: com.urbanailab.codesign
+---
+# Open the app
+- launchApp
+- waitForAnimationToEnd
+
+# FLOW 1: Report Submission
+
+# When tap on the "Create Report" tab
+- tapOn: Create Report, tab, 2 of 3
+
+# Location options should be visible
+- assertVisible: Location
+- assertVisible: Indoor
+- assertVisible: Outdoor
+
+# When interact with map
+- tapOn:
+    id: mapbox-mapview
+
+# Then modal should be shown
+- assertVisible: Use Current Location
+- assertVisible: Set Location
+- assertVisible:
+    id: "close-modal-button"
+
+# When update location and save it
+- swipe:
+    start: 90%, 50%
+    end: 80%, 50%
+- tapOn: Set Location
+
+# Then modal should be closed
+- assertNotVisible: Use Current Location
+- assertNotVisible: Set Location
+
+# When swipe to view Indoor fields
+- swipe:
+    start: 50%, 60%
+    end: 50%, 40%
+
+# and fill in the fields
+- tapOn: Enter building name
+- inputText: "Test Building"
+
+- tapOn: Enter floor number
+- eraseText
+- inputText: 2
+- tapOn: Report Details # close keyboard without using flakey hideKeyboard
+
+# and swipe to view Report Details section
+- swipe:
+    start: 50%, 60%
+    end: 50%, 35%
+
+# And open photo library
+- tapOn: ADD PHOTOS
+- tapOn: Upload from Library
+- waitForAnimationToEnd
+
+# When select a photo
+- tapOn: Photo, March 30, 2018, 2:14 PM
+
+# Then one uploaded image and two placeholders should be visible
+- waitForAnimationToEnd
+- assertVisible:
+    id: uploaded-image-0
+- assertVisible: Image Placeholder 1 of 2
+- assertVisible: Image Placeholder 2 of 2
+
+# Fill out title field
+- tapOn: Enter title
+- inputText: "Test Title"
+
+# View description field and fill it out
+- swipe:
+    start: 50%, 60%
+    end: 50%, 45%
+- tapOn: "Description (required) Enter details about the issue here"
+- inputText: "Test Details"
+
+# and close keyboard (avoiding flakey hideKeyboard)
+- tapOn: "Description*"
+
+# When submit the report
+- tapOn:
+    id: submit-report-button
+- waitForAnimationToEnd
+
+# And a success message should be shown
+- assertVisible: Report Submitted
+- tapOn: Report Submitted
+
+# FLOW 2: View Reports
+
+# When select a report on the map
+- tapOn:
+    id: marker-view-pressable
+    index: 0
+- waitForAnimationToEnd
+
+# When swipe up to view full report
+- swipe:
+    start: 50%, 60%
+    end: 50%, 30%
+- waitForAnimationToEnd
+
+# Then view report title and description
+- assertVisible: Details
+- assertVisible:
+    id: report-details-sheet-title
+- assertVisible:
+    id: report-details-sheet-date
+- assertVisible:
+    id: report-details-sheet-description
+
+
+# When close the report details sheet
+- tapOn:
+    id: report-details-sheet-close-button
+- waitForAnimationToEnd
+
+# Then the report details sheet should be closed
+- assertNotVisible:
+    id: report-details-sheet-header-image

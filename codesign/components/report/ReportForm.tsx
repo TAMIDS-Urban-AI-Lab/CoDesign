@@ -328,6 +328,7 @@ export function ReportForm({ style }: ViewProps) {
             text="Submit"
             type="primary"
             onPress={handleSubmit(onSubmit)}
+            testID="submit-report-button"
           />
         </ThemedView>
         <ThemedView style={styles.bottomSpace}></ThemedView>

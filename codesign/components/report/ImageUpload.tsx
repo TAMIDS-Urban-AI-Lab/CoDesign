@@ -328,7 +328,7 @@ function UploadedImage({
         source={{ uri: image.uri }}
         style={styles.image}
         accessibilityLabel={accessibilityLabel}
-        testID={`uploaded-image-${index}`}
+        testID={`uploaded-image-${index + 1}`}
       />
     </ThemedView>
   );

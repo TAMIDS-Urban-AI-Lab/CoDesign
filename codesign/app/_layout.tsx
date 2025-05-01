@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 import MapboxGL from '@rnmapbox/maps';
 import Constants from 'expo-constants';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useFonts } from '@/hooks/useFonts';
@@ -58,7 +59,9 @@ function App({ children }: { children: React.ReactNode }) {
         <ThemeProvider
           value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
         >
-          <ModalProvider>{children}</ModalProvider>
+          <ActionSheetProvider>
+            <ModalProvider>{children}</ModalProvider>
+          </ActionSheetProvider>
         </ThemeProvider>
       </CodesignDataProvider>
     </GestureHandlerRootView>

@@ -29,13 +29,14 @@ import { TAB_ROUTE_PATH, TAB_ROUTES } from '@/constants/Routes';
 import { ImageUpload } from '@/components/report/ImageUpload';
 import { useModal } from '@/components/provider/ModalProvider';
 import { SelectLocation } from '@/components/report/SelectLocation';
-import { VALIDATION_RULES } from '@/utils/report/validateForm';
+import { VALIDATION_RULES } from '@/utils/ReportValidation';
 import { uploadReport } from '@/api/report/uploadReport';
+import { ReportUploadSuccess } from '@/types/api';
 
 const BOTTOM_SPACE_HEIGHT = 148;
 
 export function ReportForm({ style }: ViewProps) {
-  const router = useRouter();
+  const { replace } = useRouter();
   const { reports, setReports } = useCodesignData();
   const [submissionError, setSubmissionError] = useState<string | null>(null);
 
@@ -60,7 +61,7 @@ export function ReportForm({ style }: ViewProps) {
   const onSubmit = (data: ReportFormDetails) => {
     // TO DO: Add loading animation to submit button while submitting report
     uploadReport(data)
-      .then((success) => {
+      .then((success: ReportUploadSuccess) => {
         // Update reports locally
         const newReport = new Report({
           ...data,
@@ -72,7 +73,7 @@ export function ReportForm({ style }: ViewProps) {
         setReports([...reports, newReport]);
 
         // Navigate to the Map tab on success
-        router.replace({ pathname: TAB_ROUTE_PATH[TAB_ROUTES.INDEX] });
+        replace({ pathname: TAB_ROUTE_PATH[TAB_ROUTES.INDEX] });
         successModal.openModal();
 
         // Clear form state
@@ -281,6 +282,7 @@ export function ReportForm({ style }: ViewProps) {
                 value={value}
                 placeholder="Enter title"
                 errorText={errors.title?.message}
+                testID="report-form-title-input"
                 required
               />
             )}
@@ -301,6 +303,7 @@ export function ReportForm({ style }: ViewProps) {
                 multiline
                 numberOfLines={4}
                 errorText={errors.description?.message}
+                testID="report-form-description-input"
                 required
               />
             )}

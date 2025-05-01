@@ -44,3 +44,6 @@ app-example
 
 #ignore vscode settings
 .vscode/
+
+# Coverage
+coverage/

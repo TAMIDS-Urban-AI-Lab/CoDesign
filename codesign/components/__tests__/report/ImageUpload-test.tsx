@@ -87,7 +87,9 @@ describe('<ImageUpload />', () => {
       // Then error message should be shown
       await waitFor(() => {
         expect(
-          screen.getByText('Camera permission is required to take a photo.')
+          screen.getByText(
+            'Camera permission is required to take a photo. Please enable access in device settings.'
+          )
         ).toBeVisible();
       });
     });
@@ -115,7 +117,9 @@ describe('<ImageUpload />', () => {
       // Then error message should be shown
       await waitFor(() => {
         expect(
-          screen.getByText('Library permission is required to choose a photo.')
+          screen.getByText(
+            'Library permission is required to choose a photo. Please enable access in device settings.'
+          )
         ).toBeVisible();
       });
     });

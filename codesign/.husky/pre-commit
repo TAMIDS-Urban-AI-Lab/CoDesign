@@ -1,2 +1,2 @@
 cd codesign
-npm run lint-staged
+npm run lint-staged-files

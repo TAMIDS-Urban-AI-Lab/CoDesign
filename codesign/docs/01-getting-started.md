@@ -67,18 +67,18 @@ Once you have cloned a copy of the repository and opened it in the IDE of your c
 
 3. **Build CoDesign**
 
-    To build and launch the app, run:
+    To build and launch the app to the iOS simulator, run:
 
     ```bash
     npm run ios
     ```
 
-    You’ll be prompted to choose a device.
-     1. Physical Device: Connect a physical iOS device to your laptop to select it from the menu. (Also See: How to Trust Codesign on your Phone)
-     2. Simulator: You may launch CoDesign in a Simulator.
-
-
-    Once selected,
+### Building CoDesign to a Physical Device
+1. Connect your iOS Device to your computer by wire.
+2. Run `npx expo run:ios --device`.
+3. A menu with available devices will appear. Your device should appear on this list.
+4. Select your device from the menu.
+5. Once selected,
     - Expo will build and launch Codesign automatically
     - Fast Refresh will be enabled, so code changes will reflect instantly
 

@@ -11,7 +11,7 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined);
 export const useModal = (name: string) => {
   const context = useContext(ModalContext);
   if (!context) {
-    throw new Error('useModal must be used within a ModalProvider');
+    throw new Error('useModal must be used within a ModalProvider component');
   }
   return {
     isVisible: context.isVisible(name),

@@ -67,12 +67,12 @@ describe('getReportByBoundary', () => {
   });
   describe('when the fetch fails', () => {
     beforeEach(() => {
-      global.fetch = mockFetchError();
+      global.fetch = mockFetchError('Backend error message');
     });
     afterEach(() => {
       jest.resetAllMocks();
     });
-    test('should throw an error', async () => {
+    test('should throw the correct error message', async () => {
       await expect(
         getReportByBoundary(
           testProps.west,

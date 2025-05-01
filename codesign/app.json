@@ -11,10 +11,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.urbanailab.codesign",
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
-      }
+      "bundleIdentifier": "com.urbanailab.codesign"
     },
     "android": {
       "adaptiveIcon": {

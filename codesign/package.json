@@ -11,7 +11,7 @@
     "test": "jest --watchAll",
     "test-quick": "jest",
     "lint": "expo lint",
-    "lint-staged": "lint-staged",
+    "lint-staged-files": "lint-staged",
     "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx}\"",
     "prepare": "cd .. && husky codesign/.husky"
   },

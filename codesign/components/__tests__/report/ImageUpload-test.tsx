@@ -88,7 +88,7 @@ describe('<ImageUpload />', () => {
       await waitFor(() => {
         expect(
           screen.getByText(
-            'Camera permission is required to take a photo.  Please enable access in device settings.'
+            'Camera permission is required to take a photo. Please enable access in device settings.'
           )
         ).toBeVisible();
       });

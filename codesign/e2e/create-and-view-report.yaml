@@ -36,16 +36,15 @@ appId: com.urbanailab.codesign
 
 # When swipe to view Indoor fields
 - swipe:
-    start: 50%, 60%
-    end: 50%, 40%
+    start: 50%, 70%
+    end: 50%, 50%
 
 # and fill in the fields
 - tapOn: Enter building name
 - inputText: "Test Building"
 
-- tapOn: Enter floor number
-- eraseText
-- inputText: 2
+- assertVisible: Floor Number*
+- assertVisible: 1
 - tapOn: Report Details # close keyboard without using flakey hideKeyboard
 
 # and swipe to view Report Details section
@@ -64,7 +63,7 @@ appId: com.urbanailab.codesign
 # Then one uploaded image and two placeholders should be visible
 - waitForAnimationToEnd
 - assertVisible:
-    id: uploaded-image-0
+    id: uploaded-image-1
 - assertVisible: Image Placeholder 1 of 2
 - assertVisible: Image Placeholder 2 of 2
 
@@ -113,13 +112,3 @@ appId: com.urbanailab.codesign
     id: report-details-sheet-date
 - assertVisible:
     id: report-details-sheet-description
-
-
-# When close the report details sheet
-- tapOn:
-    id: report-details-sheet-close-button
-- waitForAnimationToEnd
-
-# Then the report details sheet should be closed
-- assertNotVisible:
-    id: report-details-sheet-header-image

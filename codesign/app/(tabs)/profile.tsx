@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { EditProfile } from '@/components/profile/EditProfile';
 import { Spacing } from '@/constants/styles/Spacing';
-import { HeaderLayout } from '@/components/shared/HeaderLayout';
+import { HeaderLayout } from '@/components/ui/HeaderLayout';
 import { TextButton } from '@/components/ui/TextButton';
 
 const styles = StyleSheet.create({

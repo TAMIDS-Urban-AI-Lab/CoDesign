@@ -38,13 +38,17 @@ type HeaderLayoutProps = PropsWithChildren<{
 
 export function HeaderLayout({ title, style, children }: HeaderLayoutProps) {
   return (
-    <ThemedView style={[style, styles.parentContainer]}>
+    <ThemedView
+      testID="header-layout-container"
+      style={[style, styles.parentContainer]}
+    >
       <ThemedView style={styles.headerContainer}>
         <ThemedText type="title2" style={styles.headerTitle}>
           {title}
         </ThemedText>
       </ThemedView>
       <ThemedScrollView
+        testID="themed-scroll-view"
         style={styles.childrenContainer}
         scrollToOverflowEnabled={false}
       >

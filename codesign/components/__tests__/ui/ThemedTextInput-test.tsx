@@ -5,6 +5,10 @@ import { ThemedTextInput } from '@/components/ui/ThemedTextInput';
 describe('<ThemedTextInput />', () => {
   const mockOnChangeText = jest.fn();
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   test('renders with required props', () => {
     render(
       <ThemedTextInput

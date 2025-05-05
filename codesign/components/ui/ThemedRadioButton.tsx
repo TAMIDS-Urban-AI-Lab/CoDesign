@@ -59,12 +59,14 @@ export function ThemedRadioButton({
       onPress={onPress}
       checkedIcon={
         <Image
+          testID="radio-button-icon"
           source={CHECKED_RADIO_SRC[colorScheme]}
           style={styles.radioButtonImage}
         />
       }
       uncheckedIcon={
         <Image
+          testID="radio-button-icon"
           source={UNCHECKED_RADIO_SRC[colorScheme]}
           style={styles.radioButtonImage}
         />

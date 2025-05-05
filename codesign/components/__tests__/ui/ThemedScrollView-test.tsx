@@ -1,8 +1,12 @@
 import { render, screen } from '@testing-library/react-native';
+import * as ColorSchemeHook from '@/hooks/useColorScheme';
 
 import { ThemedScrollView } from '@/components/ui/ThemedScrollView';
 
 describe('<ThemedScrollView />', () => {
+  const lightColor = '#ffffff';
+  const darkColor = '#000000';
+
   test('renders with default props', () => {
     render(<ThemedScrollView testID="scroll-view" />);
 
@@ -10,10 +14,8 @@ describe('<ThemedScrollView />', () => {
     expect(scrollView).toBeVisible();
   });
 
-  test('applies custom light and dark colors', () => {
-    const lightColor = '#ffffff';
-    const darkColor = '#000000';
-
+  test('applies custom light color in light theme', () => {
+    jest.spyOn(ColorSchemeHook, 'useColorScheme').mockReturnValue('light');
     render(
       <ThemedScrollView
         testID="scroll-view"
@@ -24,7 +26,23 @@ describe('<ThemedScrollView />', () => {
 
     const scrollView = screen.getByTestId('scroll-view');
     expect(scrollView.props.style).toEqual(
-      expect.arrayContaining([{ backgroundColor: expect.any(String) }])
+      expect.arrayContaining([{ backgroundColor: lightColor }])
+    );
+  });
+
+  test('applies custom dark color in dark theme', () => {
+    jest.spyOn(ColorSchemeHook, 'useColorScheme').mockReturnValue('dark');
+    render(
+      <ThemedScrollView
+        testID="scroll-view"
+        lightColor={lightColor}
+        darkColor={darkColor}
+      />
+    );
+
+    const scrollView = screen.getByTestId('scroll-view');
+    expect(scrollView.props.style).toEqual(
+      expect.arrayContaining([{ backgroundColor: darkColor }])
     );
   });
 

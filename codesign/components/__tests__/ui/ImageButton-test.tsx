@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react-native';
-import { ImageButton } from '../../ui/ImageButton';
+import { ImageButton } from '@/components/ui/ImageButton';
 import { Spacing } from '@/constants/styles/Spacing';
 import { Border } from '@/constants/styles/Border';
 
@@ -7,12 +7,16 @@ describe('<ImageButton />', () => {
   const mockSource = { uri: 'test-image.png' };
   const mockOnPress = jest.fn();
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   test('renders with required props', () => {
     render(<ImageButton source={mockSource} onPress={mockOnPress} />);
     const button = screen.getByTestId('image-button');
     const icon = screen.getByTestId('image-button-icon');
-    expect(button).toBeTruthy();
-    expect(icon).toBeTruthy();
+    expect(button).toBeVisible();
+    expect(icon).toBeVisible();
   });
 
   test('applies transparent style when transparent prop is true', () => {
@@ -50,6 +54,6 @@ describe('<ImageButton />', () => {
     render(<ImageButton source={mockSource} onPress={mockOnPress} />);
     const button = screen.getByTestId('image-button-icon');
     fireEvent.press(button);
-    expect(mockOnPress).toHaveBeenCalled();
+    expect(mockOnPress).toHaveBeenCalledTimes(1);
   });
 });

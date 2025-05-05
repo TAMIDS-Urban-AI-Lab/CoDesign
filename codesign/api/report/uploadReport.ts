@@ -1,3 +1,12 @@
+/**
+ * @fileoverview This module provides functionality for uploading reports to the server.
+ * It exports a single async function that handles the submission of report data
+ * in the ReportFormDetails format. The module includes error handling and type safety
+ * for API responses.
+ *
+ * @module api/report/uploadReport
+ */
+
 import { ReportFormDetails } from '@/types/Report';
 import { constructQueryString, ROUTES } from '@/constants/api/routes';
 import { ApiResponse, ReportUploadSuccess } from '@/types/api';

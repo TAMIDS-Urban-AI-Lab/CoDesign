@@ -1,4 +1,4 @@
-import { HeaderLayout } from '@/components/shared/HeaderLayout';
+import { HeaderLayout } from '@/components/ui/HeaderLayout';
 import { ReportForm } from '@/components/report/ReportForm';
 
 export default function ReportScreen() {

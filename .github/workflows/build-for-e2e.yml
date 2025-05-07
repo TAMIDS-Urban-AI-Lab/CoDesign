@@ -1,9 +1,6 @@
 name: Build Codesign on EAS Platform
 
 on:
-  # push:
-  #   branches:
-  #     - main
   workflow_dispatch:
 
 jobs:
@@ -31,25 +28,35 @@ jobs:
         working-directory: ./codesign
 
       - name: Build Codesign on EAS Platform
-        run: eas build --platform ios --profile preview-simulator
+        run: eas build --platform ios --profile preview-simulator --non-interactive
         working-directory: ./codesign
 
-  download_artifact:
+  download-artifact:
     runs-on: ubuntu-latest
     container:
       image: node:20
-    needs: build
     steps:
+      - name: Check out CoDesign repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Setup EAS with Expo Github Action
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
-          packager: npm
           token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install Devicecloud CLI
+        run: npm install -g @devicecloud.dev/dcd
 
       - name: Get latest build info
         run: |
-          eas build:list --limit 1 --platform ios --json --non-interactive > build-info.json
+          touch build-info.json
+          EXPO_DEBUG=1 eas build:list --limit 1 --platform ios --json --non-interactive > build-info.json
           cat build-info.json
         working-directory: ./codesign
 

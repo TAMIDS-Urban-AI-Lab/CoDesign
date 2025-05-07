@@ -1,4 +1,4 @@
-name: Build Codesign on EAS Platform
+name: Build Codesign and Submit for E2E Testing
 
 on:
   workflow_dispatch:
@@ -31,10 +31,11 @@ jobs:
         run: eas build --platform ios --profile preview-simulator --non-interactive
         working-directory: ./codesign
 
-  download-artifact:
+  submit-e2e:
     runs-on: ubuntu-latest
     container:
       image: node:20
+    needs: build
     steps:
       - name: Check out CoDesign repository
         uses: actions/checkout@v4
@@ -53,6 +54,15 @@ jobs:
       - name: Install Devicecloud CLI
         run: npm install -g @devicecloud.dev/dcd
 
+      - name: Install zip tool
+        run: |
+          apt-get update
+          apt-get install zip
+
+      - name: Install project dependencies
+        run: npm ci
+        working-directory: ./codesign
+
       - name: Get latest build info
         run: |
           touch build-info.json
@@ -60,7 +70,7 @@ jobs:
           cat build-info.json
         working-directory: ./codesign
 
-      - name: Download latest iOS build tarball
+      - name: Download latest iOS build tarball from EAS
         run: |
           DOWNLOAD_URL=$(grep -o 'https://[^"]*\.tar\.gz' build-info.json | head -n 1)
           echo "Download URL: $DOWNLOAD_URL"
@@ -73,14 +83,14 @@ jobs:
           tar -xzf ios-build.tar.gz -C build-output
         working-directory: ./codesign
 
-      - name: Zip the iOS build and include date in the filename
+      - name: Zip the iOS build with date
         run: |
-          cd build-output
           DATE=$(date +'%Y-%m-%d')
           ZIP_NAME="CoDesign-$DATE.zip"
-          zip -r "$ZIP_NAME" CoDesign.app
+          zip -r CoDesign.zip CoDesign.app
+          mv CoDesign.zip "$ZIP_NAME"
           echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
-        working-directory: ./codesign
+        working-directory: ./codesign/build-output
 
       - name: Upload the iOS build artifact to GitHub
         uses: actions/upload-artifact@v4
@@ -92,5 +102,5 @@ jobs:
 
       - name: Upload iOS build and E2E test file to Devicecloud.dev for automated E2E testing
         run: |
-          dcd cloud --apiKey ${{ secrets.DCD_API_KEY }} --app-file build-output/${{ env.ZIP_NAME }} --flows ./e2e/ --ios-device iphone-15 --ios-version 17 --name ${{ env.ZIP_NAME }}
+          dcd cloud --apiKey ${{ secrets.DCD_API_KEY }} --app-file build-output/${{ env.ZIP_NAME }} --flows ./e2e/ --ios-device iphone-15 --ios-version 17 --name ${{ env.ZIP_NAME }} --device-locale en_US --download-artifacts FAILED
         working-directory: ./codesign

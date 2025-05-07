@@ -58,7 +58,9 @@ appId: com.urbanailab.codesign
 - waitForAnimationToEnd
 
 # When select a photo
-- tapOn: Photo, March 30, 2018, 2:14 PM
+# Cannot use the Photo regex selector so use screen location as a workaround
+- tapOn:
+    point: "50%,38%"
 
 # Then one uploaded image and two placeholders should be visible
 - waitForAnimationToEnd

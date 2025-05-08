@@ -1,6 +1,5 @@
 /**
  * Custom hook for loading and managing application fonts using expo-font.
- * This hook provides a centralized way to load all custom fonts used in the application.
  */
 
 import { useFonts as useFontsHook } from 'expo-font';

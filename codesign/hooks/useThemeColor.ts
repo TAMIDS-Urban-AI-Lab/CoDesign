@@ -1,7 +1,5 @@
 /**
  * Custom hook for managing theme colors in the application.
- * This hook handles the dynamic color switching between light and dark modes,
- * supporting both system theme preferences and custom color overrides.
  *
  * Learn more about light and dark modes:
  * https://docs.expo.dev/guides/color-schemes/

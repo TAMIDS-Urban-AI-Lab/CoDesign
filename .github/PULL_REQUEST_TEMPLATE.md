@@ -1,16 +1,14 @@
-# Pull Request Template
-
 Resolve # Issue Number
 <!-- Replace with the issue number that this PR resolves. -->
 
-## Summary
-<!-- Provide a brief summary of the changes made in this PR. -->
+# Summary
+<!-- Required: Provide a brief summary of the changes made in this PR. -->
 
-## Description
-<!-- Provide a short summary of your changes and the problem they address. -->
+# Description
+<!-- Required: Provide a short summary of your changes and the problem they address. -->
 
-## Testing
-<!-- Upload a photo/video to demonstrate the changes. -->
+# Testing
+<!-- Required: Upload a photo/video to demonstrate the changes. -->
 
-## Additional Notes
-<!-- Add any other relevant context about the PR. -->
+# Additional Notes
+<!-- Optional: Add any other relevant context about the PR. -->

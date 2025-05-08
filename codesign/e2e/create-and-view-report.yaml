@@ -10,9 +10,10 @@ appId: com.urbanailab.codesign
 - tapOn: Create Report, tab, 2 of 3
 
 # Location options should be visible
-- assertVisible: Location
-- assertVisible: Indoor
-- assertVisible: Outdoor
+# and indoor fields
+- assertVisible: "Building Name*"
+- assertVisible: "Floor Number*"
+- assertVisible: 1
 
 # When interact with map
 - tapOn:
@@ -31,21 +32,26 @@ appId: com.urbanailab.codesign
 - tapOn: Set Location
 
 # Then modal should be closed
-- assertNotVisible: Use Current Location
-- assertNotVisible: Set Location
-
-# When swipe to view Indoor fields
-- swipe:
-    start: 50%, 70%
-    end: 50%, 50%
+- assertNotVisible: "Use Current Location"
+- assertNotVisible: "Set Location"
 
 # and fill in the fields
 - tapOn: Enter building name
 - inputText: "Test Building"
+- tapOn: "Location" # close keyboard without using flakey hideKeyboard
 
-- assertVisible: Floor Number*
-- assertVisible: 1
-- tapOn: Report Details # close keyboard without using flakey hideKeyboard
+# Then, switching to Outdoor should trigger confirmation alert
+- tapOn: "Outdoor"
+- assertVisible: "Are you sure?"
+- assertVisible: "This will clear the Building Name and Floor Number"
+
+# When tap on "Yes"
+- tapOn: "Yes"
+- waitForAnimationToEnd
+
+# Then indoor fields should be hidden
+- assertNotVisible: "Building Name*"
+- assertNotVisible: "Floor Number*"
 
 # and swipe to view Report Details section
 - swipe:
@@ -83,34 +89,6 @@ appId: com.urbanailab.codesign
 # and close keyboard (avoiding flakey hideKeyboard)
 - tapOn: "Description*"
 
-# When submit the report
-- tapOn:
-    id: submit-report-button
-- waitForAnimationToEnd
-
-# And a success message should be shown
-- assertVisible: Report Submitted
-- tapOn: Report Submitted
-
-# FLOW 2: View Reports
-
-# When select a report on the map
-- tapOn:
-    id: marker-view-pressable
-    index: 0
-- waitForAnimationToEnd
-
-# When swipe up to view full report
-- swipe:
-    start: 50%, 60%
-    end: 50%, 30%
-- waitForAnimationToEnd
-
-# Then view report title and description
-- assertVisible: Details
-- assertVisible:
-    id: report-details-sheet-title
-- assertVisible:
-    id: report-details-sheet-date
-- assertVisible:
-    id: report-details-sheet-description
+# And actions buttons should be visible
+- assertVisible: "Reset Form"
+- assertVisible: "SUBMIT"

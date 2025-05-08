@@ -10,6 +10,10 @@ appId: com.urbanailab.codesign
 - tapOn: Create Report, tab, 2 of 3
 
 # Location options should be visible
+- assertVisible: "Location"
+- assertVisible: "Indoor"
+- assertVisible: "Outdoor"
+
 # and indoor fields
 - assertVisible: "Building Name*"
 - assertVisible: "Floor Number*"
@@ -20,8 +24,8 @@ appId: com.urbanailab.codesign
     id: mapbox-mapview
 
 # Then modal should be shown
-- assertVisible: Use Current Location
-- assertVisible: Set Location
+- assertVisible: "Use Current Location"
+- assertVisible: "Set Location"
 - assertVisible:
     id: "close-modal-button"
 
@@ -29,14 +33,14 @@ appId: com.urbanailab.codesign
 - swipe:
     start: 90%, 50%
     end: 80%, 50%
-- tapOn: Set Location
+- tapOn: "Set Location"
 
 # Then modal should be closed
 - assertNotVisible: "Use Current Location"
 - assertNotVisible: "Set Location"
 
-# and fill in the fields
-- tapOn: Enter building name
+# and fill in the Build Name
+- tapOn: "Enter building name"
 - inputText: "Test Building"
 - tapOn: "Location" # close keyboard without using flakey hideKeyboard
 
@@ -56,11 +60,11 @@ appId: com.urbanailab.codesign
 # and swipe to view Report Details section
 - swipe:
     start: 50%, 60%
-    end: 50%, 35%
+    end: 50%, 30%
 
 # And open photo library
-- tapOn: ADD PHOTOS
-- tapOn: Upload from Library
+- tapOn: "ADD PHOTOS"
+- tapOn: "Upload from Library"
 - waitForAnimationToEnd
 
 # When select a photo
@@ -73,11 +77,11 @@ appId: com.urbanailab.codesign
 - waitForAnimationToEnd
 - assertVisible:
     id: uploaded-image-1
-- assertVisible: Image Placeholder 1 of 2
-- assertVisible: Image Placeholder 2 of 2
+- assertVisible: "Image Placeholder 1 of 2"
+- assertVisible: "Image Placeholder 2 of 2"
 
 # Fill out title field
-- tapOn: Enter title
+- tapOn: "Enter title"
 - inputText: "Test Title"
 
 # View description field and fill it out

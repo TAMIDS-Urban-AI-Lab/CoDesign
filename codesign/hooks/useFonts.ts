@@ -1,5 +1,18 @@
+/**
+ * Custom hook for loading and managing application fonts using expo-font.
+ */
+
 import { useFonts as useFontsHook } from 'expo-font';
 
+/**
+ * Hook to load all custom fonts used in the application.
+ * @returns {[boolean]} Returns an array with a single boolean indicating whether all fonts are loaded
+ * The fonts loaded include:
+ * - OpenSans (Bold, Italic, Regular)
+ * - Oswald (Regular)
+ * - SpaceMono (Regular)
+ * - WorkSans (Regular, Italic, Bold, SemiBold)
+ */
 export function useFonts() {
   return useFontsHook({
     OpenSansBold: require('../assets/fonts/OpenSans-Bold.ttf'),

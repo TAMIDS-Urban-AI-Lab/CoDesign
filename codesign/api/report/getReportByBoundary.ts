@@ -1,3 +1,12 @@
+/**
+ * @fileoverview This module handles fetching reports within specified geographical boundaries.
+ * It provides functionality to retrieve and transform report data from the server based on
+ * coordinate boundaries (west, south, east, north). The module includes data transformation
+ * utilities to convert raw JSON responses into strongly-typed Report objects.
+ *
+ * @module api/report/getReportByBoundary
+ */
+
 import {
   Report,
   ReportType,

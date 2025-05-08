@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Test suite for the uploadReport API module.
+ * Tests cover successful report upload scenarios and error handling cases.
+ * Uses mock fetch implementations to verify correct API endpoint usage,
+ * request payload formatting, and response handling.
+ *
+ * @module api/__tests__/report/uploadReport
+ */
+
 import { mockFetchSuccess, mockFetchError } from '@/mocks/mockFetch';
 import { ApiResponse, ReportUploadSuccess } from '@/types/api';
 import { ROUTES } from '@/constants/api/routes';

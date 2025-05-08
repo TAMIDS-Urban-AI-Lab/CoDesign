@@ -1,3 +1,12 @@
+/**
+ * @fileoverview This module provides functionality for retrieving images associated with reports.
+ * It exports a function to fetch image data by report ID and includes utilities for
+ * converting the server response into strongly-typed ImageDetails objects. The module
+ * handles base64 encoded image data and includes proper error handling.
+ *
+ * @module api/report/getImageById
+ */
+
 import { ROUTES, constructQueryString } from '@/constants/api/routes';
 import { ApiResponse, ImageDataSuccess } from '@/types/api';
 import { ImageDetails } from '@/types/Report';

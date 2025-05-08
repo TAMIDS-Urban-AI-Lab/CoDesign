@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Test suite for the getReportByBoundary API module.
+ * Tests cover successful report retrieval within geographical boundaries and error cases.
+ * Verifies correct URL parameter handling, proper data transformation from raw JSON
+ * to Report objects, and maintenance of report order in the response.
+ *
+ * @module api/__tests__/report/getReportByBoundary
+ */
+
 import { mockFetchSuccess, mockFetchError } from '@/mocks/mockFetch';
 import { ApiResponse } from '@/types/api';
 import { getReportByBoundary } from '@/api/report/getReportByBoundary';

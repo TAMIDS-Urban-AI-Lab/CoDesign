@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Test suite for the getImageById API module.
+ * Tests cover successful image retrieval scenarios and error handling cases.
+ * Verifies correct URL construction, proper handling of base64 encoded image data,
+ * and appropriate error message propagation.
+ *
+ * @module api/__tests__/report/getImageById
+ */
+
 import { mockFetchSuccess, mockFetchError } from '@/mocks/mockFetch';
 import { ApiResponse, ImageDataSuccess } from '@/types/api';
 import { getImageById } from '@/api/report/getImageById';

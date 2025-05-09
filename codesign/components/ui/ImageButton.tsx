@@ -37,11 +37,16 @@ export function ImageButton({
 
   return (
     <ThemedView
+      testID="image-button"
       style={[styles.buttonContainer, buttonSize, elevation, style]}
       transparent={transparent}
     >
       <Pressable {...rest}>
-        <Image source={source} style={[imageSize]}></Image>
+        <Image
+          testID="image-button-icon"
+          source={source}
+          style={[imageSize]}
+        ></Image>
       </Pressable>
     </ThemedView>
   );

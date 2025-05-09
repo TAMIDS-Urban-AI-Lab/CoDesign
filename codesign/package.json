@@ -10,9 +10,10 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "test-quick": "jest",
-    "lint": "expo lint",
+    "lint": "npm run lint:syntax && npm run lint:style",
+    "lint:syntax": "expo lint",
+    "lint:style": "prettier --check \"./**/*.{js,jsx,ts,tsx}\"",
     "lint-staged-files": "lint-staged",
-    "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx}\"",
     "prepare": "cd .. && husky codesign/.husky"
   },
   "lint-staged": {

@@ -8,7 +8,7 @@ on:
 
 jobs:
   eslint:
-    name: Run ESLint
+    name: ESLint
     runs-on: ubuntu-latest
 
     steps:
@@ -29,7 +29,7 @@ jobs:
         working-directory: ./codesign
 
   prettier:
-    name: Run Prettier
+    name: Prettier
     runs-on: ubuntu-latest
 
     steps:

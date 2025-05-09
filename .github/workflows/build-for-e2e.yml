@@ -1,0 +1,106 @@
+name: Build Codesign and Submit for E2E Testing
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: node:20
+    steps:
+      - name: Check out CoDesign repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup EAS with Expo Github Action
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./codesign
+
+      - name: Build Codesign on EAS Platform
+        run: eas build --platform ios --profile preview-simulator --non-interactive
+        working-directory: ./codesign
+
+  submit-e2e:
+    runs-on: ubuntu-latest
+    container:
+      image: node:20
+    needs: build
+    steps:
+      - name: Check out CoDesign repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup EAS with Expo Github Action
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install Devicecloud CLI
+        run: npm install -g @devicecloud.dev/dcd
+
+      - name: Install zip tool
+        run: |
+          apt-get update
+          apt-get install zip
+
+      - name: Install project dependencies
+        run: npm ci
+        working-directory: ./codesign
+
+      - name: Get latest build info
+        run: |
+          touch build-info.json
+          EXPO_DEBUG=1 eas build:list --limit 1 --platform ios --json --non-interactive > build-info.json
+          cat build-info.json
+        working-directory: ./codesign
+
+      - name: Download latest iOS build tarball from EAS
+        run: |
+          DOWNLOAD_URL=$(grep -o 'https://[^"]*\.tar\.gz' build-info.json | head -n 1)
+          echo "Download URL: $DOWNLOAD_URL"
+          curl -L "$DOWNLOAD_URL" -o ios-build.tar.gz
+        working-directory: ./codesign
+
+      - name: Extract iOS build
+        run: |
+          mkdir -p build-output
+          tar -xzf ios-build.tar.gz -C build-output
+        working-directory: ./codesign
+
+      - name: Zip the iOS build with date
+        run: |
+          DATE=$(date +'%Y-%m-%d')
+          ZIP_NAME="CoDesign-$DATE.zip"
+          zip -r CoDesign.zip CoDesign.app
+          mv CoDesign.zip "$ZIP_NAME"
+          echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
+        working-directory: ./codesign/build-output
+
+      - name: Upload the iOS build artifact to GitHub
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: ${{ env.ZIP_NAME }}
+          path: ./codesign/build-output/${{ env.ZIP_NAME }}
+          retention-days: 30
+
+      - name: Upload iOS build and E2E test file to Devicecloud.dev for automated E2E testing
+        run: |
+          dcd cloud --apiKey ${{ secrets.DCD_API_KEY }} --app-file build-output/${{ env.ZIP_NAME }} --flows ./e2e/ --ios-device iphone-15 --ios-version 17 --name ${{ env.ZIP_NAME }} --device-locale en_US --download-artifacts FAILED
+        working-directory: ./codesign

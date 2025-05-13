@@ -1,0 +1,99 @@
+appId: com.urbanailab.codesign
+---
+# Open the app
+- launchApp
+- waitForAnimationToEnd
+
+# FLOW 1: Report Submission
+
+# When tap on the "Create Report" tab
+- tapOn: Create Report, tab, 2 of 3
+
+# Location options should be visible
+- assertVisible: "Location"
+- assertVisible: "Indoor"
+- assertVisible: "Outdoor"
+
+# and indoor fields
+- assertVisible: "Building Name*"
+- assertVisible: "Floor Number*"
+- assertVisible: 1
+
+# When interact with map
+- tapOn:
+    id: mapbox-mapview
+
+# Then modal should be shown
+- assertVisible: "Use Current Location"
+- assertVisible: "Set Location"
+- assertVisible:
+    id: "close-modal-button"
+
+# When update location and save it
+- swipe:
+    start: 90%, 50%
+    end: 80%, 50%
+- tapOn: "Set Location"
+
+# Then modal should be closed
+- assertNotVisible: "Use Current Location"
+- assertNotVisible: "Set Location"
+
+# and fill in the Build Name
+- tapOn: "Enter building name"
+- inputText: "Test Building"
+- tapOn: "Location" # close keyboard without using flakey hideKeyboard
+
+# Then, switching to Outdoor should trigger confirmation alert
+- tapOn: "Outdoor"
+- assertVisible: "Are you sure?"
+- assertVisible: "This will clear the Building Name and Floor Number"
+
+# When tap on "Yes"
+- tapOn: "Yes"
+- waitForAnimationToEnd
+
+# Then indoor fields should be hidden
+- assertNotVisible: "Building Name*"
+- assertNotVisible: "Floor Number*"
+
+# and swipe to view Report Details section
+- swipe:
+    start: 50%, 60%
+    end: 50%, 30%
+
+# And open photo library
+- tapOn: "ADD PHOTOS"
+- tapOn: "Upload from Library"
+- waitForAnimationToEnd
+
+# When select a photo
+# Cannot use the Photo regex selector so use screen location as a workaround
+- tapOn:
+    text: Photo,.*
+    index: 0
+
+# Then one uploaded image and two placeholders should be visible
+- waitForAnimationToEnd
+- assertVisible:
+    id: uploaded-image-1
+- assertVisible: "Image Placeholder 1 of 2"
+- assertVisible: "Image Placeholder 2 of 2"
+
+# Fill out title field
+- tapOn: "Enter title"
+- inputText: "Test Title"
+
+# View description field and fill it out
+- swipe:
+    start: 50%, 60%
+    end: 50%, 45%
+- tapOn: "Description (required) Enter details about the issue here"
+- inputText: "Test Details"
+
+# and close keyboard (avoiding flakey hideKeyboard)
+- tapOn: "Description*"
+
+# And actions buttons should be visible
+- assertVisible: "Reset Form"
+- assertVisible: "SUBMIT"

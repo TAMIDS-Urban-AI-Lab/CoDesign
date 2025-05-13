@@ -6,18 +6,11 @@ import { render, screen } from '@testing-library/react-native';
 import { View } from 'react-native';
 
 import { ThemedModal } from '@/components/ui/ThemedModal';
-
-jest.mock('@/hooks/useColorScheme', () => ({
-  useColorScheme: jest.fn()
-}));
+import * as ColorSchemeHook from '@/hooks/useColorScheme';
 
 describe('<ThemedModal />', () => {
-  const useColorScheme = jest.requireMock(
-    '@/hooks/useColorScheme'
-  ).useColorScheme;
-
   beforeEach(() => {
-    useColorScheme.mockClear();
+    jest.clearAllMocks();
   });
 
   test('renders with default props', () => {
@@ -58,7 +51,7 @@ describe('<ThemedModal />', () => {
   test('applies light color in light theme', () => {
     const lightColor = '#ffffff';
     const darkColor = '#000000';
-    useColorScheme.mockReturnValue('light');
+    jest.spyOn(ColorSchemeHook, 'useColorScheme').mockReturnValue('light');
 
     render(
       <ThemedModal testID="modal" lightColor={lightColor} darkColor={darkColor}>
@@ -75,7 +68,7 @@ describe('<ThemedModal />', () => {
   test('applies dark color in dark theme', () => {
     const lightColor = '#ffffff';
     const darkColor = '#000000';
-    useColorScheme.mockReturnValue('dark');
+    jest.spyOn(ColorSchemeHook, 'useColorScheme').mockReturnValue('dark');
 
     render(
       <ThemedModal testID="modal" lightColor={lightColor} darkColor={darkColor}>

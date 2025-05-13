@@ -1,18 +1,16 @@
 import { render, screen } from '@testing-library/react-native';
+import * as ColorSchemeHook from '@/hooks/useColorScheme';
 
 import { ThemedView } from '@/components/ui/ThemedView';
 import { tamuColors } from '@/constants/Colors';
-import { mockUseColorScheme } from '@/mocks/mockUseColorScheme';
 
 describe('<ThemedView />', () => {
-  const { mockedUseColorScheme } = mockUseColorScheme();
-
   beforeEach(() => {
-    mockedUseColorScheme.mockClear();
+    jest.clearAllMocks();
   });
 
   test('renders with default background color in light theme', () => {
-    mockedUseColorScheme.mockReturnValue('light');
+    jest.spyOn(ColorSchemeHook, 'useColorScheme').mockReturnValue('light');
     render(<ThemedView testID="themed-view" />);
     const view = screen.getByTestId('themed-view');
     expect(view).toBeVisible();
@@ -21,10 +19,10 @@ describe('<ThemedView />', () => {
     );
   });
 
-  test('applies custom light and dark colors', () => {
+  test('applies custom light color in light theme', () => {
     const lightColor = '#ffffff';
     const darkColor = '#000000';
-    mockedUseColorScheme.mockReturnValue('light');
+    jest.spyOn(ColorSchemeHook, 'useColorScheme').mockReturnValue('light');
     render(
       <ThemedView
         testID="themed-view"
@@ -37,9 +35,12 @@ describe('<ThemedView />', () => {
     expect(view.props.style).toEqual(
       expect.arrayContaining([{ backgroundColor: lightColor }])
     );
+  });
 
-    // Test dark theme
-    mockedUseColorScheme.mockReturnValue('dark');
+  test('applies custom dark color in dark theme', () => {
+    const lightColor = '#ffffff';
+    const darkColor = '#000000';
+    jest.spyOn(ColorSchemeHook, 'useColorScheme').mockReturnValue('dark');
     render(
       <ThemedView
         testID="themed-view"
@@ -50,7 +51,7 @@ describe('<ThemedView />', () => {
 
     const darkView = screen.getByTestId('themed-view');
     expect(darkView.props.style).toEqual(
-      expect.arrayContaining([{ backgroundColor: lightColor }])
+      expect.arrayContaining([{ backgroundColor: darkColor }])
     );
   });
 

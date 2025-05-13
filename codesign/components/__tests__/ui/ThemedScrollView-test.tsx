@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react-native';
-import * as ColorSchemeHook from '@/hooks/useColorScheme';
 
 import { ThemedScrollView } from '@/components/ui/ThemedScrollView';
+import * as ColorSchemeHook from '@/hooks/useColorScheme';
 
 describe('<ThemedScrollView />', () => {
   const lightColor = '#ffffff';

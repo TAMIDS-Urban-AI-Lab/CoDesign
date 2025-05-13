@@ -78,9 +78,9 @@ describe('<ThemedRadioButton />', () => {
       );
 
       const image = screen.getByTestId('radio-button-icon');
-      expect(image.props.source).toEqual({
-        testUri: '../../../assets/images/radio-button/checked-light.png'
-      });
+      expect(image.props.source.testUri).toMatch(
+        /radio-button\/checked-light\.png$/
+      );
     });
 
     test('renders correct icons in dark mode', () => {
@@ -94,9 +94,9 @@ describe('<ThemedRadioButton />', () => {
       );
 
       const image = screen.getByTestId('radio-button-icon');
-      expect(image.props.source).toEqual({
-        testUri: '../../../assets/images/radio-button/checked-dark.png'
-      });
+      expect(image.props.source.testUri).toMatch(
+        /radio-button\/checked-dark\.png$/
+      );
     });
 
     afterAll(() => {

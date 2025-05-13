@@ -1,3 +1,8 @@
+/**
+ * Mock implementation for expo-image-manipulator
+ * Provides mock functionality for image manipulation operations
+ */
+
 export function mockExpoImageManipulator({
   mockWidth,
   mockHeight
@@ -17,6 +22,8 @@ export function mockExpoImageManipulator({
     saveAsync(options?: any): Promise<ImageResult>;
   };
   const mockResize = jest.fn();
+
+  /** Mock function for saving manipulated image */
   const mockSaveAsync = jest.fn(() => {
     return Promise.resolve({
       uri: 'file://path/to/image.jpg',
@@ -25,6 +32,8 @@ export function mockExpoImageManipulator({
       base64: 'base64string'
     } as ImageResult);
   });
+
+  /** Mock function for image manipulation context */
   const mockImageContext = jest.fn(() => {
     return {
       resize: mockResize.mockImplementation(() => mockImageContext()),
@@ -32,6 +41,7 @@ export function mockExpoImageManipulator({
     };
   });
 
+  /** Mock function for rendering manipulated image */
   const mockRenderAsync = jest.fn((mockSaveAsync) =>
     Promise.resolve({
       width: mockWidth,
@@ -40,6 +50,7 @@ export function mockExpoImageManipulator({
     } as ImageRef)
   );
 
+  // Mock the entire image manipulator module
   jest.mock('expo-image-manipulator', () => {
     return {
       __esModule: true,

@@ -9,6 +9,7 @@ export function mockExpoLocation({
 }: {
   currentPosition: Coordinates;
 }) {
+  /** Location coordinates with accuracy and sensor data */
   type LocationObjectCoords = {
     latitude: number;
     longitude: number;
@@ -19,12 +20,14 @@ export function mockExpoLocation({
     speed: number | null;
   };
 
+  /** Complete location object with coordinates and metadata */
   type LocationObject = {
     coords: LocationObjectCoords;
     timestamp: number;
     mocked?: boolean;
   };
 
+  /** Mock function that returns current position with provided coordinates */
   const mockedGetCurrentPositionAsync = jest.fn(() =>
     Promise.resolve({
       coords: {
@@ -34,9 +37,11 @@ export function mockExpoLocation({
     } as LocationObject)
   );
 
+  // Mock the entire expo-location module
   jest.mock('expo-location', () => {
     return {
       __esModule: true,
+      /** Mock function that always grants location permissions */
       requestForegroundPermissionsAsync: jest.fn(() =>
         Promise.resolve({
           status: 'granted'

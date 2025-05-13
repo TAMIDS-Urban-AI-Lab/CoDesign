@@ -1,3 +1,8 @@
+/**
+ * Mock implementation for expo-image-picker
+ * Provides mock functionality for camera and image library access with permissions
+ */
+
 export function mockExpoImagePicker({
   mockWidth,
   mockHeight
@@ -5,11 +10,13 @@ export function mockExpoImagePicker({
   mockWidth: number;
   mockHeight: number;
 }) {
+  /** Returns mock granted permission response */
   const grantPermission = () => [
     { status: 'granted' },
     jest.fn(() => Promise.resolve({ status: 'granted' }))
   ];
 
+  /** Returns mock denied permission response */
   const denyPermission = () => [
     { status: 'denied' },
     jest.fn(() => Promise.resolve({ status: 'denied' }))
@@ -22,8 +29,11 @@ export function mockExpoImagePicker({
 
   type ImagePickerAsset = any;
 
+  /** Mock hooks for permission management */
   const mockMediaLibraryPermissions = jest.fn(grantPermission);
   const mockCameraPermissions = jest.fn();
+
+  /** Mock function for launching image library picker */
   const mockLaunchImageLibraryAsync = jest.fn(() => {
     const response: ImagePickerResult = {
       assets: [
@@ -40,6 +50,7 @@ export function mockExpoImagePicker({
     return Promise.resolve(response);
   });
 
+  /** Mock function for launching camera */
   const mockLaunchCameraAsync = jest.fn(() => {
     const response: ImagePickerResult = {
       assets: [
@@ -56,6 +67,7 @@ export function mockExpoImagePicker({
     return Promise.resolve(response);
   });
 
+  // Mock the entire expo-image-picker module
   jest.mock('expo-image-picker', () => {
     return {
       __esModule: true,

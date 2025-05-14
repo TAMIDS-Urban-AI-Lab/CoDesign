@@ -31,15 +31,16 @@ jobs:
         working-directory: ./codesign
 
       - name: Build Codesign on EAS Platform
-        run: eas build --platform ios --profile preview-simulator --non-interactive
+        run: EAS_NO_VCS=1 eas build --platform ios --profile preview-simulator --non-interactive
         working-directory: ./codesign
 
   submit-e2e:
     runs-on: ubuntu-latest
-    container:
-      image: node:20
-    needs: build
     steps:
+      - name: Install Act dependencies
+        if: ${{ env.ACT }}
+        run: apt-get update && apt-get install sudo -y
+
       - name: Check out CoDesign repository
         uses: actions/checkout@v4
 
@@ -57,10 +58,10 @@ jobs:
       - name: Install Devicecloud CLI
         run: npm install -g @devicecloud.dev/dcd
 
-      - name: Install zip tool
+      - name: Install curl and zip
         run: |
-          apt-get update
-          apt-get install zip
+          sudo apt-get update
+          sudo apt-get install zip curl -y
 
       - name: Install project dependencies
         run: npm ci

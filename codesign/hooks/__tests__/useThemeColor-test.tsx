@@ -1,3 +1,12 @@
+/**
+ * Unit tests for the useThemeColor hook.
+ *
+ * These tests verify the hook's functionality for:
+ * - Handling custom color props for both light and dark themes
+ * - Falling back to default colors when no props are provided
+ * - Proper theme selection based on the system color scheme
+ */
+
 import { tamuColors } from '@/constants/Colors';
 import { mockUseColorScheme } from '@/mocks/mockUseColorScheme';
 

@@ -1,36 +1,40 @@
 ---
-title: 'Gala: A Python package for galactic dynamics'
+title: 'Codesign: A Mobile Crowdsourcing App for Campus Digital Twin Feedback'
 tags:
-  - Python
-  - astronomy
-  - dynamics
-  - galactic dynamics
-  - milky way
+  - React native
+  - Typescript
+  - moblie application
+  - digital twin
+  - crowdsourcing
 authors:
-  - name: Adrian M. Price-Whelan
+  - name: Sulong Zhou
     orcid: 0000-0000-0000-0000
     equal-contrib: true
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID
+    affiliation: 1 # (Multiple affiliations must be quoted)
+  - name: Malika Kodial
     equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
-    affiliation: 2
-  - name: Author with no affiliation
+    affiliation: 1
+  - name: Shaoheng Zhou
     corresponding: true # (This is how to denote the corresponding author)
-    affiliation: 3
-  - given-names: Ludwig
-    dropping-particle: van
-    surname: Beethoven
-    affiliation: 3
+    affiliation: 2
+  - name: Xinyue Ye
+    corresponding: true # (This is how to denote the corresponding author)
+    affiliation: 1
+  - name: Suphanut Jamonnak
+    affiliation: 1
+  - name: Xinyu Li
+    affiliation: 1
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University, United States
+ - name: Department of Landscape Architecture and Urban Planning & Urban Artificial Intelligence Lab,Texas A&M University
    index: 1
    ror: 00hx57361
  - name: Institution Name, Country
    index: 2
  - name: Independent Researcher, Country
    index: 3
-date: 13 August 2017
+date: 19 May 2025
 bibliography: paper.bib
+link-citations: true
 
 # Optional fields if submitting to a AAS journal too, see this blog post:
 # https://blog.joss.theoj.org/2018/12/a-new-collaboration-with-aas-publishing
@@ -40,77 +44,52 @@ aas-journal: Astrophysical Journal <- The name of the AAS journal.
 
 # Summary
 
-The forces on stars, galaxies, and dark matter under external gravitational
-fields lead to the dynamical evolution of structures in the universe. The orbits
-of these bodies are therefore key to understanding the formation, history, and
-future state of galaxies. The field of "galactic dynamics," which aims to model
-the gravitating components of galaxies to study their structure and evolution,
-is now well-established, commonly taught, and frequently used in astronomy.
-Aside from toy problems and demonstrations, the majority of problems require
-efficient numerical tools, many of which require the same base code (e.g., for
-performing numerical orbit integration).
+Codesign is an open-source mobile application developed with React and TypeScript as part of Texas A\&M University’s campus digital twin research and implementation [@gong2025integrating]. It supports the crowdsourcing of feedback and facilitates human-centered planning for shared university spaces [@ye2024developing]. 
+
+Inspired by Goodchild’s (2007) vision of “citizens as sensors” and the concept of Volunteered Geographic Information (VGI) [@goodchild2007citizens], Codesign facilitates the collection of community-sensed data to complement traditional infrastructure monitoring systems. The app enables students, faculty, and staff to submit geo-tagged photo reports documenting conditions of on-site facilities. In alignment with the digital twin maturity model [@errandonea2020digital], Codesign supports real-time monitoring (Level 2) and lays the groundwork for predictive and prescriptive maintenance capabilities (Levels 3–4). 
+
+The five-step process, “empathize, define, ideate, prototype, test”, outlined in Design Thinking [@meinel2011design], is widely recognized as an effective strategy for creating innovative, human-centered solutions [@corral2018design; @zhou5065948advancing]. Guided by this framework, we adopted an iterative UI/UX design process to improve usability and accessibility. This approach fosters sustained engagement among diverse stakeholders, positioning participatory reporting as an ongoing channel for communication rather than a one-time survey.
+
+Codesign is also designed with scalability to city-level systems in mind, employing a modular and human-centered approach for integrating qualitative, localized feedback into the governance and decision-making processes of smart infrastructure [@ham2020participatory].
 
 # Statement of need
 
-`Gala` is an Astropy-affiliated Python package for galactic dynamics. Python
-enables wrapping low-level languages (e.g., C) for speed without losing
-flexibility or ease-of-use in the user-interface. The API for `Gala` was
-designed to provide a class-based and user-friendly interface to fast (C or
-Cython-optimized) implementations of common operations such as gravitational
-potential and force evaluation, orbit integration, dynamical transformations,
-and chaos indicators for nonlinear dynamics. `Gala` also relies heavily on and
-interfaces well with the implementations of physical units and astronomical
-coordinate systems in the `Astropy` package [@astropy] (`astropy.units` and
-`astropy.coordinates`).
+University campuses often lack efficient and inclusive systems for gathering infrastructure feedback from everyday users. Existing solutions tend to be top-down (e.g., formal surveys) or narrowly focused (e.g., maintenance ticketing systems) and they rarely foster proactive, broad-based engagement. Codesign addresses this gap by providing a mobile-first, location-aware, image-enabled reporting system that emphasizes ease of use and scalability. It supports both research and operational needs by streamlining participatory data collection and making it accessible to the entire campus community.
 
-`Gala` was designed to be used by both astronomical researchers and by
-students in courses on gravitational dynamics or astronomy. It has already been
-used in a number of scientific publications [@Pearson:2017] and has also been
-used in graduate courses on Galactic dynamics to, e.g., provide interactive
-visualizations of textbook material [@Binney:2008]. The combination of speed,
-design, and support for Astropy functionality in `Gala` will enable exciting
-scientific explorations of forthcoming data releases from the *Gaia* mission
-[@gaia] by students and experts alike.
+From the perspective of university community, Codesign facilitates individuals who can voice their everyday experiences and needs in the campus environment. Many students, staffs, and faculty members may encounter small but impactful issues, such as lack of seating or poor lighting. These issues could be easily overlooked by the facility management team but can accumulate into significant barriers to comfort and accessibility. However, existing solutions are often too formal, time-consuming, or inaccessible to motivate stakeholders to report them. By offering a lightweight, intuitive, and friendly-used interface, Codesign lowers the barrier to participation and enhances that individual feedback matters. It transforms passive dissatisfaction into active contribution, allowing users to influence their surroundings and feel more connected to campus improvement processes.
 
-# Mathematics
+Social media platforms, such as Twitter, Facebook, and Reddit, may occasionally serve as alternative channels for expressing these concerns. However, these platforms often present challenges, including the spread of distorted or misleading information, content generated by artificial intelligence, and posts from fabricated identities. These issues raise concerns about the reliability and authenticity of shared content. In contrast, Codesign, as a university-owned and verified platform, ensures a trusted, secure, and community-centered space for constructive dialogue and actionable feedback. By integrating directly with campus operations, it not only facilitates more reliable reporting but also fosters a sense of shared ownership in shaping a better campus environment.
 
-Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
+In addition to its operational benefits, Codesign plays a critical role in supporting our ongoing academic research. As a downstream mobile application, it seamlessly integrates with current initiatives to develop a comprehensive campus digital twin [@gong2025integrating], including systems for campus transportation modeling, heat exposure mapping, and infrastructure resilience analysis. By providing rich, crowdsourced data, Codesign strengthens research on participatory design, civic engagement, and human-centered planning. It offers a valuable interdisciplinary platform that not only informs evidence-based campus management but also advances cutting-edge research in smart infrastructure, citizen science, and community-driven innovation.
 
-Double dollars make self-standing equations:
 
-$$\Theta(x) = \left\{\begin{array}{l}
-0\textrm{ if } x < 0\cr
-1\textrm{ else}
-\end{array}\right.$$
+# Main Features
 
-You can also use plain \LaTeX for equations
-\begin{equation}\label{eq:fourier}
-\hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
-\end{equation}
-and refer to \autoref{eq:fourier} from text.
+Figure [1](#fig:feature)  provides an overview of the application's key user flows and main features.
 
-# Citations
+![Fig 1: Main features and key user flows.](Features_Flows.png){#fig:feature}
 
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
+- Geo-tagged reporting: Users can submit location-specific feedback on campus infrastructure such as benches, lighting, and signage. This feature enables the system to capture spatially explicit, human-centered observations in real time.
 
-If you want to cite a software repository URL (e.g. something on GitHub without a preferred
-citation) then you can do it with the example BibTeX entry below for @fidgit.
+- Photo and text input: Each report may include descriptive text along with optional images from the device's camera or photo library, providing rich contextual information and visual documentation.
 
-For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
+- Interactive map visualization: Submitted reports are displayed on an interactive map using the MapBox API, enabling users and planners to explore feedback spatially and identify patterns such as clusters or hotspots.
 
-# Figures
+- Cross-platform accessibility: Built with React and TypeScript, the application currently supports iOS and can be readily extended to Android via Expo, ensuring broad accessibility across device types.
 
-Figures can be included like this:
-![Caption for example figure.\label{fig:example}](figure.png)
-and referenced from text using \autoref{fig:example}.
+# Test
+Our software is tested at multiple levels to ensure reliability, maintainability, and user-friendly. We covered test from two asepects: functional tests and usability tests
 
-Figure sizes can be customized by adding an optional second parameter:
-![Caption for example figure.](figure.png){ width=20% }
+## Functional tests
+- Component-level testing is implemented using Jest and React Testing Library, covering key user interface components and their expected behavior.
+- API tests validate the integration of front-end components with backend services.
+- End-to-end (E2E) testing is performed using Maestro, simulating complete user flows and verifying cross-component functionality.
+
+All instructions for running tests are provided in the README. Continuous integration is configured via GitHub Actions to automatically run all test suites on each pull request and commit.
+
+## Usability tests
+
+The team conducted usability studies with Texas A\&M students and working professionals. During these sessions, participants completed some tasks using a prototype built with Figma. The team assessed the ease and rate of success that participants had submitting and viewing maintenance reports about issues they have experienced on campus. These feedbacks were used to understand Codesign’s strengths and weaknesses and improve upon it.
 
 # Acknowledgements
 

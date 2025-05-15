@@ -1,6 +1,6 @@
 # Welcome to Codesign
 
-Codesign enables students and faculty to provide feedback reports about Texas A&M's on-site facilities and use Augmented Reality to design and imagine a better community space.
+Codesign enables students and faculty to provide feedback reports about Texas A&M's on-site facilities and eventually, use Augmented Reality to design and imagine a better community space.
 
 ## Current Features
 
@@ -59,37 +59,12 @@ When you add images, fonts, or install new dependencies (e.g., a new library), y
    npm run ios // Rebuild the iOS app
 ```
 
-# Git Best Practices
-
-To ensure consistency, collaboration, and code quality, please follow these guidelines when contributing to this repository:
-
-## 1. Branching Strategy
-
-- Do NOT directly change the main branch.
-- Always create a new branch for your work.
-- Use a meaningful branch name.
-  Example:
-  ```bash
-  git checkout -b username/<your-feature-name>
-  ```
-
-## 2. Commit
-
-- Use a meaningful commit message for every commit
-
-## 3. Pull Request
-
-- Clearly document your steps.
-- Expand on complex code snippets in the PR description.
-- Ensure to include an explanation and demo of testing completed.
-- Your code must be reviewed by atleast one other reviewer.
-
 # Expo Resources
 
-Options for running the app:
+How to Build CoDesign with Expo:
 
-- [Development build](https://docs.expo.dev/develop/development-builds/introduction/) <- Used by Codesign
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- [Development Builds](https://docs.expo.dev/develop/development-builds/introduction/) <- Used by CoDesign
+- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo, not used by CoDesign
 - [Info on Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
 - [Info on iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
 

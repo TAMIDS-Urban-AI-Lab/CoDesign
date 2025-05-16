@@ -1,3 +1,8 @@
+/**
+ * Mock implementation for image handling
+ * Provides utilities for loading and converting test images to base64
+ */
+
 import { readAsStringAsync, EncodingType } from 'expo-file-system';
 import { Asset } from 'expo-asset';
 
@@ -9,6 +14,7 @@ const DEFAULT_IMAGES = [
   require('@/assets/images/default/stairs.png')
 ];
 
+/** Returns a random image from default images as base64 string array */
 export async function getMockImage() {
   try {
     const randomIdx = getRandomInt(0, DEFAULT_IMAGES.length);
@@ -21,6 +27,7 @@ export async function getMockImage() {
   }
 }
 
+/** Helper function to convert image file to base64 string */
 const convertImageToBase64 = async (fileUri: string) => {
   try {
     const base64Data = await readAsStringAsync(fileUri, {

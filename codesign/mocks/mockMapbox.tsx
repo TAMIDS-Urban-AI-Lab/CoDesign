@@ -10,6 +10,7 @@ export function mockMapbox({
 }: {
   centerCoordinate: Position;
 }) {
+  /** Mock component for MapView with ref handling */
   const mockMapView = jest.fn(function ({ children }: any, ref: any) {
     if (ref) {
       ref.current = {

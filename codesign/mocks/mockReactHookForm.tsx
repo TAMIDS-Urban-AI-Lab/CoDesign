@@ -1,12 +1,20 @@
+/**
+ * Mock implementation for react-hook-form library
+ * Provides test utilities for form handling with customizable state and behavior
+ */
+
 export function mockReactHookForm() {
+  // Mock form data getter
   const getMockedForm = jest.fn().mockReturnValue({});
   let isFormMocked = false;
 
+  /** Sets custom form data for testing */
   const mockFormData = (mockData: any) => {
     getMockedForm.mockReturnValueOnce(mockData);
     isFormMocked = true;
   };
 
+  /** Default form state values */
   const mockedFormState = {
     errors: {},
     isSubmitting: false,
@@ -16,12 +24,14 @@ export function mockReactHookForm() {
     dirtyFields: {}
   };
 
+  /** Updates form state with new values */
   const mockFormState = (newState: any) => {
     Object.keys(newState).forEach(
       (key) => (mockedFormState[key] = newState[key])
     );
   };
 
+  /** Resets form state to initial values */
   const resetFormToDefault = () => {
     mockedFormState.errors = {};
     mockedFormState.isSubmitting = false;
@@ -32,6 +42,7 @@ export function mockReactHookForm() {
     isFormMocked = false;
   };
 
+  /** Mock implementation of useForm hook */
   const mockedUseForm = jest.fn(function <T>({
     defaultValues
   }: {
@@ -79,6 +90,7 @@ export function mockReactHookForm() {
     };
   });
 
+  /** Mock implementation of Controller component */
   const mockedController = jest.fn(function <T>({
     render,
     defaultValue,

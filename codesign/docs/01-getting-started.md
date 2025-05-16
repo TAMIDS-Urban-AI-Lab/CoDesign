@@ -14,18 +14,29 @@ In this guide, you will learn how to:
 
 1. (Required) Download [XCode](https://developer.apple.com/xcode/)
 
-    Currently, CoDesign supports only the iOS platform. This requires having a Mac with XCode installed. Once downloaded, no additional configuration is required- Expo will handle the rest!
+    Currently, CoDesign supports only the iOS platform. iOS development requires having a Mac with XCode installed. Once downloaded, no additional configuration is required- Expo will handle the rest!
 
 
-2. Download [VSCode](https://code.visualstudio.com/) + Extensions
+2. Set up IDE + Extensions
 
-    When opening the project in VSCode, ensure to open the folder that has package.json in it --> CoDesign/codesign
+    Recommended IDEs and Code Editors:
+
+    -  [VSCode](https://code.visualstudio.com/) with [Github Copilot](https://code.visualstudio.com/docs/copilot/setup)
+    -  [Cursor AI Code Editor](https://www.cursor.com/)
+    - [WebStorm](https://www.jetbrains.com/webstorm/) IDE by JetBrains. 
+
+    When opening the project in your IDE, ensure to open the `CoDesign/codesign/` folder that has package.json in it. Otherwise, you will see the following error from ESLint:
+    ```
+    Unable to resolve path to module '@/hooks/useColorScheme'
+    .eslint import/no-unresolved
+    ```
 
     CoDesign configures ESLint and Prettier to enforce formatting and syntax rules. Add VSCode extensions to autoformat your code and make your life easy:
     - [ ] ESLint formatter
     - [ ] Prettier formatter
 
     Other useful extensions:
+    - [ ] Set up [Github Copilot](https://code.visualstudio.com/docs/copilot/setup) or configure your AI tool of choice
     - [ ] Git Blame - See history of each line
     - [ ] GitLens - Git Supercharged - Visualize git history
     - [ ] Jest - Provides tools for running jest tests

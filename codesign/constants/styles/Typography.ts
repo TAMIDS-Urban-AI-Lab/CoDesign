@@ -18,12 +18,12 @@ export const Typography = {
   },
 
   paragraph: {
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: 24,
     fontFamily: 'OpenSansRegular'
   },
   paragraphBold: {
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: 24,
     fontFamily: 'OpenSansBold'
   },

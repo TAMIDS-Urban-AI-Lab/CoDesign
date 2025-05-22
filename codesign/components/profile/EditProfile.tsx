@@ -15,10 +15,29 @@ const styles = StyleSheet.create({
   profileContainer: {
     gap: Spacing.large
   },
-  actionContainer: {
+  liftedActionCard: {
     padding: Spacing.large,
     ...Border.roundedSmall,
     ...Border.elevated
+  },
+  actionCardRow: {
+    ...Layout.row,
+    gap: Spacing.small
+  },
+  profileImage: {
+    width: PROFILE_IMAGE_SIZE,
+    height: PROFILE_IMAGE_SIZE,
+    ...Border.roundedSmall,
+    backgroundColor: tamuColors.primaryBrandDark
+  },
+  actionsList: {
+    ...Layout.col,
+    gap: Spacing.small
+  },
+  actionListItem: {
+    ...Layout.row,
+    ...Layout.alignCenter,
+    gap: Spacing.small
   }
 });
 
@@ -36,22 +55,17 @@ export function EditProfile({
   return (
     <ThemedView style={[styles.profileContainer, style]}>
       <ThemedText type="title3">{displayName}</ThemedText>
-      <ThemedView style={[styles.actionContainer]}>
-        <ThemedView style={[Layout.row, { gap: Spacing.medium }]}>
+      <ThemedView style={[styles.liftedActionCard]}>
+        <ThemedView style={[styles.actionCardRow]}>
           <Image
             source={
               profileImageSrc ?? require('@/assets/images/react-logo.png')
             }
-            style={{
-              width: PROFILE_IMAGE_SIZE,
-              height: PROFILE_IMAGE_SIZE,
-              ...Border.roundedSmall,
-              backgroundColor: tamuColors.primaryBrandDark
-            }}
+            style={styles.profileImage}
             testID="profile-image"
           />
-          <ThemedView style={[Layout.col, { gap: Spacing.small }]}>
-            <Pressable style={[Layout.row, { gap: Spacing.small }]}>
+          <ThemedView style={[styles.actionsList]}>
+            <Pressable style={[styles.actionListItem]}>
               <IconSymbol
                 size={EDIT_ICON_SIZE}
                 name="pencil"
@@ -59,7 +73,7 @@ export function EditProfile({
               />
               <ThemedText type="paragraph">Edit Display Name</ThemedText>
             </Pressable>
-            <Pressable style={[Layout.row, { gap: Spacing.small }]}>
+            <Pressable style={[styles.actionListItem]}>
               <IconSymbol
                 size={EDIT_ICON_SIZE}
                 name="camera.fill"

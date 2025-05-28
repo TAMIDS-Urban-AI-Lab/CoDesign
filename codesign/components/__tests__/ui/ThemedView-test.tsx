@@ -1,16 +1,17 @@
 import { render, screen } from '@testing-library/react-native';
-import * as ColorSchemeHook from '@/hooks/useColorScheme';
 
-import { ThemedView } from '@/components/ui/ThemedView';
+import { mockUseColorScheme } from '@/mocks/mockUseColorScheme';
 import { tamuColors } from '@/constants/Colors';
 
 describe('<ThemedView />', () => {
+  const { mockedUseColorScheme } = mockUseColorScheme();
+  const { ThemedView } = require('@/components/ui/ThemedView');
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   test('renders with default background color in light theme', () => {
-    jest.spyOn(ColorSchemeHook, 'useColorScheme').mockReturnValue('light');
+    mockedUseColorScheme.mockReturnValue('light');
     render(<ThemedView testID="themed-view" />);
     const view = screen.getByTestId('themed-view');
     expect(view).toBeVisible();
@@ -20,9 +21,9 @@ describe('<ThemedView />', () => {
   });
 
   test('applies custom light color in light theme', () => {
+    mockedUseColorScheme.mockReturnValue('light');
     const lightColor = '#ffffff';
     const darkColor = '#000000';
-    jest.spyOn(ColorSchemeHook, 'useColorScheme').mockReturnValue('light');
     render(
       <ThemedView
         testID="themed-view"
@@ -38,9 +39,9 @@ describe('<ThemedView />', () => {
   });
 
   test('applies custom dark color in dark theme', () => {
+    mockedUseColorScheme.mockReturnValue('dark');
     const lightColor = '#ffffff';
     const darkColor = '#000000';
-    jest.spyOn(ColorSchemeHook, 'useColorScheme').mockReturnValue('dark');
     render(
       <ThemedView
         testID="themed-view"

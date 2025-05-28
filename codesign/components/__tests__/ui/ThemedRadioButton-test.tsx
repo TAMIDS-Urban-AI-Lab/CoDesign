@@ -1,9 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react-native';
 
-import { ThemedRadioButton } from '@/components/ui/ThemedRadioButton';
-import * as ColorSchemeHooks from '@/hooks/useColorScheme';
+import { mockUseColorScheme } from '@/mocks/mockUseColorScheme';
 
 describe('<ThemedRadioButton />', () => {
+  const { mockedUseColorScheme } = mockUseColorScheme();
+  const { ThemedRadioButton } = require('@/components/ui/ThemedRadioButton');
   const mockOnPress = jest.fn();
 
   beforeEach(() => {
@@ -65,10 +66,8 @@ describe('<ThemedRadioButton />', () => {
   });
 
   describe('theme modes', () => {
-    const mockUseColorScheme = jest.spyOn(ColorSchemeHooks, 'useColorScheme');
-
     test('renders correct icons in light mode', () => {
-      mockUseColorScheme.mockReturnValue('light');
+      mockedUseColorScheme.mockReturnValue('light');
       render(
         <ThemedRadioButton
           title="Test Radio"
@@ -84,7 +83,7 @@ describe('<ThemedRadioButton />', () => {
     });
 
     test('renders correct icons in dark mode', () => {
-      mockUseColorScheme.mockReturnValue('dark');
+      mockedUseColorScheme.mockReturnValue('dark');
       render(
         <ThemedRadioButton
           title="Test Radio"
@@ -97,10 +96,6 @@ describe('<ThemedRadioButton />', () => {
       expect(image.props.source.testUri).toMatch(
         /radio-button\/checked-dark\.png$/
       );
-    });
-
-    afterAll(() => {
-      mockUseColorScheme.mockRestore();
     });
   });
 });

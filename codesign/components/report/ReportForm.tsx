@@ -252,7 +252,7 @@ export function ReportForm({ style }: ViewProps) {
           style={[{ marginBottom: Spacing.large }]}
           withDivider={true}
         >
-          Report Details
+          Details
         </ThemedText>
 
         <ThemedView style={styles.input}>
@@ -339,7 +339,7 @@ export function ReportForm({ style }: ViewProps) {
 
 const styles = StyleSheet.create({
   input: {
-    marginBottom: Spacing.large
+    marginBottom: Spacing.medium
   },
   errorContainer: {
     ...Layout.flex,

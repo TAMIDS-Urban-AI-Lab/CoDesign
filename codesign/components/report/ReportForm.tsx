@@ -27,6 +27,7 @@ import {
 import { useCodesignData } from '@/components/provider/CodesignDataProvider';
 import { TAB_ROUTE_PATH, TAB_ROUTES } from '@/constants/Routes';
 import { ImageUpload } from '@/components/report/ImageUpload';
+import { SuggestionUpload } from '@/components/report/SuggestionUpload';
 import { useModal } from '@/components/provider/ModalProvider';
 import { SelectLocation } from '@/components/report/SelectLocation';
 import { VALIDATION_RULES } from '@/utils/ReportValidation';
@@ -265,6 +266,20 @@ export function ReportForm({ style }: ViewProps) {
                 value={value}
                 onChange={onChange}
                 errorText={errors.images?.message}
+              />
+            )}
+          />
+        </ThemedView>
+
+        <ThemedView style={styles.input}>
+          <Controller
+            control={control}
+            name="suggestions"
+            render={({ field: { onChange, value } }) => (
+              <SuggestionUpload
+                value={value}
+                onChange={onChange}
+                style={{ marginTop: Spacing.xsmall }}
               />
             )}
           />

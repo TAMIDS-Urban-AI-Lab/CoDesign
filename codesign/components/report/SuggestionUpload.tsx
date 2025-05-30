@@ -17,7 +17,7 @@ const SPARKLES_SRC = {
 type SuggestionUploadProps = {
   style?: ViewProps['style'];
   onChange: (...event: any[]) => void;
-  value?: string;
+  value: string;
 };
 
 export function SuggestionUpload({
@@ -33,6 +33,7 @@ export function SuggestionUpload({
         <Image
           source={SPARKLES_SRC[colorScheme]}
           style={styles.sparklesImage}
+          testID="suggestion-sparkles-image"
         />
         <ThemedText style={styles.message}>
           Would you like to suggest an improvement?

@@ -17,6 +17,7 @@ authors:
   - name: Shaoheng Zhou
     affiliation: 2
   - name: Xinyue Ye
+    orcid: 0000-0001-8838-9476    
     corresponding: true
     affiliation: 1
   - name: Suphanut Jamonnak

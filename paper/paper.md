@@ -90,8 +90,6 @@ The team conducted usability studies with Texas A\&M students and working profes
 
 # Acknowledgements
 
-We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
-Oh, and support from Kathryn Johnston during the genesis of this project.
+This material is partially based upon work supported by the National Science Foundation under 2401860 and 2430700, as well as Texas A&M University. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the authors. The funders have no role in the study design, data collection, analysis, or preparation of this article.
 
 # References
-This material is partially based upon work supported by the National Science Foundation under 2401860 and 2430700, as well as Texas A&M University. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the authors. The funders have no role in the study design, data collection, analysis, or preparation of this article.

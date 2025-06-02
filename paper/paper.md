@@ -8,38 +8,35 @@ tags:
   - crowdsourcing
 authors:
   - name: Sulong Zhou
-    orcid: 0000-0000-0000-0000
+    orcid: 0000-0002-3376-7350
     equal-contrib: true
     affiliation: 1 # (Multiple affiliations must be quoted)
   - name: Malika Kodial
     equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
     affiliation: 1
   - name: Shaoheng Zhou
-    corresponding: true # (This is how to denote the corresponding author)
     affiliation: 2
   - name: Xinyue Ye
-    corresponding: true # (This is how to denote the corresponding author)
+    corresponding: true
     affiliation: 1
   - name: Suphanut Jamonnak
     affiliation: 1
   - name: Xinyu Li
     affiliation: 1
 affiliations:
- - name: Department of Landscape Architecture and Urban Planning & Urban Artificial Intelligence Lab,Texas A&M University
+ - name: Department of Landscape Architecture and Urban Planning & Urban Artificial Intelligence Lab,Texas A&M University, United States
    index: 1
-   ror: 00hx57361
- - name: Institution Name, Country
+   ror: 01f5ytq51
+ - name: Department of Computer Science, University of Wisconsin-Madison, United States
    index: 2
- - name: Independent Researcher, Country
-   index: 3
 date: 19 May 2025
 bibliography: paper.bib
 link-citations: true
 
 # Optional fields if submitting to a AAS journal too, see this blog post:
 # https://blog.joss.theoj.org/2018/12/a-new-collaboration-with-aas-publishing
-aas-doi: 10.3847/xxxxx <- update this with the DOI from AAS once you know it.
-aas-journal: Astrophysical Journal <- The name of the AAS journal.
+# aas-doi: 10.3847/xxxxx <- update this with the DOI from AAS once you know it.
+# aas-journal: Astrophysical Journal <- The name of the AAS journal.
 ---
 
 # Summary
@@ -67,18 +64,18 @@ In addition to its operational benefits, Codesign plays a critical role in suppo
 
 Figure [1](#fig:feature)  provides an overview of the application's key user flows and main features.
 
-![Fig 1: Main features and key user flows.](Features_Flows.png){#fig:feature}
+![Main features and key user flows.](Features_Flows.png){#fig:feature}
 
 - Geo-tagged reporting: Users can submit location-specific feedback on campus infrastructure such as benches, lighting, and signage. This feature enables the system to capture spatially explicit, human-centered observations in real time.
 
-- Photo and text input: Each report may include descriptive text along with optional images from the device's camera or photo library, providing rich contextual information and visual documentation.
+- Photo and text input: Each report may include descriptive text along with images from the device's camera or photo library, providing rich contextual information and visual documentation.
 
 - Interactive map visualization: Submitted reports are displayed on an interactive map using the MapBox API, enabling users and planners to explore feedback spatially and identify patterns such as clusters or hotspots.
 
 - Cross-platform accessibility: Built with React and TypeScript, the application currently supports iOS and can be readily extended to Android via Expo, ensuring broad accessibility across device types.
 
 # Test
-Our software is tested at multiple levels to ensure reliability, maintainability, and user-friendly. We covered test from two asepects: functional tests and usability tests
+Our software is tested at multiple levels to ensure reliability, maintainability, and user-friendly. We covered test from two aspects: functional tests and usability tests
 
 ## Functional tests
 - Component-level testing is implemented using Jest and React Testing Library, covering key user interface components and their expected behavior.
@@ -97,3 +94,4 @@ We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
 Oh, and support from Kathryn Johnston during the genesis of this project.
 
 # References
+This material is partially based upon work supported by the National Science Foundation under 2401860 and 2430700, as well as Texas A&M University. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the authors. The funders have no role in the study design, data collection, analysis, or preparation of this article.

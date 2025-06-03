@@ -80,7 +80,7 @@ Our software is tested at multiple levels to ensure reliability, maintainability
 
 ## Functional tests
 - Component-level testing is implemented using Jest and React Testing Library, covering key user interface components and their expected behavior.
-- API tests validate the integration of front-end components with backend services.
+- API tests verify backend endpoints by checking response correctness, validating business logic execution, and ensuring integration with front-end components.
 - End-to-end (E2E) testing is performed using Maestro, simulating complete user flows and verifying cross-component functionality.
 
 All instructions for running tests are provided in the README. Continuous integration is configured via GitHub Actions to automatically run all test suites on each pull request and commit.

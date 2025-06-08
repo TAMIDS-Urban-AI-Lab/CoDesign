@@ -103,7 +103,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.large
   },
   modalContentContainer: {
-    ...Layout.flex
+    ...Layout.flex,
+    ...Layout.center
   },
   backButton: {
     position: 'absolute',

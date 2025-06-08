@@ -19,7 +19,8 @@ type ThemedTextType =
   | 'feedback'
   | 'error'
   | 'link'
-  | 'formText';
+  | 'formText'
+  | 'buttonText';
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;

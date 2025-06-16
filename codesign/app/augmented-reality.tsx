@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import {
   ViroARScene,
   ViroText,
@@ -13,6 +13,8 @@ import { router } from 'expo-router';
 
 import { ThemedView } from '@/components/ui/ThemedView';
 import { ThemedText } from '@/components/ui/ThemedText';
+import { CHEVRON_LEFT_SRC } from '@/constants/ImagePaths';
+import { ImageButton } from '@/components/ui/ImageButton';
 
 // AR Scene Component
 const ARScene = () => {
@@ -47,19 +49,41 @@ const ARScene = () => {
   );
 };
 
-export default function Test() {
+export function Test() {
   return (
     <ThemedView>
+      <ImageButton
+        source={CHEVRON_LEFT_SRC['light']}
+        size={24}
+        onPress={() => router.back()}
+        elevated={true}
+        testID="close-ar-modal-button"
+      />
+      <ThemedText>Hello</ThemedText>
+      <ThemedText>Hello</ThemedText>
+      <ThemedText>Hello</ThemedText>
+      <ThemedText>Hello</ThemedText>
+      <ThemedText>Hello</ThemedText>
+      <ThemedText>Hello</ThemedText>
+      <ThemedText>Hello</ThemedText>
+      <ThemedText>Hello</ThemedText>
       <ThemedText>Hello</ThemedText>
     </ThemedView>
   );
 }
 
-export function ARExperienceScreen() {
+export default function ARExperienceScreen() {
   return (
-    <View style={styles.container}>
+    <ThemedView style={styles.container}>
+      {/* <ImageButton
+        source={CHEVRON_LEFT_SRC['light']}
+        size={24}
+        onPress={() => router.back()}
+        elevated={true}
+        testID="close-ar-modal-button"
+      /> */}
       <ViroARSceneNavigator
-        autofocus={true}
+        // autofocus={true}
         initialScene={{
           scene: ARScene
         }}
@@ -70,9 +94,9 @@ export function ARExperienceScreen() {
         style={styles.closeButton}
         onPress={() => router.back()}
       >
-        <Text style={styles.closeButtonText}>Close AR</Text>
+        <ThemedText style={styles.closeButtonText}>Close AR</ThemedText>
       </TouchableOpacity>
-    </View>
+    </ThemedView>
   );
 }
 

@@ -12,6 +12,7 @@ import { useModal } from '@/components/provider/ModalProvider';
 import { ThemedModal } from '@/components/ui/ThemedModal';
 import { ImageButton } from '@/components/ui/ImageButton';
 import { CHEVRON_LEFT_SRC } from '@/constants/ImagePaths';
+import { AugmentedRealityScene } from '@/components/augmented-reality/augmented-reality';
 
 const SPARKLES_SRC = {
   light: require('@/assets/images/sparkles/sparkles-light.png'),
@@ -51,7 +52,11 @@ export function SuggestionUpload({
         <ThemedText style={styles.message}>
           Would you like to suggest an improvement?
         </ThemedText>
-        <TextButton type="secondary" text="SUGGEST" onPress={openARModal} />
+        <TextButton
+          type="secondary"
+          text="SUGGEST"
+          onPress={() => openARModal()}
+        />
       </ThemedView>
 
       <ThemedModal
@@ -68,7 +73,9 @@ export function SuggestionUpload({
             style={styles.backButton}
             testID="close-ar-modal-button"
           />
-          <ThemedView style={[styles.modalContentContainer]}></ThemedView>
+          <ThemedView style={[styles.modalContentContainer]}>
+            <AugmentedRealityScene />
+          </ThemedView>
         </ThemedView>
       </ThemedModal>
     </ThemedView>
@@ -98,13 +105,10 @@ const styles = StyleSheet.create({
     fontFamily: 'OpenSansSemiBold'
   },
   modalContainer: {
-    ...Layout.flex,
-    paddingVertical: Spacing.xxxlarge,
-    paddingHorizontal: Spacing.large
+    ...Layout.flex
   },
   modalContentContainer: {
-    ...Layout.flex,
-    ...Layout.center
+    ...Layout.flex
   },
   backButton: {
     position: 'absolute',

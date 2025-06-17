@@ -18,7 +18,7 @@ const InitialScene = () => {
   );
 };
 
-export function Basic() {
+export function AugmentedRealityScene() {
   return (
     <ThemedView style={{ flex: 1 }}>
       <ViroARSceneNavigator

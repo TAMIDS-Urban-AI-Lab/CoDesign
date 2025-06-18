@@ -3,15 +3,17 @@ import {
   ViroARScene,
   ViroARSceneNavigator,
   ViroText,
-  ViroAmbientLight,
   ViroTrackingStateConstants as ViroConstants,
   ViroARPlane,
   ViroBox,
-  ViroMaterials
+  ViroMaterials,
+  ViroImage
 } from '@reactvision/react-viro';
 
 import { tamuColors } from '@/constants/Colors';
 import { ThemedView } from '@/components/ui/ThemedView';
+import { BUTTON_PLUS_SRC } from '@/constants/ImagePaths';
+import { ClickStates } from '@/constants/augmented-reality/ViroStates';
 
 ViroMaterials.createMaterials({
   blue_scratch: {
@@ -21,8 +23,18 @@ ViroMaterials.createMaterials({
   }
 });
 
-const InitialScene = () => {
+function InitialScene() {
   const [text, setText] = useState('Look for a surface...');
+  const [objectCount, setObjectCount] = useState(0);
+
+  const handleAddButtonClick = (state: number) => {
+    if (state === ClickStates.CLICKED) {
+      setText('Add button clicked');
+      setObjectCount(objectCount + 1);
+    }
+  };
+
+  const handleItemDrag = () => {};
 
   const onTrackingUpdated = (state: ViroConstants) => {
     if (state === ViroConstants.TRACKING_NORMAL) {
@@ -36,32 +48,36 @@ const InitialScene = () => {
 
   return (
     <ViroARScene onTrackingUpdated={onTrackingUpdated}>
-      <ViroAmbientLight color="#FFFFFF" intensity={0.3} />
-      <ViroText
-        text="Hello AR World!"
-        scale={[0.5, 0.5, 0.5]}
-        position={[0, 0, -1]}
-        style={{ fontSize: 20, color: tamuColors.black }}
-      />
-      {/* Status text */}
       <ViroText
         text={text}
         scale={[0.3, 0.3, 0.3]}
-        position={[0, 1, -2]}
+        position={[0.5, 1, -2]}
         style={styles.statusTextStyle}
       />
+      <ViroImage
+        source={BUTTON_PLUS_SRC.default}
+        position={[0, 0, -1]}
+        height={0.2}
+        width={0.2}
+        onClickState={handleAddButtonClick}
+        transformBehaviors={['billboard']}
+      />
       <ViroARPlane minHeight={0.1} minWidth={0.1} alignment="Horizontal">
-        <ViroBox
-          position={[0, 0, 0]}
-          scale={[0.1, 0.1, 0.1]} // Very thin box to show plane surface
-          opacity={1}
-          materials={['blue_scratch']}
-          dragType="FixedToWorld"
-        />
+        {Array.from({ length: objectCount }).map((_, index) => (
+          <ViroBox
+            key={index}
+            position={[index * 0.15, -1, -1]}
+            scale={[0.1, 0.1, 0.1]}
+            opacity={1}
+            materials={['blue_scratch']}
+            dragType="FixedToWorld"
+            onDrag={handleItemDrag}
+          />
+        ))}
       </ViroARPlane>
     </ViroARScene>
   );
-};
+}
 
 export function AugmentedRealityScene() {
   return (

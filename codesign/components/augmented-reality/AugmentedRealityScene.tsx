@@ -12,6 +12,7 @@ import {
 import { ThemedView } from '@/components/ui/ThemedView';
 import { BUTTON_PLUS_SRC } from '@/constants/ImagePaths';
 import { ClickStates } from '@/constants/augmented-reality/ViroStates';
+import { useAugmentedRealityContext } from '@/components/provider/AugmentedRealityProvider';
 
 ViroMaterials.createMaterials({
   blue_scratch: {
@@ -25,7 +26,7 @@ function InitialScene(props: any) {
   const sceneNavigator = props?.sceneNavigator;
   const viroAppProps = sceneNavigator?.viroAppProps;
   const resetARSession = sceneNavigator?.resetARSession;
-  const setEventCallbacks = viroAppProps.setEventCallbacks;
+  const { setEventCallbacks } = useAugmentedRealityContext();
 
   const [objectCount, setObjectCount] = useState(0);
 
@@ -58,10 +59,10 @@ function InitialScene(props: any) {
     }
   };
 
-  /** Save all interactive methods to parent component, to be used by UI Overlay */
+  /** Save all interactive callbacks for AR UI Overlay */
   useEffect(() => {
     setEventCallbacks({
-      handleMoveScene
+      handleMoveScene: handleMoveScene
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setEventCallbacks]);
@@ -95,7 +96,6 @@ function InitialScene(props: any) {
 
 type AugmentedRealitySceneProps = {
   updateNudgeText?: (text: string) => void;
-  setEventCallbacks: CallableFunction;
 };
 
 export function AugmentedRealityScene(props: AugmentedRealitySceneProps) {

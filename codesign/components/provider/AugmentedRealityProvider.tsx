@@ -1,8 +1,12 @@
 import { createContext, useContext, useState } from 'react';
 
+export type AREventCallbacks = {
+  handleMoveScene?: () => void;
+};
+
 export type AugmentedRealityContextType = {
-  clearObjects: (() => void) | null;
-  setClearObjects: CallableFunction;
+  eventCallbacks: AREventCallbacks;
+  setEventCallbacks: CallableFunction;
   isLoading: boolean;
   setIsLoading: CallableFunction;
   error: string | null;
@@ -29,15 +33,15 @@ export const AugmentedRealityProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [clearObjects, setClearObjects] = useState(null);
+  const [eventCallbacks, setEventCallbacks] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   return (
     <AugmentedRealityContext.Provider
       value={{
-        clearObjects,
-        setClearObjects,
+        eventCallbacks,
+        setEventCallbacks,
         isLoading,
         setIsLoading,
         error,

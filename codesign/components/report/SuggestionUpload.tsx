@@ -12,7 +12,8 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { useModal } from '@/components/provider/ModalProvider';
 import { ThemedModal } from '@/components/ui/ThemedModal';
 import { AugmentedRealityScene } from '@/components/augmented-reality/AugmentedRealityScene';
-import { AugmentedRealityUIOverlay } from '../augmented-reality/AugmentedRealityUIOverlay';
+import { AugmentedRealityUIOverlay } from '@/components/augmented-reality/AugmentedRealityUIOverlay';
+import { AugmentedRealityProvider } from '@/components/provider/AugmentedRealityProvider';
 
 const SPARKLES_SRC = {
   light: require('@/assets/images/sparkles/sparkles-light.png'),
@@ -31,7 +32,6 @@ export function SuggestionUpload({
   value: suggestion
 }: SuggestionUploadProps) {
   const [nudgeText, setNudgeText] = useState('Loading Augmented Reality...');
-  const [eventCallbacks, setEventCallbacks] = useState({});
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
   const {
     isVisible,
@@ -67,18 +67,18 @@ export function SuggestionUpload({
         testID="ar-suggestion-modal"
       >
         <ThemedView style={styles.modalContainer}>
-          <AugmentedRealityUIOverlay
-            colorScheme={colorScheme}
-            handleBackButton={handleBackButton}
-            nudgeText={nudgeText}
-            eventCallbacks={eventCallbacks}
-          />
-          <AugmentedRealityScene
-            updateNudgeText={(text) => {
-              setNudgeText(text);
-            }}
-            setEventCallbacks={setEventCallbacks}
-          />
+          <AugmentedRealityProvider>
+            <AugmentedRealityUIOverlay
+              colorScheme={colorScheme}
+              handleBackButton={handleBackButton}
+              nudgeText={nudgeText}
+            />
+            <AugmentedRealityScene
+              updateNudgeText={(text) => {
+                setNudgeText(text);
+              }}
+            />
+          </AugmentedRealityProvider>
         </ThemedView>
       </ThemedModal>
     </ThemedView>

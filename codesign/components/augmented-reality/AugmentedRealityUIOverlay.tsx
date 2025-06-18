@@ -10,31 +10,25 @@ import { Border } from '@/constants/styles/Border';
 import { Layout } from '@/constants/styles/Layout';
 import { CHEVRON_LEFT_SRC } from '@/constants/ImagePaths';
 import { TextButton } from '../ui/TextButton';
+import { useAugmentedRealityContext } from '@/components/provider/AugmentedRealityProvider';
 
 type AugmentedRealityUIOverlayProps = {
   handleBackButton: () => void;
   nudgeText: string;
   colorScheme: 'light' | 'dark';
-  eventCallbacks: object;
 };
 
 export function AugmentedRealityUIOverlay({
   handleBackButton,
   nudgeText,
-  colorScheme,
-  eventCallbacks
+  colorScheme
 }: AugmentedRealityUIOverlayProps) {
   const nudgeBackground = useThemeColor(
     {},
     'augmentedRealityTransparentBackground'
   );
 
-  const moveHandler = () => {
-    const moveHandler = eventCallbacks.handleMoveScene;
-    if (typeof moveHandler === 'function') {
-      moveHandler();
-    }
-  };
+  const { eventCallbacks } = useAugmentedRealityContext();
 
   return (
     <>
@@ -46,11 +40,11 @@ export function AugmentedRealityUIOverlay({
         style={styles.backButton}
         testID="close-ar-modal-button"
       />
-      {moveHandler && (
+      {eventCallbacks.handleMoveScene && (
         <TextButton
           type="secondary"
           text="Move Here"
-          onPress={moveHandler}
+          onPress={eventCallbacks.handleMoveScene}
           style={styles.clearButton}
         />
       )}

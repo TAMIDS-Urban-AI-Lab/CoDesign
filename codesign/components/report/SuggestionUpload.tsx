@@ -37,7 +37,7 @@ export function SuggestionUpload({
     {},
     'augmentedRealityTransparentBackground'
   );
-  const [nudgeText, setNudgeText] = useState('');
+  const [nudgeText, setNudgeText] = useState('Loading Augmented Reality...');
   const {
     isVisible,
     openModal: openARModal,

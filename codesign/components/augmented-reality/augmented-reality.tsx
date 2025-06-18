@@ -2,7 +2,6 @@ import { useState } from 'react';
 import {
   ViroARScene,
   ViroARSceneNavigator,
-  ViroText,
   ViroTrackingStateConstants as ViroConstants,
   ViroARPlane,
   ViroBox,
@@ -10,7 +9,6 @@ import {
   ViroImage
 } from '@reactvision/react-viro';
 
-import { tamuColors } from '@/constants/Colors';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { BUTTON_PLUS_SRC } from '@/constants/ImagePaths';
 import { ClickStates } from '@/constants/augmented-reality/ViroStates';
@@ -23,14 +21,19 @@ ViroMaterials.createMaterials({
   }
 });
 
-function InitialScene() {
-  const [text, setText] = useState('Look for a surface...');
+type InitialSceneProps = {
+  sceneNavigator: {
+    viroAppProps: AugmentedRealitySceneProps;
+  };
+};
+
+function InitialScene({ sceneNavigator: { viroAppProps } }: InitialSceneProps) {
   const [objectCount, setObjectCount] = useState(0);
 
   const handleAddButtonClick = (state: number) => {
     if (state === ClickStates.CLICKED) {
-      setText('Add button clicked');
       setObjectCount(objectCount + 1);
+      viroAppProps.updateNudgeText?.('Add button clicked');
     }
   };
 
@@ -38,22 +41,16 @@ function InitialScene() {
 
   const onTrackingUpdated = (state: ViroConstants) => {
     if (state === ViroConstants.TRACKING_NORMAL) {
-      setText('AR tracking is normal');
+      viroAppProps.updateNudgeText?.('AR tracking is normal');
     } else if (state === ViroConstants.TRACKING_LIMITED) {
-      setText('AR tracking is limited');
+      viroAppProps.updateNudgeText?.('AR tracking is limited');
     } else if (state === ViroConstants.TRACKING_UNAVAILABLE) {
-      setText('AR tracking is not available');
+      viroAppProps.updateNudgeText?.('AR tracking is not available');
     }
   };
 
   return (
     <ViroARScene onTrackingUpdated={onTrackingUpdated}>
-      <ViroText
-        text={text}
-        scale={[0.3, 0.3, 0.3]}
-        position={[0.5, 1, -2]}
-        style={styles.statusTextStyle}
-      />
       <ViroImage
         source={BUTTON_PLUS_SRC.default}
         position={[0, 0, -1]}
@@ -79,7 +76,13 @@ function InitialScene() {
   );
 }
 
-export function AugmentedRealityScene() {
+type AugmentedRealitySceneProps = {
+  updateNudgeText?: (text: string) => void;
+};
+
+export function AugmentedRealityScene({
+  updateNudgeText
+}: AugmentedRealitySceneProps) {
   return (
     <ThemedView style={{ flex: 1 }}>
       <ViroARSceneNavigator
@@ -87,17 +90,9 @@ export function AugmentedRealityScene() {
         initialScene={{
           scene: InitialScene
         }}
+        viroAppProps={{ updateNudgeText }}
         style={{ flex: 1 }}
       />
     </ThemedView>
   );
 }
-
-const styles = {
-  statusTextStyle: {
-    fontSize: 24,
-    color: tamuColors.white,
-    backgroundColor: '#00000080',
-    padding: 10
-  }
-};

@@ -1,4 +1,5 @@
 import { ViewProps, StyleSheet, Image } from 'react-native';
+import { useState } from 'react';
 
 import { ThemedView } from '@/components/ui/ThemedView';
 import { ThemedText } from '@/components/ui/ThemedText';
@@ -8,6 +9,7 @@ import { Spacing } from '@/constants/styles/Spacing';
 import { tamuColors } from '@/constants/Colors';
 import { Border } from '@/constants/styles/Border';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useThemeColor } from '@/hooks/useThemeColor';
 import { useModal } from '@/components/provider/ModalProvider';
 import { ThemedModal } from '@/components/ui/ThemedModal';
 import { ImageButton } from '@/components/ui/ImageButton';
@@ -31,6 +33,11 @@ export function SuggestionUpload({
   value: suggestion
 }: SuggestionUploadProps) {
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
+  const nudgeBackground = useThemeColor(
+    {},
+    'augmentedRealityTransparentBackground'
+  );
+  const [nudgeText, setNudgeText] = useState('');
   const {
     isVisible,
     openModal: openARModal,
@@ -74,7 +81,18 @@ export function SuggestionUpload({
             testID="close-ar-modal-button"
           />
           <ThemedView style={[styles.modalContentContainer]}>
-            <AugmentedRealityScene />
+            <AugmentedRealityScene
+              updateNudgeText={(text) => {
+                setNudgeText(text);
+              }}
+            />
+          </ThemedView>
+          <ThemedView style={styles.nudgeTextContainer}>
+            <ThemedText
+              style={[styles.nudgeText, { backgroundColor: nudgeBackground }]}
+            >
+              {nudgeText}
+            </ThemedText>
           </ThemedView>
         </ThemedView>
       </ThemedModal>
@@ -115,5 +133,19 @@ const styles = StyleSheet.create({
     top: Spacing.xxxlarge,
     left: Spacing.large,
     zIndex: 1
+  },
+  nudgeTextContainer: {
+    ...Layout.row,
+    ...Layout.justifyCenter,
+    position: 'absolute',
+    bottom: Spacing.xxxlarge,
+    left: 0,
+    right: 0,
+    backgroundColor: tamuColors.transparent
+  },
+  nudgeText: {
+    textAlign: 'center',
+    padding: Spacing.small,
+    ...Border.roundedSmall
   }
 });

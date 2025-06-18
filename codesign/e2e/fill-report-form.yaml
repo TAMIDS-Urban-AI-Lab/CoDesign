@@ -86,7 +86,7 @@ appId: com.urbanailab.codesign
 
 # View description field and fill it out
 - swipe:
-    start: 50%, 60%
+    start: 50%, 50%
     end: 50%, 45%
 - tapOn: "Description (required) Enter details about the issue here"
 - inputText: "Test Details"

@@ -111,7 +111,7 @@ Codesign uses [Maestro](https://docs.maestro.dev/) for end-to-end testing, which
 
   - **Pre-requisite: Build Codesign and install to Simulator** - In terminal, run `npm run ios` to build and run Codesign on the iOS Simulator.
 
-  - **Run Maestro test:** `maestro test e2e/create-and-view-report.yaml` Maestro run the test using the simulator that was opened in the previous step and output each step.
+  - **Run Maestro test:** `maestro test e2e/fill-report-form.yaml` Maestro run the test using the simulator that was opened in the previous step and output each step.
 
 
 # Debugging

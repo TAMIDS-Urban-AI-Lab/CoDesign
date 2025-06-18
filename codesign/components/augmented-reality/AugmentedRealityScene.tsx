@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   ViroARScene,
   ViroARSceneNavigator,
@@ -21,33 +21,50 @@ ViroMaterials.createMaterials({
   }
 });
 
-type InitialSceneProps = {
-  sceneNavigator: {
-    viroAppProps: AugmentedRealitySceneProps;
-  };
-};
+function InitialScene(props: any) {
+  const sceneNavigator = props?.sceneNavigator;
+  const viroAppProps = sceneNavigator?.viroAppProps;
+  const resetARSession = sceneNavigator?.resetARSession;
+  const setEventCallbacks = viroAppProps.setEventCallbacks;
 
-function InitialScene({ sceneNavigator: { viroAppProps } }: InitialSceneProps) {
   const [objectCount, setObjectCount] = useState(0);
+
+  const updateNudgeText = viroAppProps.updateNudgeText;
 
   const handleAddButtonClick = (state: number) => {
     if (state === ClickStates.CLICKED) {
       setObjectCount(objectCount + 1);
-      viroAppProps.updateNudgeText?.('Add button clicked');
+      updateNudgeText?.('Add button clicked');
     }
   };
 
   const handleItemDrag = () => {};
 
+  /** Moves all objects to new location relative to user */
+  const handleMoveScene = useCallback(() => {
+    const resetTracking = true;
+    const removeAnchors = true;
+    resetARSession(resetTracking, removeAnchors);
+    updateNudgeText?.('Scene moved to new location');
+  }, [updateNudgeText, resetARSession]);
+
   const onTrackingUpdated = (state: ViroConstants) => {
     if (state === ViroConstants.TRACKING_NORMAL) {
-      viroAppProps.updateNudgeText?.('AR tracking is normal');
+      updateNudgeText?.('AR tracking is normal');
     } else if (state === ViroConstants.TRACKING_LIMITED) {
-      viroAppProps.updateNudgeText?.('AR tracking is limited');
+      updateNudgeText?.('AR tracking is limited');
     } else if (state === ViroConstants.TRACKING_UNAVAILABLE) {
-      viroAppProps.updateNudgeText?.('AR tracking is not available');
+      updateNudgeText?.('AR tracking is not available');
     }
   };
+
+  /** Save all interactive methods to parent component, to be used by UI Overlay */
+  useEffect(() => {
+    setEventCallbacks({
+      handleMoveScene
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setEventCallbacks]);
 
   return (
     <ViroARScene onTrackingUpdated={onTrackingUpdated}>
@@ -78,11 +95,10 @@ function InitialScene({ sceneNavigator: { viroAppProps } }: InitialSceneProps) {
 
 type AugmentedRealitySceneProps = {
   updateNudgeText?: (text: string) => void;
+  setEventCallbacks: CallableFunction;
 };
 
-export function AugmentedRealityScene({
-  updateNudgeText
-}: AugmentedRealitySceneProps) {
+export function AugmentedRealityScene(props: AugmentedRealitySceneProps) {
   return (
     <ThemedView style={{ flex: 1 }}>
       <ViroARSceneNavigator
@@ -90,7 +106,7 @@ export function AugmentedRealityScene({
         initialScene={{
           scene: InitialScene
         }}
-        viroAppProps={{ updateNudgeText }}
+        viroAppProps={props}
         style={{ flex: 1 }}
       />
     </ThemedView>

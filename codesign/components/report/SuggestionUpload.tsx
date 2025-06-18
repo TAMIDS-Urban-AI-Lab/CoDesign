@@ -9,12 +9,10 @@ import { Spacing } from '@/constants/styles/Spacing';
 import { tamuColors } from '@/constants/Colors';
 import { Border } from '@/constants/styles/Border';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { useThemeColor } from '@/hooks/useThemeColor';
 import { useModal } from '@/components/provider/ModalProvider';
 import { ThemedModal } from '@/components/ui/ThemedModal';
-import { ImageButton } from '@/components/ui/ImageButton';
-import { CHEVRON_LEFT_SRC } from '@/constants/ImagePaths';
-import { AugmentedRealityScene } from '@/components/augmented-reality/augmented-reality';
+import { AugmentedRealityScene } from '@/components/augmented-reality/AugmentedRealityScene';
+import { AugmentedRealityUIOverlay } from '../augmented-reality/AugmentedRealityUIOverlay';
 
 const SPARKLES_SRC = {
   light: require('@/assets/images/sparkles/sparkles-light.png'),
@@ -32,12 +30,9 @@ export function SuggestionUpload({
   onChange,
   value: suggestion
 }: SuggestionUploadProps) {
-  const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
-  const nudgeBackground = useThemeColor(
-    {},
-    'augmentedRealityTransparentBackground'
-  );
   const [nudgeText, setNudgeText] = useState('Loading Augmented Reality...');
+  const [eventCallbacks, setEventCallbacks] = useState({});
+  const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
   const {
     isVisible,
     openModal: openARModal,
@@ -72,28 +67,18 @@ export function SuggestionUpload({
         testID="ar-suggestion-modal"
       >
         <ThemedView style={styles.modalContainer}>
-          <ImageButton
-            source={CHEVRON_LEFT_SRC[colorScheme]}
-            size={24}
-            onPress={handleBackButton}
-            elevated={true}
-            style={styles.backButton}
-            testID="close-ar-modal-button"
+          <AugmentedRealityUIOverlay
+            colorScheme={colorScheme}
+            handleBackButton={handleBackButton}
+            nudgeText={nudgeText}
+            eventCallbacks={eventCallbacks}
           />
-          <ThemedView style={[styles.modalContentContainer]}>
-            <AugmentedRealityScene
-              updateNudgeText={(text) => {
-                setNudgeText(text);
-              }}
-            />
-          </ThemedView>
-          <ThemedView style={styles.nudgeTextContainer}>
-            <ThemedText
-              style={[styles.nudgeText, { backgroundColor: nudgeBackground }]}
-            >
-              {nudgeText}
-            </ThemedText>
-          </ThemedView>
+          <AugmentedRealityScene
+            updateNudgeText={(text) => {
+              setNudgeText(text);
+            }}
+            setEventCallbacks={setEventCallbacks}
+          />
         </ThemedView>
       </ThemedModal>
     </ThemedView>
@@ -124,28 +109,5 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     ...Layout.flex
-  },
-  modalContentContainer: {
-    ...Layout.flex
-  },
-  backButton: {
-    position: 'absolute',
-    top: Spacing.xxxlarge,
-    left: Spacing.large,
-    zIndex: 1
-  },
-  nudgeTextContainer: {
-    ...Layout.row,
-    ...Layout.justifyCenter,
-    position: 'absolute',
-    bottom: Spacing.xxxlarge,
-    left: 0,
-    right: 0,
-    backgroundColor: tamuColors.transparent
-  },
-  nudgeText: {
-    textAlign: 'center',
-    padding: Spacing.small,
-    ...Border.roundedSmall
   }
 });

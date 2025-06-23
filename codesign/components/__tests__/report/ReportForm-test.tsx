@@ -75,7 +75,7 @@ describe('<ReportForm />', () => {
       expect(screen.getByTestId('location-preview')).toBeVisible();
     });
     await waitFor(() => {
-      expect(screen.getByText('Tap to select location')).toBeVisible();
+      expect(screen.getByText('Select Location on Map')).toBeVisible();
     });
 
     // Indoor option is checked by default
@@ -100,7 +100,7 @@ describe('<ReportForm />', () => {
 
     // Report Details section should be visible
     await waitFor(() => {
-      expect(screen.getByText('Report Details')).toBeVisible();
+      expect(screen.getByText('Details')).toBeVisible();
     });
     await waitFor(() => {
       expect(

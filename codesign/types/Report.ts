@@ -38,6 +38,7 @@ export type ReportFormDetails = {
   images: ImageDetails[];
   title: string;
   description: string;
+  suggestions?: any;
 };
 
 export class Report implements ReportFormDetails {
@@ -50,6 +51,7 @@ export class Report implements ReportFormDetails {
   reportLocationDetails: ReportLocationDetails;
   createdAt: Date;
   images: ImageDetails[];
+  suggestions?: any;
 
   constructor(reportDetails: ReportFormDetails) {
     this.id = reportDetails.id;
@@ -61,6 +63,7 @@ export class Report implements ReportFormDetails {
     this.reportLocationDetails = reportDetails.reportLocationDetails;
     this.createdAt = reportDetails.createdAt;
     this.images = reportDetails.images;
+    this.suggestions = reportDetails.suggestions;
   }
 
   getId(): number {
@@ -123,5 +126,9 @@ export class Report implements ReportFormDetails {
 
   getImages(): ImageDetails[] {
     return this.images;
+  }
+
+  getSuggestions(): any {
+    return this.suggestions;
   }
 }

@@ -1,4 +1,7 @@
 import { ViewProps, StyleSheet, Image } from 'react-native';
+import { useState, useEffect } from 'react';
+import { useEngine, EngineView } from '@babylonjs/react-native';
+import { Scene, Camera } from '@babylonjs/core';
 
 import { ThemedView } from '@/components/ui/ThemedView';
 import { ThemedText } from '@/components/ui/ThemedText';
@@ -68,7 +71,9 @@ export function SuggestionUpload({
             style={styles.backButton}
             testID="close-ar-modal-button"
           />
-          <ThemedView style={[styles.modalContentContainer]}></ThemedView>
+          <ThemedView style={[styles.modalContentContainer]}>
+            <BabylonAR />
+          </ThemedView>
         </ThemedView>
       </ThemedModal>
     </ThemedView>
@@ -112,3 +117,23 @@ const styles = StyleSheet.create({
     zIndex: 1
   }
 });
+
+function BabylonAR() {
+  const engine = useEngine();
+  const [camera, setCamera] = useState<Camera>();
+
+  useEffect(() => {
+    if (engine) {
+      const scene = new Scene(engine);
+      scene.createDefaultCamera(true);
+      setCamera(scene.activeCamera!);
+      // Setup the scene!
+    }
+  }, [engine]);
+
+  return (
+    <>
+      <EngineView style={{ flex: 1 }} camera={camera} />
+    </>
+  );
+}

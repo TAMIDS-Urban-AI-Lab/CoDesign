@@ -48,6 +48,14 @@ export function AugmentedRealityUIOverlay({
           style={styles.clearButton}
         />
       )}
+      {eventCallbacks.handleAddObject && (
+        <TextButton
+          type="secondary"
+          text="+ Add Object"
+          onPress={eventCallbacks.handleAddObject}
+          style={styles.addButton}
+        />
+      )}
       <ThemedView style={styles.nudgeTextContainer}>
         <ThemedText
           style={[styles.nudgeText, { backgroundColor: nudgeBackground }]}
@@ -64,6 +72,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: Spacing.xxxlarge,
     left: Spacing.large,
+    zIndex: 1
+  },
+  addButton: {
+    position: 'absolute',
+    top: Spacing.xxxlarge,
+    right: Spacing.large * 6,
     zIndex: 1
   },
   clearButton: {

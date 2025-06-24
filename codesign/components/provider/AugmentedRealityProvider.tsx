@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from 'react';
 
 export type AREventCallbacks = {
   handleMoveScene?: () => void;
+  handleAddObject?: () => void;
 };
 
 export type AugmentedRealityContextType = {

@@ -5,13 +5,10 @@ import {
   ViroTrackingStateConstants as ViroConstants,
   ViroARPlane,
   ViroBox,
-  ViroMaterials,
-  ViroImage
+  ViroMaterials
 } from '@reactvision/react-viro';
 
 import { ThemedView } from '@/components/ui/ThemedView';
-import { BUTTON_PLUS_SRC } from '@/constants/ImagePaths';
-import { ClickStates } from '@/constants/augmented-reality/ViroStates';
 import { useAugmentedRealityContext } from '@/components/provider/AugmentedRealityProvider';
 
 ViroMaterials.createMaterials({
@@ -32,12 +29,10 @@ function InitialScene(props: any) {
 
   const updateNudgeText = viroAppProps.updateNudgeText;
 
-  const handleAddButtonClick = (state: number) => {
-    if (state === ClickStates.CLICKED) {
-      setObjectCount(objectCount + 1);
-      updateNudgeText?.('Add button clicked');
-    }
-  };
+  const handleAddObject = useCallback(() => {
+    setObjectCount((prev) => prev + 1);
+    updateNudgeText?.(`Add button clicked: ${objectCount + 1}`);
+  }, [objectCount, updateNudgeText, setObjectCount]);
 
   const handleItemDrag = () => {};
 
@@ -62,26 +57,18 @@ function InitialScene(props: any) {
   /** Save all interactive callbacks for AR UI Overlay */
   useEffect(() => {
     setEventCallbacks({
-      handleMoveScene: handleMoveScene
+      handleMoveScene: handleMoveScene,
+      handleAddObject: handleAddObject
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setEventCallbacks]);
 
   return (
     <ViroARScene onTrackingUpdated={onTrackingUpdated}>
-      <ViroImage
-        source={BUTTON_PLUS_SRC.default}
-        position={[0, 0, -1]}
-        height={0.2}
-        width={0.2}
-        onClickState={handleAddButtonClick}
-        transformBehaviors={['billboard']}
-      />
       <ViroARPlane minHeight={0.1} minWidth={0.1} alignment="Horizontal">
         {Array.from({ length: objectCount }).map((_, index) => (
           <ViroBox
             key={index}
-            position={[index * 0.15, -1, -1]}
             scale={[0.1, 0.1, 0.1]}
             opacity={1}
             materials={['blue_scratch']}

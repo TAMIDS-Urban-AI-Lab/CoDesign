@@ -69,6 +69,7 @@ function InitialScene(props: any) {
         {Array.from({ length: objectCount }).map((_, index) => (
           <ViroBox
             key={index}
+            position={[index * 0.15, 0, -1]}
             scale={[0.1, 0.1, 0.1]}
             opacity={1}
             materials={['blue_scratch']}

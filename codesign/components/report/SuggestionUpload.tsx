@@ -1,4 +1,5 @@
 import { ViewProps, StyleSheet, Image } from 'react-native';
+import { WebView } from 'react-native-webview';
 
 import { ThemedView } from '@/components/ui/ThemedView';
 import { ThemedText } from '@/components/ui/ThemedText';
@@ -68,7 +69,12 @@ export function SuggestionUpload({
             style={styles.backButton}
             testID="close-ar-modal-button"
           />
-          <ThemedView style={[styles.modalContentContainer]}></ThemedView>
+          <ThemedView style={[styles.modalContentContainer]}>
+            <WebView
+              source={{ uri: 'https://tamucodesign.8thwall.app/tap-menu/' }}
+              allowsInlineMediaPlayback={true}
+            />
+          </ThemedView>
         </ThemedView>
       </ThemedModal>
     </ThemedView>
@@ -98,9 +104,7 @@ const styles = StyleSheet.create({
     fontFamily: 'OpenSansSemiBold'
   },
   modalContainer: {
-    ...Layout.flex,
-    paddingVertical: Spacing.xxxlarge,
-    paddingHorizontal: Spacing.large
+    ...Layout.flex
   },
   modalContentContainer: {
     ...Layout.flex

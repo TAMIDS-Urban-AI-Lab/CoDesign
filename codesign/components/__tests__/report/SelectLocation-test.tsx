@@ -50,7 +50,7 @@ describe('<SelectLocation />', () => {
     });
     expect(screen.getByTestId('mapview-mock')).toBeVisible();
     expect(screen.getByTestId('marker-mock')).toBeVisible();
-    expect(screen.getByText('Tap to select location')).toBeVisible();
+    expect(screen.getByText('Select Location on Map')).toBeVisible();
   });
 
   test('it opens the modal and closes the modal successfully', async () => {

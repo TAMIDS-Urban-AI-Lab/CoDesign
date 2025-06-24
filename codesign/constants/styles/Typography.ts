@@ -16,20 +16,19 @@ export const Typography = {
   textUppercase: {
     textTransform: 'uppercase'
   },
-
   paragraph: {
-    fontSize: 14,
-    lineHeight: 24,
+    fontSize: 12,
+    lineHeight: 18,
     fontFamily: 'OpenSansRegular'
   },
   paragraphBold: {
-    fontSize: 14,
-    lineHeight: 24,
+    fontSize: 12,
+    lineHeight: 18,
     fontFamily: 'OpenSansBold'
   },
   paragraphItalic: {
-    fontSize: 16,
-    lineHeight: 24,
+    fontSize: 12,
+    lineHeight: 18,
     fontFamily: 'OpenSansItalic'
   },
   title1: {
@@ -38,43 +37,48 @@ export const Typography = {
     fontFamily: 'OswaldRegular'
   },
   title2: {
-    fontSize: 32,
-    lineHeight: 48,
+    fontSize: 24,
+    lineHeight: 36,
     fontFamily: 'OswaldRegular'
   },
   title3: {
-    fontSize: 24,
-    lineHeight: 33,
+    fontSize: 20,
+    lineHeight: 30,
     fontFamily: 'WorkSansSemiBold'
   },
   title4: {
-    fontSize: 20,
-    lineHeight: 30,
+    fontSize: 16,
+    lineHeight: 24,
     fontFamily: 'OpenSansRegular'
   },
   title5: {
-    fontSize: 18,
-    lineHeight: 27,
+    fontSize: 12,
+    lineHeight: 18,
     fontFamily: 'WorkSansBold'
   },
   feedback: {
-    fontSize: 14,
-    lineHeight: 21,
+    fontSize: 12,
+    lineHeight: 18,
     fontFamily: 'OpenSansItalic'
   },
   error: {
-    fontSize: 14,
-    lineHeight: 21,
+    fontSize: 12,
+    lineHeight: 18,
     fontFamily: 'OpenSansItalic'
   },
   formText: {
-    fontSize: 16,
-    lineHeight: 24,
+    fontSize: 12,
+    lineHeight: 18,
     fontFamily: 'WorkSansRegular'
   },
+  buttonText: {
+    fontSize: 10,
+    lineHeight: 15,
+    fontFamily: 'WorkSansBold'
+  },
   link: {
-    fontSize: 18,
-    lineHeight: 25,
+    fontSize: 12,
+    lineHeight: 18,
     fontFamily: 'OpenSansBold',
     textDecorationLine: 'underline'
   }

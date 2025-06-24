@@ -6,6 +6,7 @@
     "start": "expo start",
     "android": "expo run:android",
     "ios": "USE_MIRAGE=true expo run:ios",
+    "ios-device": "USE_MIRAGE=true expo run:ios --device",
     "clean-ios": "expo install && npx expo prebuild --clean",
     "web": "expo start --web",
     "test": "jest --watchAll",
@@ -32,6 +33,7 @@
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/bottom-tabs": "^7.0.0",
     "@react-navigation/native": "^7.0.0",
+    "@reactvision/react-viro": "^2.43.0",
     "@rnmapbox/maps": "^10.1.33",
     "date-fns": "^4.1.0",
     "expo": "~52.0.42",
@@ -67,6 +69,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@expo/ngrok": "^4.1.3",
     "@faker-js/faker": "^9.6.0",
     "@testing-library/react-native": "^13.2.0",
     "@types/jest": "^29.5.12",

@@ -73,6 +73,14 @@ export default function RootLayout() {
     <App>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="augmented-reality"
+          options={{
+            presentation: 'modal',
+            headerShown: false,
+            gestureEnabled: false // Prevent swipe to dismiss during AR
+          }}
+        />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />

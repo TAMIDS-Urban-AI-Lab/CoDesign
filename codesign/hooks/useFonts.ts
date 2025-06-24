@@ -15,6 +15,7 @@ import { useFonts as useFontsHook } from 'expo-font';
  */
 export function useFonts() {
   return useFontsHook({
+    OpenSansSemiBold: require('../assets/fonts/OpenSans-SemiBold.ttf'),
     OpenSansBold: require('../assets/fonts/OpenSans-Bold.ttf'),
     OpenSansItalic: require('../assets/fonts/OpenSans-Italic.ttf'),
     OpenSansRegular: require('../assets/fonts/OpenSans-Regular.ttf'),

@@ -224,7 +224,7 @@ function LocationPreview({
         </Pressable>
       </ThemedView>
       <ThemedView style={[styles.messageContainer]} transparent={true}>
-        <ThemedText type="feedback">Tap to select location</ThemedText>
+        <ThemedText type="feedback">Select Location on Map</ThemedText>
       </ThemedView>
     </ThemedView>
   );

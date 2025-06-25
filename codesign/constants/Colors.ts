@@ -34,7 +34,8 @@ export const Colors = {
     icon: tamuColors.gray500,
     tabIconDefault: tamuColors.gray500,
     tabIconSelected: selectedColorLight,
-    error: '#bd1206'
+    error: '#bd1206',
+    augmentedRealityTransparentBackground: '#ffffff99'
   },
   dark: {
     text: '#ECEDEE',
@@ -43,6 +44,7 @@ export const Colors = {
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: selectedColorDark,
-    error: '#e34f44'
+    error: '#e34f44',
+    augmentedRealityTransparentBackground: '#00000099'
   }
 };

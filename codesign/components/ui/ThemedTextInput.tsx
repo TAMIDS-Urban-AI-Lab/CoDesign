@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
     marginTop: Spacing.small,
     padding: Spacing.medium,
     borderWidth: 1,
-    marginBottom: 10,
     ...Typography.textInput
   }
 });

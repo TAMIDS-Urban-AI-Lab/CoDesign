@@ -21,6 +21,7 @@ import { tamuColors } from '@/constants/Colors';
 import { ImageButton } from '@/components/ui/ImageButton';
 import { ThemedScrollView } from '@/components/ui/ThemedScrollView';
 import { getImageSrc } from '@/utils/Image';
+import { useColorScheme } from '@/hooks/useColorScheme';
 
 const HALF_SCREEN = '30%';
 const FULL_SCREEN = '100%';
@@ -36,7 +37,10 @@ const TIMING_PARAMS = {
   reduceMotion: ReduceMotion.System
 };
 
-const CLOSE_SHEET_SRC = require('@/assets/images/circle-xmark.png');
+const CLOSE_SHEET_SRC = {
+  light: require('@/assets/images/circle-xmark/circle-xmark-light.png'),
+  dark: require('@/assets/images/circle-xmark/circle-xmark-dark.png')
+};
 const DEFAULT_IMAGE_SRC = require('@/assets/images/react-logo.png');
 
 type ReportDetailsSheetProps = {
@@ -49,6 +53,7 @@ export function ReportDetailsSheet({
   afterCloseCallback
 }: ReportDetailsSheetProps) {
   const backgroundColor = useThemeColor({}, 'background');
+  const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
 
   const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -127,7 +132,7 @@ export function ReportDetailsSheet({
           ]}
         >
           <ImageButton
-            source={CLOSE_SHEET_SRC}
+            source={CLOSE_SHEET_SRC[colorScheme]}
             size={24}
             transparent={true}
             onPress={closeSheet}

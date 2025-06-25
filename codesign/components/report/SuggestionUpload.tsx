@@ -10,8 +10,8 @@ import { Border } from '@/constants/styles/Border';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useModal } from '@/components/provider/ModalProvider';
 import { ThemedModal } from '@/components/ui/ThemedModal';
-import { ImageButton } from '@/components/ui/ImageButton';
-import { CHEVRON_LEFT_SRC } from '@/constants/ImagePaths';
+import { AugmentedRealityUI } from '@/components/augmented-reality/AugmentedRealityUI';
+import { AugmentedRealityProvider } from '@/components/augmented-reality/AugmentedRealityProvider';
 
 const SPARKLES_SRC = {
   light: require('@/assets/images/sparkles/sparkles-light.png'),
@@ -60,15 +60,14 @@ export function SuggestionUpload({
         testID="ar-suggestion-modal"
       >
         <ThemedView style={styles.modalContainer}>
-          <ImageButton
-            source={CHEVRON_LEFT_SRC[colorScheme]}
-            size={24}
-            onPress={handleBackButton}
-            elevated={true}
-            style={styles.backButton}
-            testID="close-ar-modal-button"
-          />
-          <ThemedView style={[styles.modalContentContainer]}></ThemedView>
+          <AugmentedRealityProvider>
+            <AugmentedRealityUI
+              handleBackButton={handleBackButton}
+              handleSaveSuggestion={() => {
+                // console.log('TODO: Save suggestion');
+              }}
+            />
+          </AugmentedRealityProvider>
         </ThemedView>
       </ThemedModal>
     </ThemedView>
@@ -98,17 +97,6 @@ const styles = StyleSheet.create({
     fontFamily: 'OpenSansSemiBold'
   },
   modalContainer: {
-    ...Layout.flex,
-    paddingVertical: Spacing.xxxlarge,
-    paddingHorizontal: Spacing.large
-  },
-  modalContentContainer: {
     ...Layout.flex
-  },
-  backButton: {
-    position: 'absolute',
-    top: Spacing.xxxlarge,
-    left: Spacing.large,
-    zIndex: 1
   }
 });

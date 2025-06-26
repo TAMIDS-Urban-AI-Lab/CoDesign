@@ -49,6 +49,26 @@ export function SuggestionUpload({
     'augmentedRealityTransparentBackground'
   );
   const augmentedRealitySceneRef = useRef<ViewShot>(null);
+  const webViewRef = useRef<WebView>(null);
+
+  const setMenuDisplay = (display: 'none' | 'block') => {
+    return `
+    document.getElementById('container').style.display = '${display}';
+    true;
+    `;
+  };
+
+  const hideMenu = () => {
+    if (webViewRef.current) {
+      webViewRef.current.injectJavaScript(setMenuDisplay('none'));
+    }
+  };
+
+  const showMenu = () => {
+    if (webViewRef.current) {
+      webViewRef.current.injectJavaScript(setMenuDisplay('block'));
+    }
+  };
 
   const handleBackButton = () => {
     closeARModal();
@@ -66,19 +86,30 @@ export function SuggestionUpload({
       }
     }
 
-    await augmentedRealitySceneRef?.current?.capture?.().then((uri) => {
+    hideMenu();
+    // TO DO: countdown before taking screenshot
+    setTimeout(() => {
+      takeScreenshot();
+    }, 3000);
+  };
+
+  const takeScreenshot = async () => {
+    return await augmentedRealitySceneRef?.current?.capture?.().then((uri) => {
       saveToLibraryAsync(uri)
         .then(() => {
           setNudgeText('Screenshot saved');
           resetNudgeText(NUDGE_TEXT_TIMEOUT);
+          showMenu();
         })
         .catch(() => {
           setNudgeText('An issue occurred while saving the screenshot.');
           resetNudgeText(NUDGE_TEXT_TIMEOUT);
+          showMenu();
         })
         .catch(() => {
           setNudgeText('An issue occurred while taking the screenshot.');
           resetNudgeText(NUDGE_TEXT_TIMEOUT);
+          showMenu();
         });
     });
   };
@@ -138,6 +169,7 @@ export function SuggestionUpload({
             ref={augmentedRealitySceneRef}
           >
             <WebView
+              ref={webViewRef}
               source={{ uri: 'https://tamucodesign.8thwall.app/tap-menu/' }}
               allowsInlineMediaPlayback={true}
             />

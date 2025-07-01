@@ -84,6 +84,7 @@ export function SuggestionUpload({
     }
   };
 
+  const SCREENSHOT_WAIT = 25; // milliseconds
   const handleScreenshot = async () => {
     if (!libraryStatus?.granted) {
       const { status } = await requestLibraryPermission();
@@ -95,11 +96,12 @@ export function SuggestionUpload({
       }
     }
 
+    setNudgeTextWithReset('');
     hideMenu();
     // TO DO: countdown before taking screenshot
     setTimeout(() => {
       takeScreenshot();
-    }, 3000);
+    }, SCREENSHOT_WAIT);
   };
 
   const takeScreenshot = async () => {

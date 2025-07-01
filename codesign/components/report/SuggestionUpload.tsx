@@ -52,7 +52,7 @@ export function SuggestionUpload({
   const augmentedRealitySceneRef = useRef<ViewShot>(null);
   const webViewRef = useRef<WebView>(null);
 
-  const setMenuDisplay = (display: 'none' | 'block') => {
+  const setMenuDisplay = (display: 'none' | 'flex') => {
     return `
     document.getElementById('container').style.display = '${display}';
     true;
@@ -67,7 +67,7 @@ export function SuggestionUpload({
 
   const showMenu = () => {
     if (webViewRef.current) {
-      webViewRef.current.injectJavaScript(setMenuDisplay('block'));
+      webViewRef.current.injectJavaScript(setMenuDisplay('flex'));
     }
   };
 

@@ -44,6 +44,7 @@ export function SuggestionUpload({
   } = useModal('augmentedReality');
   const [libraryStatus, requestLibraryPermission] = usePermissions();
   const [nudgeText, setNudgeText] = useState('');
+  const [timerId, setTimerId] = useState<NodeJS.Timeout | null>(null);
   const nudgeBackground = useThemeColor(
     {},
     'augmentedRealityTransparentBackground'
@@ -74,14 +75,22 @@ export function SuggestionUpload({
     closeARModal();
   };
 
+  const REMOVE_BUTTON = 'Remove';
+  const handleARButtonTap = (itemName: string) => {
+    if (itemName === REMOVE_BUTTON) {
+      setNudgeTextWithReset('Tap an item to remove it.');
+    } else {
+      setNudgeTextWithReset(`Tap ground to place the ${itemName}`);
+    }
+  };
+
   const handleScreenshot = async () => {
     if (!libraryStatus?.granted) {
       const { status } = await requestLibraryPermission();
       if (status && status !== 'granted') {
-        setNudgeText(
+        setNudgeTextWithReset(
           'Camera permission is required to take a photo. Please enable access in device settings.'
         );
-        resetNudgeText(NUDGE_TEXT_TIMEOUT);
         return;
       }
     }
@@ -97,27 +106,34 @@ export function SuggestionUpload({
     return await augmentedRealitySceneRef?.current?.capture?.().then((uri) => {
       saveToLibraryAsync(uri)
         .then(() => {
-          setNudgeText('Screenshot saved');
-          resetNudgeText(NUDGE_TEXT_TIMEOUT);
+          setNudgeTextWithReset('Screenshot saved');
           showMenu();
         })
         .catch(() => {
-          setNudgeText('An issue occurred while saving the screenshot.');
-          resetNudgeText(NUDGE_TEXT_TIMEOUT);
+          setNudgeTextWithReset(
+            'An issue occurred while saving the screenshot.'
+          );
           showMenu();
         })
         .catch(() => {
-          setNudgeText('An issue occurred while taking the screenshot.');
-          resetNudgeText(NUDGE_TEXT_TIMEOUT);
+          setNudgeTextWithReset(
+            'An issue occurred while taking the screenshot.'
+          );
           showMenu();
         });
     });
   };
 
-  const resetNudgeText = (waitTime: number) => {
-    setTimeout(() => {
-      setNudgeText('');
-    }, waitTime);
+  const setNudgeTextWithReset = (text: string) => {
+    setNudgeText(text);
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+    setTimerId(
+      setTimeout(() => {
+        setNudgeText('');
+      }, NUDGE_TEXT_TIMEOUT)
+    );
   };
 
   return (
@@ -171,6 +187,7 @@ export function SuggestionUpload({
             <WebView
               ref={webViewRef}
               source={{ uri: 'https://tamucodesign.8thwall.app/tap-menu/' }}
+              onMessage={(event) => handleARButtonTap(event.nativeEvent.data)}
               allowsInlineMediaPlayback={true}
             />
           </ViewShot>
@@ -226,7 +243,7 @@ const styles = StyleSheet.create({
     ...Layout.row,
     ...Layout.justifyCenter,
     position: 'absolute',
-    bottom: Spacing.xxxlarge * 3.5,
+    bottom: Spacing.xxxlarge * 4,
     left: 0,
     right: 0,
     backgroundColor: tamuColors.transparent,

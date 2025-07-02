@@ -1,8 +1,4 @@
 import { ViewProps, StyleSheet, Image } from 'react-native';
-import { useState, useRef } from 'react';
-import { WebView } from 'react-native-webview';
-import { saveToLibraryAsync, usePermissions } from 'expo-media-library';
-import ViewShot from 'react-native-view-shot';
 
 import { ThemedView } from '@/components/ui/ThemedView';
 import { ThemedText } from '@/components/ui/ThemedText';
@@ -14,11 +10,9 @@ import { Border } from '@/constants/styles/Border';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useModal } from '@/components/provider/ModalProvider';
 import { ThemedModal } from '@/components/ui/ThemedModal';
-import { ImageButton } from '@/components/ui/ImageButton';
-import { CHEVRON_LEFT_SRC } from '@/constants/ImagePaths';
-import { useThemeColor } from '@/hooks/useThemeColor';
-
-const NUDGE_TEXT_TIMEOUT = 5000;
+import { AugmentedRealityUI } from '@/components/augmented-reality/AugmentedRealityUI';
+import { AugmentedRealityProvider } from '@/components/augmented-reality/AugmentedRealityProvider';
+import { AugmentedRealityScene } from '@/components/augmented-reality/AugmentedRealityScene';
 
 const SPARKLES_SRC = {
   light: require('@/assets/images/sparkles/sparkles-light.png'),
@@ -42,100 +36,9 @@ export function SuggestionUpload({
     openModal: openARModal,
     closeModal: closeARModal
   } = useModal('augmentedReality');
-  const [libraryStatus, requestLibraryPermission] = usePermissions();
-  const [nudgeText, setNudgeText] = useState('');
-  const [timerId, setTimerId] = useState<NodeJS.Timeout | null>(null);
-  const nudgeBackground = useThemeColor(
-    {},
-    'augmentedRealityTransparentBackground'
-  );
-  const augmentedRealitySceneRef = useRef<ViewShot>(null);
-  const webViewRef = useRef<WebView>(null);
-
-  const setMenuDisplay = (display: 'none' | 'flex') => {
-    return `
-    document.getElementById('container').style.display = '${display}';
-    true;
-    `;
-  };
-
-  const hideMenu = () => {
-    if (webViewRef.current) {
-      webViewRef.current.injectJavaScript(setMenuDisplay('none'));
-    }
-  };
-
-  const showMenu = () => {
-    if (webViewRef.current) {
-      webViewRef.current.injectJavaScript(setMenuDisplay('flex'));
-    }
-  };
 
   const handleBackButton = () => {
     closeARModal();
-  };
-
-  const REMOVE_BUTTON = 'Remove';
-  const handleARButtonTap = (itemName: string) => {
-    if (itemName === REMOVE_BUTTON) {
-      setNudgeTextWithReset('Tap an item to remove it.');
-    } else {
-      setNudgeTextWithReset(`Tap ground to place the ${itemName}`);
-    }
-  };
-
-  const SCREENSHOT_WAIT = 25; // milliseconds
-  const handleScreenshot = async () => {
-    if (!libraryStatus?.granted) {
-      const { status } = await requestLibraryPermission();
-      if (status && status !== 'granted') {
-        setNudgeTextWithReset(
-          'Camera permission is required to take a photo. Please enable access in device settings.'
-        );
-        return;
-      }
-    }
-
-    setNudgeTextWithReset('');
-    hideMenu();
-    // TO DO: countdown before taking screenshot
-    setTimeout(() => {
-      takeScreenshot();
-    }, SCREENSHOT_WAIT);
-  };
-
-  const takeScreenshot = async () => {
-    return await augmentedRealitySceneRef?.current?.capture?.().then((uri) => {
-      saveToLibraryAsync(uri)
-        .then(() => {
-          setNudgeTextWithReset('Screenshot saved');
-          showMenu();
-        })
-        .catch(() => {
-          setNudgeTextWithReset(
-            'An issue occurred while saving the screenshot.'
-          );
-          showMenu();
-        })
-        .catch(() => {
-          setNudgeTextWithReset(
-            'An issue occurred while taking the screenshot.'
-          );
-          showMenu();
-        });
-    });
-  };
-
-  const setNudgeTextWithReset = (text: string) => {
-    setNudgeText(text);
-    if (timerId) {
-      clearTimeout(timerId);
-    }
-    setTimerId(
-      setTimeout(() => {
-        setNudgeText('');
-      }, NUDGE_TEXT_TIMEOUT)
-    );
   };
 
   return (
@@ -158,41 +61,15 @@ export function SuggestionUpload({
         testID="ar-suggestion-modal"
       >
         <ThemedView style={styles.modalContainer}>
-          <ImageButton
-            source={CHEVRON_LEFT_SRC[colorScheme]}
-            size={24}
-            onPress={handleBackButton}
-            elevated={true}
-            style={styles.backButton}
-            testID="close-ar-modal-button"
-          />
-          <TextButton
-            type="secondary"
-            text="Take Screenshot"
-            onPress={handleScreenshot}
-            style={styles.screenshotButton}
-            testID="take-screenshot-button"
-          />
-          {nudgeText && (
-            <ThemedView style={styles.nudgeTextContainer}>
-              <ThemedText
-                style={[styles.nudgeText, { backgroundColor: nudgeBackground }]}
-              >
-                {nudgeText}
-              </ThemedText>
-            </ThemedView>
-          )}
-          <ViewShot
-            style={[styles.modalContentContainer]}
-            ref={augmentedRealitySceneRef}
-          >
-            <WebView
-              ref={webViewRef}
-              source={{ uri: 'https://tamucodesign.8thwall.app/tap-menu/' }}
-              onMessage={(event) => handleARButtonTap(event.nativeEvent.data)}
-              allowsInlineMediaPlayback={true}
+          <AugmentedRealityProvider>
+            <AugmentedRealityUI
+              handleBackButton={handleBackButton}
+              handleSaveSuggestion={() => {
+                // console.log('TODO: Save suggestion');
+              }}
             />
-          </ViewShot>
+            <AugmentedRealityScene />
+          </AugmentedRealityProvider>
         </ThemedView>
       </ThemedModal>
     </ThemedView>
@@ -222,38 +99,6 @@ const styles = StyleSheet.create({
     fontFamily: 'OpenSansSemiBold'
   },
   modalContainer: {
-    ...Layout.flex,
-    paddingVertical: Spacing.xxxlarge,
-    paddingHorizontal: Spacing.large
-  },
-  modalContentContainer: {
     ...Layout.flex
-  },
-  backButton: {
-    position: 'absolute',
-    top: Spacing.xxxlarge,
-    left: Spacing.large,
-    zIndex: 1
-  },
-  screenshotButton: {
-    position: 'absolute',
-    bottom: Spacing.xxxlarge,
-    right: Spacing.large,
-    zIndex: 1
-  },
-  nudgeTextContainer: {
-    ...Layout.row,
-    ...Layout.justifyCenter,
-    position: 'absolute',
-    bottom: Spacing.xxxlarge * 4,
-    left: 0,
-    right: 0,
-    backgroundColor: tamuColors.transparent,
-    zIndex: 1
-  },
-  nudgeText: {
-    textAlign: 'center',
-    padding: Spacing.small,
-    ...Border.roundedSmall
   }
 });

@@ -32,6 +32,7 @@ export const AugmentedRealityProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  // Shared state between Scene and UI
   const [nudgeText, setNudgeText] = useState('');
   const [hideTextTimerId, setTimerId] = useState<NodeJS.Timeout | null>(null);
   const webViewRef = useRef<WebView>(null);

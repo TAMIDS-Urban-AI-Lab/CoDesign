@@ -43,7 +43,6 @@ export function AugmentedRealityScene() {
         <WebView
           ref={webViewRef}
           source={{ uri: AR_SCENE_PROD_URL }}
-          /* handle messages from the webview */
           onMessage={handleWebViewMessage}
           /* Prevents weird full screen behavior on iOS */
           allowsInlineMediaPlayback={true}

@@ -8,6 +8,7 @@ const NUDGE_TEXT_TIMEOUT = 5000;
 export type AugmentedRealityContextType = {
   nudgeText: string;
   setNudgeTextWithReset: (text: string) => void;
+  maybeHideNudgeText: () => void;
   webViewRef: React.RefObject<WebView>;
   augmentedRealitySceneRef: React.RefObject<ViewShot>;
 };
@@ -50,11 +51,20 @@ export const AugmentedRealityProvider = ({
     );
   };
 
+  const maybeHideNudgeText = () => {
+    if (hideTextTimerId) {
+      clearTimeout(hideTextTimerId);
+      setTimerId(null);
+    }
+    setNudgeText('');
+  };
+
   return (
     <AugmentedRealityContext.Provider
       value={{
         nudgeText,
         setNudgeTextWithReset,
+        maybeHideNudgeText,
         webViewRef,
         augmentedRealitySceneRef
       }}

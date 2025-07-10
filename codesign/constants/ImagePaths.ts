@@ -26,3 +26,8 @@ export const ADD_SRC = {
 };
 
 export const CAPTURE_BUTTON_SRC = require('@/assets/images/capture-button.png');
+
+export const LEFT_ARROW_SRC = {
+  light: require('@/assets/images/left-arrow/left-arrow-light.png'),
+  dark: require('@/assets/images/left-arrow/left-arrow-dark.png')
+};

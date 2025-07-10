@@ -6,13 +6,14 @@ import { ThemedText } from '@/components/ui/ThemedText';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { CHEVRON_LEFT_SRC, CAMERA_SRC, ADD_SRC } from '@/constants/ImagePaths';
+import { CAMERA_SRC, ADD_SRC } from '@/constants/ImagePaths';
 import { Spacing } from '@/constants/styles/Spacing';
 import { Layout } from '@/constants/styles/Layout';
 import { tamuColors } from '@/constants/Colors';
 import { Border } from '@/constants/styles/Border';
 import { useAugmentedRealityContext } from '@/components/augmented-reality/AugmentedRealityProvider';
 import { ScreenshotCapture } from '@/components/augmented-reality/ScreenshotCapture';
+import { LEFT_ARROW_SRC } from '@/constants/ImagePaths';
 
 type AR_UI_TAB = 'INITIAL' | 'ITEM_MENU' | 'SCREEN_CAPTURE';
 
@@ -91,12 +92,14 @@ export function AugmentedRealityUI({
   return (
     <>
       <ImageButton
-        source={CHEVRON_LEFT_SRC[colorScheme]}
-        size={24}
+        source={LEFT_ARROW_SRC[colorScheme]}
+        size={30}
+        spacing={Spacing.medium}
         onPress={handleBackButton}
-        elevated={true}
-        style={styles.backButton}
+        style={[styles.backButton, { backgroundColor: transparentBackground }]}
         testID="close-ar-modal-button"
+        transparent={true}
+        accessibilityLabel="Close Suggestion Modal"
       />
       {isCameraButtonActive && (
         <ScreenshotCapture
@@ -118,10 +121,10 @@ export function AugmentedRealityUI({
               styles.itemMenuButton,
               { backgroundColor: transparentBackground }
             ]}
-            accessibilityViewIsModal
             testID="item-menu-button-tab"
             transparent={true}
             aria-selected={isItemMenuButtonActive}
+            accessibilityLabel="Add items as suggestions"
           />
         </>
       )}
@@ -135,8 +138,10 @@ export function AugmentedRealityUI({
           styles.cameraButton,
           { backgroundColor: transparentBackground }
         ]}
+        transparent={true}
         testID="camera-button-tab"
         aria-selected={isCameraButtonActive}
+        accessibilityLabel="Camera view to save suggestions"
       />
       {nudgeText && (
         <ThemedView style={styles.nudgeTextContainer}>

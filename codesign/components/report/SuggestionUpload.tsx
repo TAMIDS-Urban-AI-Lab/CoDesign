@@ -8,6 +8,10 @@ import { Spacing } from '@/constants/styles/Spacing';
 import { tamuColors } from '@/constants/Colors';
 import { Border } from '@/constants/styles/Border';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useModal } from '@/components/provider/ModalProvider';
+import { ThemedModal } from '@/components/ui/ThemedModal';
+import { AugmentedRealityUI } from '@/components/augmented-reality/AugmentedRealityUI';
+import { AugmentedRealityProvider } from '@/components/augmented-reality/AugmentedRealityProvider';
 
 const SPARKLES_SRC = {
   light: require('@/assets/images/sparkles/sparkles-light.png'),
@@ -49,6 +53,23 @@ export function SuggestionUpload({
         </ThemedText>
         <TextButton type="secondary" text="SUGGEST" onPress={openARModal} />
       </ThemedView>
+
+      <ThemedModal
+        animationType="slide"
+        visible={isVisible}
+        testID="ar-suggestion-modal"
+      >
+        <ThemedView style={styles.modalContainer}>
+          <AugmentedRealityProvider>
+            <AugmentedRealityUI
+              handleBackButton={handleBackButton}
+              handleSaveSuggestion={() => {
+                // console.log('TODO: Save suggestion');
+              }}
+            />
+          </AugmentedRealityProvider>
+        </ThemedView>
+      </ThemedModal>
     </ThemedView>
   );
 }
@@ -74,5 +95,8 @@ const styles = StyleSheet.create({
     fontSize: 10,
     lineHeight: 15,
     fontFamily: 'OpenSansSemiBold'
+  },
+  modalContainer: {
+    ...Layout.flex
   }
 });

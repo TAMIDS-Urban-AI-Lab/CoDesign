@@ -24,3 +24,5 @@ export const ADD_SRC = {
     inactive: require('@/assets/images/plus/plus-dark-inactive.png')
   }
 };
+
+export const CAPTURE_BUTTON_SRC = require('@/assets/images/capture-button.png');

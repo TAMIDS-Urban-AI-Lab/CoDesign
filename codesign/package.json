@@ -6,6 +6,7 @@
     "start": "expo start",
     "android": "expo run:android",
     "ios": "USE_MIRAGE=true expo run:ios",
+    "ios-device": "USE_MIRAGE=true expo run:ios --device",
     "clean-ios": "expo install && npx expo prebuild --clean",
     "web": "expo start --web",
     "test": "jest --watchAll",

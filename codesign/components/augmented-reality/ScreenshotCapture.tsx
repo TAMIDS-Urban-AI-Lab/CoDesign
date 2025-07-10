@@ -80,6 +80,7 @@ export function ScreenshotCapture({
             transparent={true}
             onPress={handleScreenshot}
             testID="screenshot-button"
+            accessibilityLabel="Take Screenshot"
           />
         </ThemedView>
       </ThemedView>

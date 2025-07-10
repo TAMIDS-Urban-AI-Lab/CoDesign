@@ -44,7 +44,7 @@ export function TextButton({
     <Pressable style={[styles.buttonBase, buttonStyle, style]} {...rest}>
       {children}
       <ThemedText
-        type="title5"
+        type="buttonText"
         style={[textColor, textCapitalization, textStyle]}
       >
         {text}
@@ -56,7 +56,7 @@ export function TextButton({
 const styles = StyleSheet.create({
   buttonBase: {
     height: Spacing.xxlarge,
-    paddingHorizontal: Spacing.large,
+    paddingHorizontal: Spacing.medium,
     ...Layout.row,
     ...Layout.center,
     gap: Spacing.small

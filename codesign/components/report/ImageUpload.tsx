@@ -33,7 +33,10 @@ import { ImageDetails } from '@/types/Report';
 export const IMAGE_UPLOAD_LIMIT = 3;
 
 const CONTAINER_HEIGHT = 120;
-const REMOVE_IMAGE_SRC = require('@/assets/images/circle-xmark.png');
+const CLOSE_IMAGE_SRC = {
+  light: require('@/assets/images/circle-xmark/circle-xmark-light.png'),
+  dark: require('@/assets/images/circle-xmark/circle-xmark-dark.png')
+};
 const MAX_MB = 20;
 const MAX_IMAGE_SIZE = MAX_MB * 1024 * 1024;
 const MAX_RESOLUTION = 1080;
@@ -56,7 +59,7 @@ export function ImageUpload({
   const [cameraStatus, requestCameraPermission] = useCameraPermissions();
   const [uploadErrorText, setUploadErrorText] = useState<string | null>(null);
   const { showActionSheetWithOptions } = useActionSheet();
-  const userInterfaceStyle = (useColorScheme() ?? 'light') as 'light' | 'dark';
+  const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
 
   const imagePickerOptions: ImagePickerOptions = {
     mediaTypes: ['images'],
@@ -196,7 +199,7 @@ export function ImageUpload({
       {
         options,
         cancelButtonIndex,
-        userInterfaceStyle
+        userInterfaceStyle: colorScheme
       },
       (selectedIndex?: number) => {
         if (selectedIndex === undefined) return;
@@ -255,6 +258,7 @@ export function ImageUpload({
                 image={image}
                 removeImage={removeImage}
                 index={index}
+                colorScheme={colorScheme}
               />
             );
           })}
@@ -306,17 +310,19 @@ function UploadedImage({
   accessibilityLabel,
   index,
   removeImage,
-  image
+  image,
+  colorScheme
 }: {
   accessibilityLabel: string;
   index: number;
   removeImage: CallableFunction;
   image: ImageDetails;
+  colorScheme: 'light' | 'dark';
 }) {
   return (
     <ThemedView key={`uploaded_${index}`} style={styles.imageContainer}>
       <ImageButton
-        source={REMOVE_IMAGE_SRC}
+        source={CLOSE_IMAGE_SRC[colorScheme]}
         size={24}
         transparent={true}
         style={styles.removeImageButton}

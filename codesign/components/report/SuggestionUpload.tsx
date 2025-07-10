@@ -12,7 +12,6 @@ import { useModal } from '@/components/provider/ModalProvider';
 import { ThemedModal } from '@/components/ui/ThemedModal';
 import { AugmentedRealityUI } from '@/components/augmented-reality/AugmentedRealityUI';
 import { AugmentedRealityProvider } from '@/components/augmented-reality/AugmentedRealityProvider';
-import { AugmentedRealityScene } from '@/components/augmented-reality/AugmentedRealityScene';
 
 const SPARKLES_SRC = {
   light: require('@/assets/images/sparkles/sparkles-light.png'),
@@ -68,7 +67,6 @@ export function SuggestionUpload({
                 // console.log('TODO: Save suggestion');
               }}
             />
-            <AugmentedRealityScene />
           </AugmentedRealityProvider>
         </ThemedView>
       </ThemedModal>

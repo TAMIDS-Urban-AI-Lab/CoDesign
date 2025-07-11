@@ -18,6 +18,7 @@ type ImageButtonProps = PressableProps & {
   size?: number;
   elevated?: boolean;
   source: ImageSourcePropType;
+  spacing?: number;
 };
 
 export function ImageButton({
@@ -26,12 +27,13 @@ export function ImageButton({
   elevated = false,
   size = 24,
   source,
+  spacing = Spacing.large,
   ...rest
 }: ImageButtonProps) {
   const imageSize = { width: size, height: size };
   const buttonSize = {
-    width: size + Spacing.large,
-    height: size + Spacing.large
+    width: size + spacing,
+    height: size + spacing
   };
   const elevation = elevated ? Border.elevated : {};
 

@@ -7,6 +7,7 @@ export type ThemedViewProps = ViewProps & {
   lightColor?: string;
   darkColor?: string;
   transparent?: boolean;
+  ref?: React.Ref<View>;
 };
 
 export function ThemedView({

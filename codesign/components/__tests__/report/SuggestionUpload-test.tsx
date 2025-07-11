@@ -1,11 +1,16 @@
 import { render, screen } from '@testing-library/react-native';
 
 import { SuggestionUpload } from '@/components/report/SuggestionUpload';
+import { ModalProvider } from '@/components/provider/ModalProvider';
 
 describe('<SuggestionUpload />', () => {
   test('renders suggestion upload with message and button', () => {
     // When view the Suggestion Upload component
-    render(<SuggestionUpload onChange={jest.fn()} value={''} />);
+    render(
+      <ModalProvider>
+        <SuggestionUpload onChange={jest.fn()} value={''} />
+      </ModalProvider>
+    );
 
     // Then show the suggestion message
     expect(

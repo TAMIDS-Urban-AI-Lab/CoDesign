@@ -12,9 +12,11 @@ export function mockRNWebView() {
   });
 
   jest.mock('react-native-webview', () => {
+    const { forwardRef } = jest.requireActual('react');
     return {
       __esModule: true,
-      WebView: mockWebView
+      WebView: forwardRef(mockWebView),
+      WebViewMessageEvent: jest.fn()
     };
   });
 

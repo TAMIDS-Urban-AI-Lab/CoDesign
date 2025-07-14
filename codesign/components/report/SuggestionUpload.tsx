@@ -30,7 +30,7 @@ export function SuggestionUpload({
   value: suggestion
 }: SuggestionUploadProps) {
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
-  const { isVisible } = useModal('augmentedReality');
+  const { isVisible, openModal: openARModal } = useModal('augmentedReality');
 
   return (
     <ThemedView style={style}>
@@ -43,13 +43,7 @@ export function SuggestionUpload({
         <ThemedText style={styles.message}>
           Would you like to suggest an improvement?
         </ThemedText>
-        <TextButton
-          type="secondary"
-          text="SUGGEST"
-          onPress={() => {
-            // TODO: Implement suggestion upload functionality
-          }}
-        />
+        <TextButton type="secondary" text="SUGGEST" onPress={openARModal} />
       </ThemedView>
 
       <ThemedModal

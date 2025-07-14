@@ -19,7 +19,8 @@ export const DefaultIndoorReport: ReportFormDetails = {
   },
   coordinates: ALBRITTON_BELL_TOWER,
   createdAt: new Date(),
-  images: []
+  images: [],
+  suggestions: []
 };
 
 export const DefaultOutdoorReport: ReportFormDetails = {
@@ -31,5 +32,6 @@ export const DefaultOutdoorReport: ReportFormDetails = {
   reportLocationDetails: {},
   coordinates: ALBRITTON_BELL_TOWER,
   createdAt: new Date(),
-  images: []
+  images: [],
+  suggestions: []
 };

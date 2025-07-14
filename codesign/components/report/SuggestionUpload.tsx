@@ -14,11 +14,15 @@ import { ARProvider } from '@/components/augmented-reality/ARProvider';
 import { ARScene } from '@/components/augmented-reality/ARScene';
 import { ARUserInterface } from '@/components/augmented-reality/ARUserInterface';
 import { ImageDetails } from '@/types/Report';
+import { ImageButton } from '@/components/ui/ImageButton';
+import { CLOSE_IMAGE_SRC } from '@/constants/ImagePaths';
 
 const SPARKLES_SRC = {
   light: require('@/assets/images/sparkles/sparkles-light.png'),
   dark: require('@/assets/images/sparkles/sparkles-dark.png')
 };
+
+const SUGGESTION_IMAGE_HEIGHT = 90;
 
 type SuggestionUploadProps = {
   style?: ViewProps['style'];
@@ -29,7 +33,7 @@ type SuggestionUploadProps = {
 export function SuggestionUpload({
   style,
   onChange: saveSuggestionToForm,
-  value: suggestion
+  value: suggestions
 }: SuggestionUploadProps) {
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
   const {
@@ -50,10 +54,36 @@ export function SuggestionUpload({
           style={styles.sparklesImage}
           testID="suggestion-sparkles-image"
         />
-        <ThemedText style={styles.message}>
-          Would you like to suggest an improvement?
-        </ThemedText>
-        <TextButton type="secondary" text="SUGGEST" onPress={openARModal} />
+        {suggestions && suggestions.length > 0 && (
+          <>
+            <ThemedText style={styles.message}>Suggestion Added</ThemedText>
+            <ThemedView style={styles.imageContainer}>
+              <ImageButton
+                source={CLOSE_IMAGE_SRC[colorScheme]}
+                size={24}
+                transparent={true}
+                style={styles.removeImageButton}
+                onPress={() => saveSuggestionToForm([])}
+                accessibilityLabel={`Remove suggestion`}
+                testID="remove-suggestion-button"
+              />
+              <Image
+                source={{ uri: suggestions[0].uri }}
+                style={styles.image}
+                accessibilityLabel={'Uploaded suggestion'}
+                testID={`uploaded-suggestion`}
+              />
+            </ThemedView>
+          </>
+        )}
+        {(!suggestions || suggestions.length === 0) && (
+          <>
+            <ThemedText style={styles.message}>
+              Suggest an improvement with Augmented Reality
+            </ThemedText>
+            <TextButton type="secondary" text="SUGGEST" onPress={openARModal} />
+          </>
+        )}
       </ThemedView>
 
       <ThemedModal
@@ -102,5 +132,24 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     ...Layout.flex
+  },
+  imageContainer: {
+    ...Layout.flex,
+    ...Layout.absolute,
+    ...Border.elevatedSmall,
+    ...Border.roundedSmall,
+    width: 'auto',
+    height: SUGGESTION_IMAGE_HEIGHT
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    ...Border.roundedSmall
+  },
+  removeImageButton: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 1
   }
 });

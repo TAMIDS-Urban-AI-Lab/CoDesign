@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import ViewShot from 'react-native-view-shot';
-import { WebView, WebViewMessageEvent } from 'react-native-webview';
+import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 
 import { Layout } from '@/constants/styles/Layout';
 import { useAugmentedRealityContext } from '@/components/augmented-reality/AugmentedRealityProvider';

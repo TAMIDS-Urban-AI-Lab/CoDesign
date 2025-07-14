@@ -13,6 +13,7 @@ import { ThemedModal } from '@/components/ui/ThemedModal';
 import { ARProvider } from '@/components/augmented-reality/ARProvider';
 import { ARScene } from '@/components/augmented-reality/ARScene';
 import { ARUserInterface } from '@/components/augmented-reality/ARUserInterface';
+import { ImageDetails } from '@/types/Report';
 
 const SPARKLES_SRC = {
   light: require('@/assets/images/sparkles/sparkles-light.png'),
@@ -22,12 +23,12 @@ const SPARKLES_SRC = {
 type SuggestionUploadProps = {
   style?: ViewProps['style'];
   onChange: (...event: any[]) => void;
-  value: string;
+  value: ImageDetails[];
 };
 
 export function SuggestionUpload({
   style,
-  onChange,
+  onChange: saveSuggestionToForm,
   value: suggestion
 }: SuggestionUploadProps) {
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
@@ -64,8 +65,9 @@ export function SuggestionUpload({
           <ARProvider>
             <ARUserInterface
               handleBackButton={handleBackButton}
-              handleSaveSuggestion={() => {
-                // console.log('TODO: Save suggestion');
+              handleSaveSuggestion={(suggestion) => {
+                saveSuggestionToForm([suggestion]);
+                closeARModal();
               }}
             />
             <ARScene />

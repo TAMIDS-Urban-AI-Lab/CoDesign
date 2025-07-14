@@ -1,5 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { saveToLibraryAsync, usePermissions } from 'expo-media-library';
+import {
+  usePermissions,
+  createAssetAsync,
+  type Asset
+} from 'expo-media-library';
 
 import { ThemedView } from '@/components/ui/ThemedView';
 import { ImageButton } from '@/components/ui/ImageButton';
@@ -7,12 +11,14 @@ import { useARContext } from '@/components/augmented-reality/ARProvider';
 import { Spacing } from '@/constants/styles/Spacing';
 import { Layout } from '@/constants/styles/Layout';
 import { CAPTURE_BUTTON_SRC } from '@/constants/ImagePaths';
+import { convertImageToBase64 } from '@/utils/Image';
+import { ImageDetails } from '@/types/Report';
 
 const SCREENSHOT_WAIT_TIME = 25;
 const CAPTURE_BUTTON_SIZE = 75;
 
 type ScreenshotCaptureProps = {
-  handleSaveSuggestion: () => void;
+  handleSaveSuggestion: (suggestion: ImageDetails) => void;
   setShowEntireUI: (show: boolean) => void;
 };
 
@@ -30,7 +36,7 @@ export function ScreenshotCapture({
       const { status } = await requestLibraryPermission();
       if (status && status !== 'granted') {
         setNudgeTextWithReset(
-          'Camera permission is required to take a photo. Please enable access in device settings.'
+          'Library access is required to save the photo. Please enable access in device settings.'
         );
         return;
       }
@@ -45,15 +51,30 @@ export function ScreenshotCapture({
 
   const takeScreenshot = async () => {
     return await ARSceneRef?.current?.capture?.().then((uri) => {
-      saveToLibraryAsync(uri)
-        .then(() => {
+      createAssetAsync(uri)
+        .then((asset: Asset) => {
           setNudgeTextWithReset('Screenshot saved');
           setShowEntireUI(true);
-          handleSaveSuggestion();
+          convertImageToBase64(uri)
+            .then((base64) => {
+              const screenshotImage: ImageDetails = {
+                uri: asset.uri,
+                base64: base64
+              };
+              // Save to form
+              handleSaveSuggestion(screenshotImage);
+              setShowEntireUI(true);
+            })
+            .catch(() => {
+              setNudgeTextWithReset(
+                'An issue occurred while adding the suggestion to the report'
+              );
+              setShowEntireUI(true);
+            });
         })
         .catch(() => {
           setNudgeTextWithReset(
-            'An issue occurred while saving the screenshot.'
+            'An issue occurred while saving the screenshot to library'
           );
           setShowEntireUI(true);
         })

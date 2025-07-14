@@ -1,3 +1,5 @@
+import { readAsStringAsync, EncodingType } from 'expo-file-system';
+
 import { ImageDetails } from '@/types/Report';
 
 export const getImageSrc = (
@@ -17,4 +19,16 @@ export const getImageSrc = (
 
 type ImageSource = {
   uri: string;
+};
+
+/** Helper function to convert image file to base64 string */
+export const convertImageToBase64 = async (fileUri: string) => {
+  try {
+    const base64Data = await readAsStringAsync(fileUri, {
+      encoding: EncodingType.Base64
+    });
+    return base64Data;
+  } catch {
+    throw new Error('Error converting image to base 64');
+  }
 };

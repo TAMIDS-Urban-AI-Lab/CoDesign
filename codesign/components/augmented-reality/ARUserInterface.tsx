@@ -14,6 +14,7 @@ import { Border } from '@/constants/styles/Border';
 import { useARContext } from '@/components/augmented-reality/ARProvider';
 import { ScreenshotCapture } from '@/components/augmented-reality/ScreenshotCapture';
 import { LEFT_ARROW_SRC } from '@/constants/ImagePaths';
+import { ImageDetails } from '@/types/Report';
 
 type AR_UI_TAB = 'INITIAL' | 'ITEM_MENU' | 'SCREEN_CAPTURE';
 
@@ -28,7 +29,7 @@ export function ARUserInterface({
   handleSaveSuggestion
 }: {
   handleBackButton: () => void;
-  handleSaveSuggestion: () => void;
+  handleSaveSuggestion: (suggestion: ImageDetails) => void;
 }) {
   const { nudgeText, setNudgeTextWithReset, maybeHideNudgeText, webViewRef } =
     useARContext();

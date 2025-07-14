@@ -1,3 +1,8 @@
+export const CLOSE_IMAGE_SRC = {
+  light: require('@/assets/images/circle-xmark/circle-xmark-light.png'),
+  dark: require('@/assets/images/circle-xmark/circle-xmark-dark.png')
+};
+
 export const CHEVRON_LEFT_SRC = {
   light: require('@/assets/images/back-arrow.png'),
   dark: require('@/assets/images/back-arrow.png')

@@ -28,20 +28,18 @@ export function AugmentedRealityScene() {
   };
 
   return (
-    <>
-      <ViewShot
-        style={[styles.modalContentContainer]}
-        ref={augmentedRealitySceneRef}
-      >
-        <WebView
-          ref={webViewRef}
-          source={{ uri: AR_SCENE_PROD_URL }}
-          onMessage={handleWebViewMessage}
-          /* Prevents weird full screen behavior on iOS */
-          allowsInlineMediaPlayback={true}
-        />
-      </ViewShot>
-    </>
+    <ViewShot
+      style={[styles.modalContentContainer]}
+      ref={augmentedRealitySceneRef}
+    >
+      <WebView
+        ref={webViewRef}
+        source={{ uri: AR_SCENE_PROD_URL }}
+        onMessage={handleWebViewMessage}
+        /* Prevents weird full screen behavior on iOS */
+        allowsInlineMediaPlayback={true}
+      />
+    </ViewShot>
   );
 }
 

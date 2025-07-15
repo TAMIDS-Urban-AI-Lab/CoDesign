@@ -12,6 +12,7 @@ import { useModal } from '@/components/provider/ModalProvider';
 import { ThemedModal } from '@/components/ui/ThemedModal';
 import { AugmentedRealityProvider } from '@/components/augmented-reality/AugmentedRealityProvider';
 import { AugmentedRealityScene } from '@/components/augmented-reality/AugmentedRealityScene';
+import { AugmentedRealityUI } from '@/components/augmented-reality/AugmentedRealityUI';
 
 const SPARKLES_SRC = {
   light: require('@/assets/images/sparkles/sparkles-light.png'),
@@ -30,7 +31,15 @@ export function SuggestionUpload({
   value: suggestion
 }: SuggestionUploadProps) {
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
-  const { isVisible, openModal: openARModal } = useModal('augmentedReality');
+  const {
+    isVisible,
+    openModal: openARModal,
+    closeModal: closeARModal
+  } = useModal('augmentedReality');
+
+  const handleBackButton = () => {
+    closeARModal();
+  };
 
   return (
     <ThemedView style={style}>
@@ -53,6 +62,12 @@ export function SuggestionUpload({
       >
         <ThemedView style={styles.modalContainer}>
           <AugmentedRealityProvider>
+            <AugmentedRealityUI
+              handleBackButton={handleBackButton}
+              handleSaveSuggestion={() => {
+                // console.log('TODO: Save suggestion');
+              }}
+            />
             <AugmentedRealityScene />
           </AugmentedRealityProvider>
         </ThemedView>

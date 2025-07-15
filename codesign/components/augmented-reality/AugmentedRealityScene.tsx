@@ -4,14 +4,7 @@ import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 
 import { Layout } from '@/constants/styles/Layout';
 import { useAugmentedRealityContext } from '@/components/augmented-reality/AugmentedRealityProvider';
-
-const AR_ITEM_NAMES = {
-  TRASH: 'Trash',
-  BUS_STOP: 'Bus Stop',
-  BENCH: 'Bench',
-  REMOVE: 'Remove'
-};
-const AR_ITEM_NAMES_LIST = Object.values(AR_ITEM_NAMES);
+import { AR_ITEMS, AR_ITEM_NAMES } from '@/constants/augmented-reality/Items';
 
 const AR_SCENE_PROD_URL = 'https://tamucodesign.8thwall.app/tap-menu/';
 
@@ -21,13 +14,13 @@ export function AugmentedRealityScene() {
 
   const handleWebViewMessage = (event: WebViewMessageEvent) => {
     const webViewMessage = event.nativeEvent.data;
-    if (AR_ITEM_NAMES_LIST.includes(webViewMessage)) {
+    if (AR_ITEM_NAMES.includes(webViewMessage)) {
       handleSelectItem(webViewMessage);
     }
   };
 
   const handleSelectItem = (itemName: string) => {
-    if (itemName === AR_ITEM_NAMES.REMOVE) {
+    if (itemName === AR_ITEMS.REMOVE) {
       setNudgeTextWithReset('Tap an item to remove it.');
     } else {
       setNudgeTextWithReset(`Tap ground to place the ${itemName}`);

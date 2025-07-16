@@ -10,9 +10,9 @@ import { Border } from '@/constants/styles/Border';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useModal } from '@/components/provider/ModalProvider';
 import { ThemedModal } from '@/components/ui/ThemedModal';
-import { AugmentedRealityProvider } from '@/components/augmented-reality/AugmentedRealityProvider';
-import { AugmentedRealityScene } from '@/components/augmented-reality/AugmentedRealityScene';
-import { AugmentedRealityUI } from '@/components/augmented-reality/AugmentedRealityUI';
+import { ARProvider } from '@/components/augmented-reality/ARProvider';
+import { ARScene } from '@/components/augmented-reality/ARScene';
+import { ARUserInterface } from '@/components/augmented-reality/ARUserInterface';
 import { ImageDetails } from '@/types/Report';
 import { ImageButton } from '@/components/ui/ImageButton';
 import { CLOSE_IMAGE_SRC } from '@/constants/ImagePaths';
@@ -95,8 +95,8 @@ export function SuggestionUpload({
         testID="ar-suggestion-modal"
       >
         <ThemedView style={styles.modalContainer}>
-          <AugmentedRealityProvider>
-            <AugmentedRealityUI
+          <ARProvider>
+            <ARUserInterface
               suggestions={suggestions}
               handleBackButton={handleBackButton}
               handleSaveSuggestions={(suggestions: ImageDetails[]) => {
@@ -104,8 +104,8 @@ export function SuggestionUpload({
               }}
               closeARModal={closeARModal}
             />
-            <AugmentedRealityScene />
-          </AugmentedRealityProvider>
+            <ARScene />
+          </ARProvider>
         </ThemedView>
       </ThemedModal>
     </ThemedView>

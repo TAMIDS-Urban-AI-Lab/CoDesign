@@ -5,39 +5,31 @@ import ViewShot from 'react-native-view-shot';
 
 const NUDGE_TEXT_TIMEOUT = 5000;
 
-export type AugmentedRealityContextType = {
+export type ARContextType = {
   nudgeText: string;
   setNudgeTextWithReset: (text: string) => void;
   maybeHideNudgeText: () => void;
   webViewRef: React.RefObject<WebView>;
-  augmentedRealitySceneRef: React.RefObject<ViewShot>;
+  ARSceneRef: React.RefObject<ViewShot>;
 };
 
-const AugmentedRealityContext = createContext<
-  AugmentedRealityContextType | undefined
->(undefined);
+const ARContext = createContext<ARContextType | undefined>(undefined);
 
 // Custom hook to access context
-export const useAugmentedRealityContext = () => {
-  const context = useContext(AugmentedRealityContext);
+export const useARContext = () => {
+  const context = useContext(ARContext);
   if (!context) {
-    throw new Error(
-      'useAugmentedRealityContext must be used within an AugmentedRealityProvider component'
-    );
+    throw new Error('useARContext must be used within an ARProvider component');
   }
   return context;
 };
 
-export const AugmentedRealityProvider = ({
-  children
-}: {
-  children: React.ReactNode;
-}) => {
+export const ARProvider = ({ children }: { children: React.ReactNode }) => {
   // Shared state between Scene and UI
   const [nudgeText, setNudgeText] = useState('');
   const [hideTextTimerId, setTimerId] = useState<NodeJS.Timeout | null>(null);
   const webViewRef = useRef<WebView>(null);
-  const augmentedRealitySceneRef = useRef<ViewShot>(null);
+  const ARSceneRef = useRef<ViewShot>(null);
 
   const setNudgeTextWithReset = (text: string) => {
     setNudgeText(text);
@@ -60,16 +52,16 @@ export const AugmentedRealityProvider = ({
   };
 
   return (
-    <AugmentedRealityContext.Provider
+    <ARContext.Provider
       value={{
         nudgeText,
         setNudgeTextWithReset,
         maybeHideNudgeText,
         webViewRef,
-        augmentedRealitySceneRef
+        ARSceneRef
       }}
     >
       {children}
-    </AugmentedRealityContext.Provider>
+    </ARContext.Provider>
   );
 };

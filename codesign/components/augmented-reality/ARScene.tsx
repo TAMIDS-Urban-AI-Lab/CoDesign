@@ -3,7 +3,7 @@ import ViewShot from 'react-native-view-shot';
 import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 
 import { Layout } from '@/constants/styles/Layout';
-import { useAugmentedRealityContext } from '@/components/augmented-reality/AugmentedRealityProvider';
+import { useARContext } from '@/components/augmented-reality/ARProvider';
 
 const AR_ITEM_NAMES = {
   TRASH: 'Trash',
@@ -15,9 +15,8 @@ const AR_ITEM_NAMES_LIST = Object.values(AR_ITEM_NAMES);
 
 const AR_SCENE_PROD_URL = 'https://tamucodesign.8thwall.app/tap-menu/';
 
-export function AugmentedRealityScene() {
-  const { setNudgeTextWithReset, webViewRef, augmentedRealitySceneRef } =
-    useAugmentedRealityContext();
+export function ARScene() {
+  const { setNudgeTextWithReset, webViewRef, ARSceneRef } = useARContext();
 
   const handleWebViewMessage = (event: WebViewMessageEvent) => {
     const webViewMessage = event.nativeEvent.data;
@@ -36,10 +35,7 @@ export function AugmentedRealityScene() {
 
   return (
     <>
-      <ViewShot
-        style={[styles.modalContentContainer]}
-        ref={augmentedRealitySceneRef}
-      >
+      <ViewShot style={[styles.modalContentContainer]} ref={ARSceneRef}>
         <WebView
           ref={webViewRef}
           source={{ uri: AR_SCENE_PROD_URL }}

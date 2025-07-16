@@ -14,7 +14,7 @@ import { CAPTURE_BUTTON_SRC } from '@/constants/ImagePaths';
 import { convertImageToBase64 } from '@/utils/Image';
 import { ImageDetails } from '@/types/Report';
 
-const SCREENSHOT_WAIT_TIME = 25;
+const SCREENSHOT_WAIT_TIME = 5;
 const CAPTURE_BUTTON_SIZE = 75;
 
 type ScreenshotCaptureProps = {

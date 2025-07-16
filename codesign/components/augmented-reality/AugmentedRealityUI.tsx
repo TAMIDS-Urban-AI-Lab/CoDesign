@@ -1,4 +1,4 @@
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useState } from 'react';
 
 import { ImageButton } from '@/components/ui/ImageButton';
@@ -15,7 +15,14 @@ import { useAugmentedRealityContext } from '@/components/augmented-reality/Augme
 import { ScreenshotCapture } from '@/components/augmented-reality/ScreenshotCapture';
 import { LEFT_ARROW_SRC } from '@/constants/ImagePaths';
 import { ImageDetails } from '@/types/Report';
-import { TextButton } from '../ui/TextButton';
+import { TextButton } from '@/components/ui/TextButton';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  Easing,
+  SharedValue
+} from 'react-native-reanimated';
 
 type AR_UI_TAB =
   | 'INITIAL'
@@ -53,6 +60,19 @@ export function AugmentedRealityUI({
 
   const [currentTab, setCurrentTab] = useState<AR_UI_TAB>(AR_UI_TABS.INITIAL);
   const [showEntireUI, setShowEntireUI] = useState<boolean>(true);
+
+  const suggestionImageOpacity: SharedValue<number> = useSharedValue(0);
+  const suggestionImageScale: SharedValue<number> = useSharedValue(0.95);
+
+  const suggestionImageAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: suggestionImageOpacity.value,
+    transform: [{ scale: suggestionImageScale.value }]
+  }));
+
+  /* Hide UI when taking a screenshot */
+  if (!showEntireUI) {
+    return null;
+  }
 
   const setMenuDisplay = (display: 'none' | 'flex') => {
     return `
@@ -113,10 +133,11 @@ export function AugmentedRealityUI({
     AR_UI_TABS.ITEM_MENU
   ].includes(currentTab);
 
-  /* Hide UI when taking a screenshot */
-  if (!showEntireUI) {
-    return null;
-  }
+  maybeAnimatesuggestionImage(
+    isConfirmSuggestionTabActive,
+    suggestionImageOpacity,
+    suggestionImageScale
+  );
 
   return (
     <>
@@ -192,9 +213,9 @@ export function AugmentedRealityUI({
           ]}
           transparent={true}
         >
-          <Image
+          <Animated.Image
             source={{ uri: suggestions[0].uri }}
-            style={styles.suggestionImage}
+            style={[styles.suggestionImage, suggestionImageAnimatedStyle]}
             accessibilityLabel={'Uploaded suggestion'}
             testID={`uploaded-suggestion`}
           />
@@ -234,6 +255,26 @@ export function AugmentedRealityUI({
       )}
     </>
   );
+}
+
+function maybeAnimatesuggestionImage(
+  isConfirmSuggestionTabActive: boolean,
+  suggestionImageOpacity: SharedValue<number>,
+  suggestionImageScale: SharedValue<number>
+) {
+  if (isConfirmSuggestionTabActive) {
+    suggestionImageOpacity.value = withTiming(1, {
+      duration: 400,
+      easing: Easing.out(Easing.ease)
+    });
+    suggestionImageScale.value = withTiming(1, {
+      duration: 400,
+      easing: Easing.out(Easing.ease)
+    });
+  } else {
+    suggestionImageOpacity.value = 0;
+    suggestionImageScale.value = 0.95;
+  }
 }
 
 const styles = StyleSheet.create({

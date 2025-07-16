@@ -46,6 +46,9 @@ export function SuggestionUpload({
     closeARModal();
   };
 
+  const noSuggestions = !suggestions || suggestions.length === 0;
+  const hasSuggestions = suggestions && suggestions.length > 0;
+
   return (
     <ThemedView style={style}>
       <ThemedView style={styles.container}>
@@ -54,7 +57,7 @@ export function SuggestionUpload({
           style={styles.sparklesImage}
           testID="suggestion-sparkles-image"
         />
-        {suggestions && suggestions.length > 0 && (
+        {hasSuggestions && (
           <>
             <ThemedText style={styles.message}>Suggestion Added</ThemedText>
             <ThemedView style={styles.imageContainer}>
@@ -76,7 +79,7 @@ export function SuggestionUpload({
             </ThemedView>
           </>
         )}
-        {(!suggestions || suggestions.length === 0) && (
+        {noSuggestions && (
           <>
             <ThemedText style={styles.message}>
               Suggest an improvement with Augmented Reality
@@ -94,11 +97,12 @@ export function SuggestionUpload({
         <ThemedView style={styles.modalContainer}>
           <ARProvider>
             <ARUserInterface
+              suggestions={suggestions}
               handleBackButton={handleBackButton}
-              handleSaveSuggestion={(suggestion) => {
-                saveSuggestionToForm([suggestion]);
-                closeARModal();
+              handleSaveSuggestions={(suggestions: ImageDetails[]) => {
+                saveSuggestionToForm(suggestions);
               }}
+              closeARModal={closeARModal}
             />
             <ARScene />
           </ARProvider>

@@ -11,7 +11,7 @@ import { Spacing } from '@/constants/styles/Spacing';
 import { Layout } from '@/constants/styles/Layout';
 import { tamuColors } from '@/constants/Colors';
 import { Border } from '@/constants/styles/Border';
-import { useAugmentedRealityContext } from '@/components/augmented-reality/AugmentedRealityProvider';
+import { useARContext } from '@/components/augmented-reality/ARProvider';
 import { ScreenshotCapture } from '@/components/augmented-reality/ScreenshotCapture';
 import { LEFT_ARROW_SRC } from '@/constants/ImagePaths';
 
@@ -23,7 +23,7 @@ const AR_UI_TABS: Record<string, AR_UI_TAB> = {
   SCREEN_CAPTURE: 'SCREEN_CAPTURE'
 } as const;
 
-export function AugmentedRealityUI({
+export function ARUserInterface({
   handleBackButton,
   handleSaveSuggestion
 }: {
@@ -31,14 +31,11 @@ export function AugmentedRealityUI({
   handleSaveSuggestion: () => void;
 }) {
   const { nudgeText, setNudgeTextWithReset, maybeHideNudgeText, webViewRef } =
-    useAugmentedRealityContext();
+    useARContext();
 
   const colorScheme = (useColorScheme() ?? 'light') as 'light' | 'dark';
-  const transparentBackground = useThemeColor(
-    {},
-    'augmentedRealityTransparentBackground'
-  );
-  const nudgeTextColor = useThemeColor({}, 'augmentedRealityText');
+  const transparentBackground = useThemeColor({}, 'ARTransparentBackground');
+  const nudgeTextColor = useThemeColor({}, 'ARText');
 
   const [currentTab, setCurrentTab] = useState<AR_UI_TAB>(AR_UI_TABS.INITIAL);
   const [showEntireUI, setShowEntireUI] = useState<boolean>(true);

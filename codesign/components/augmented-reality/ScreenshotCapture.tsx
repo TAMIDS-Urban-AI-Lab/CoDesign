@@ -3,7 +3,7 @@ import { saveToLibraryAsync, usePermissions } from 'expo-media-library';
 
 import { ThemedView } from '@/components/ui/ThemedView';
 import { ImageButton } from '@/components/ui/ImageButton';
-import { useAugmentedRealityContext } from '@/components/augmented-reality/AugmentedRealityProvider';
+import { useARContext } from '@/components/augmented-reality/ARProvider';
 import { Spacing } from '@/constants/styles/Spacing';
 import { Layout } from '@/constants/styles/Layout';
 import { CAPTURE_BUTTON_SRC } from '@/constants/ImagePaths';
@@ -22,11 +22,8 @@ export function ScreenshotCapture({
 }: ScreenshotCaptureProps) {
   const [libraryStatus, requestLibraryPermission] = usePermissions();
 
-  const {
-    setNudgeTextWithReset,
-    augmentedRealitySceneRef,
-    maybeHideNudgeText
-  } = useAugmentedRealityContext();
+  const { setNudgeTextWithReset, ARSceneRef, maybeHideNudgeText } =
+    useARContext();
 
   const handleScreenshot = async () => {
     if (!libraryStatus?.granted) {
@@ -47,7 +44,7 @@ export function ScreenshotCapture({
   };
 
   const takeScreenshot = async () => {
-    return await augmentedRealitySceneRef?.current?.capture?.().then((uri) => {
+    return await ARSceneRef?.current?.capture?.().then((uri) => {
       saveToLibraryAsync(uri)
         .then(() => {
           setNudgeTextWithReset('Screenshot saved');

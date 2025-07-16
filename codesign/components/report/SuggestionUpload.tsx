@@ -10,9 +10,9 @@ import { Border } from '@/constants/styles/Border';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useModal } from '@/components/provider/ModalProvider';
 import { ThemedModal } from '@/components/ui/ThemedModal';
-import { AugmentedRealityProvider } from '@/components/augmented-reality/AugmentedRealityProvider';
-import { AugmentedRealityScene } from '@/components/augmented-reality/AugmentedRealityScene';
-import { AugmentedRealityUI } from '@/components/augmented-reality/AugmentedRealityUI';
+import { ARProvider } from '@/components/augmented-reality/ARProvider';
+import { ARScene } from '@/components/augmented-reality/ARScene';
+import { ARUserInterface } from '@/components/augmented-reality/ARUserInterface';
 
 const SPARKLES_SRC = {
   light: require('@/assets/images/sparkles/sparkles-light.png'),
@@ -61,15 +61,15 @@ export function SuggestionUpload({
         testID="ar-suggestion-modal"
       >
         <ThemedView style={styles.modalContainer}>
-          <AugmentedRealityProvider>
-            <AugmentedRealityUI
+          <ARProvider>
+            <ARUserInterface
               handleBackButton={handleBackButton}
               handleSaveSuggestion={() => {
                 // console.log('TODO: Save suggestion');
               }}
             />
-            <AugmentedRealityScene />
-          </AugmentedRealityProvider>
+            <ARScene />
+          </ARProvider>
         </ThemedView>
       </ThemedModal>
     </ThemedView>

@@ -56,6 +56,7 @@ export function ARUserInterface({
   const nudgeTextColor = useThemeColor({}, 'ARText');
 
   const [currentTab, setCurrentTab] = useState<AR_UI_TAB>(AR_UI_TABS.INITIAL);
+  const [showScreenCapture, setShowScreenCapture] = useState<boolean>(false);
   const [showEntireUI, setShowEntireUI] = useState<boolean>(true);
 
   const suggestionImageOpacity: SharedValue<number> = useSharedValue(0);
@@ -96,14 +97,12 @@ export function ARUserInterface({
     }
     if (tab === AR_UI_TABS.SCREEN_CAPTURE) {
       setCurrentTab(AR_UI_TABS.SCREEN_CAPTURE);
-      // show screen capture UI
       hideItemMenu();
+      setShowScreenCapture(true);
       setNudgeTextWithReset('Take a picture of your creation');
-      // update nudge text
     } else if (tab === AR_UI_TABS.ITEM_MENU) {
       setCurrentTab(AR_UI_TABS.ITEM_MENU);
       showItemMenu();
-      // hide screen capture UI
       maybeHideNudgeText();
     }
   };
@@ -153,8 +152,10 @@ export function ARUserInterface({
           accessibilityLabel="Close Suggestion Modal"
         />
       )}
-      {isCameraButtonActive && (
+      {showScreenCapture && (
         <ScreenshotCapture
+          isVisible={isCameraButtonActive}
+          unmountScreenCapture={() => setShowScreenCapture(false)}
           handleSaveSuggestions={handleSaveSuggestions}
           setShowEntireUI={setShowEntireUI}
           afterScreenshotCallback={() => {
@@ -225,7 +226,7 @@ export function ARUserInterface({
               type="secondary"
               onPress={() => {
                 handleSaveSuggestions([]);
-                setCurrentTab(AR_UI_TABS.SCREEN_CAPTURE);
+                switchToTab(AR_UI_TABS.SCREEN_CAPTURE);
               }}
               style={{ backgroundColor: '#ffffff99' }}
             />

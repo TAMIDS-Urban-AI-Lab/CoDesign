@@ -1,4 +1,12 @@
 import { StyleSheet } from 'react-native';
+import { useEffect } from 'react';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  Easing,
+  runOnJS
+} from 'react-native-reanimated';
 import {
   usePermissions,
   createAssetAsync,
@@ -18,12 +26,16 @@ const SCREENSHOT_WAIT_TIME = 5;
 const CAPTURE_BUTTON_SIZE = 75;
 
 type ScreenshotCaptureProps = {
+  isVisible: boolean;
+  unmountScreenCapture: () => void;
   handleSaveSuggestions: (suggestion: ImageDetails[]) => void;
   setShowEntireUI: (show: boolean) => void;
   afterScreenshotCallback?: () => void;
 };
 
 export function ScreenshotCapture({
+  isVisible,
+  unmountScreenCapture,
   handleSaveSuggestions,
   setShowEntireUI,
   afterScreenshotCallback
@@ -90,7 +102,10 @@ export function ScreenshotCapture({
 
   return (
     <>
-      <ThemedView style={[styles.screenCaptureContainer]}>
+      <AnimatedScreenCaptureContainer
+        isVisible={isVisible}
+        unmountScreenCapture={unmountScreenCapture}
+      >
         <ThemedView style={[styles.screenCaptureRow]}>
           <ImageButton
             source={CAPTURE_BUTTON_SRC}
@@ -102,8 +117,58 @@ export function ScreenshotCapture({
             accessibilityLabel="Take Screenshot"
           />
         </ThemedView>
-      </ThemedView>
+      </AnimatedScreenCaptureContainer>
     </>
+  );
+}
+
+function AnimatedScreenCaptureContainer({
+  isVisible,
+  unmountScreenCapture,
+  children
+}: {
+  isVisible: boolean;
+  unmountScreenCapture: () => void;
+  children: React.ReactNode;
+}) {
+  const opacity = useSharedValue(0);
+  const translateY = useSharedValue(40);
+
+  useEffect(() => {
+    opacity.value = withTiming(1, {
+      duration: 400,
+      easing: Easing.out(Easing.ease)
+    });
+    translateY.value = withTiming(0, {
+      duration: 400,
+      easing: Easing.out(Easing.ease)
+    });
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, []);
+
+  if (!isVisible) {
+    opacity.value = withTiming(
+      0,
+      { duration: 400, easing: Easing.out(Easing.ease) },
+      (finished) => {
+        if (finished) runOnJS(unmountScreenCapture)();
+      }
+    );
+    translateY.value = withTiming(40, {
+      duration: 400,
+      easing: Easing.out(Easing.ease)
+    });
+  }
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: translateY.value }]
+  }));
+
+  return (
+    <Animated.View style={[styles.screenCaptureContainer, animatedStyle]}>
+      {children}
+    </Animated.View>
   );
 }
 

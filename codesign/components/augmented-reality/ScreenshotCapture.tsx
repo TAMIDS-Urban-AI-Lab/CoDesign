@@ -63,7 +63,7 @@ export function ScreenshotCapture({
     }, SCREENSHOT_WAIT_TIME);
   };
 
-  const takeScreenshot = async () => {
+  const takeScreenshot = async (afterScreenshotCallback?: () => void) => {
     return await ARSceneRef?.current?.capture?.().then((uri) => {
       createAssetAsync(uri)
         .then((asset: Asset) => {

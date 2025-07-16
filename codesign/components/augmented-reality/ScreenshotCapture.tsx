@@ -18,13 +18,15 @@ const SCREENSHOT_WAIT_TIME = 25;
 const CAPTURE_BUTTON_SIZE = 75;
 
 type ScreenshotCaptureProps = {
-  handleSaveSuggestion: (suggestion: ImageDetails) => void;
+  handleSaveSuggestions: (suggestion: ImageDetails[]) => void;
   setShowEntireUI: (show: boolean) => void;
+  afterScreenshotCallback?: () => void;
 };
 
 export function ScreenshotCapture({
-  handleSaveSuggestion,
-  setShowEntireUI
+  handleSaveSuggestions,
+  setShowEntireUI,
+  afterScreenshotCallback
 }: ScreenshotCaptureProps) {
   const [libraryStatus, requestLibraryPermission] = usePermissions();
 
@@ -48,16 +50,14 @@ export function ScreenshotCapture({
     maybeHideNudgeText();
     setShowEntireUI(false);
     setTimeout(() => {
-      takeScreenshot();
+      takeScreenshot(afterScreenshotCallback);
     }, SCREENSHOT_WAIT_TIME);
   };
 
-  const takeScreenshot = async () => {
+  const takeScreenshot = async (afterScreenshotCallback?: () => void) => {
     return await augmentedRealitySceneRef?.current?.capture?.().then((uri) => {
       createAssetAsync(uri)
         .then((asset: Asset) => {
-          setNudgeTextWithReset('Screenshot saved');
-          setShowEntireUI(true);
           convertImageToBase64(uri)
             .then((base64) => {
               const screenshotImage: ImageDetails = {
@@ -65,7 +65,8 @@ export function ScreenshotCapture({
                 base64: base64
               };
               // Save to form
-              handleSaveSuggestion(screenshotImage);
+              handleSaveSuggestions([screenshotImage]);
+              afterScreenshotCallback?.();
               setShowEntireUI(true);
             })
             .catch(() => {

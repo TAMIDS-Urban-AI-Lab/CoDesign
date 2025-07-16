@@ -1,9 +1,17 @@
 import { render, screen } from '@testing-library/react-native';
 
-import { SuggestionUpload } from '@/components/report/SuggestionUpload';
+import { mockRNWebView } from '@/mocks/mockWebView';
 import { ModalProvider } from '@/components/provider/ModalProvider';
 
 describe('<SuggestionUpload />', () => {
+  const { mockWebView } = mockRNWebView();
+
+  beforeEach(() => {
+    mockWebView.mockClear();
+  });
+
+  const { SuggestionUpload } = require('@/components/report/SuggestionUpload');
+
   test('renders suggestion upload with message and button', () => {
     // When view the Suggestion Upload component
     render(

@@ -14,6 +14,7 @@ import { mockExpoRouter } from '@/mocks/mockExpoRouter';
 import { TAB_ROUTE_PATH, TAB_ROUTES } from '@/constants/Routes';
 import { mockUploadReport } from '@/mocks/api/mockUploadReport';
 import { createMockedReportFormDetails } from '@/mocks/mockReport';
+import { mockRNWebView } from '@/mocks/mockWebView';
 
 describe('<ReportForm />', () => {
   // Mock 3rd party libraries
@@ -24,6 +25,7 @@ describe('<ReportForm />', () => {
   });
   const { mockedRouterReplace } = mockExpoRouter();
   const { mockedUploadReport } = mockUploadReport();
+  mockRNWebView();
 
   // Mock CodesignDataProvider and ModalProvider
   const mockedOpenModal = jest.fn();

@@ -312,7 +312,6 @@ const styles = StyleSheet.create({
     ...Border.roundedSmall
   },
   confirmSuggestionContainer: {
-    // ...Layout.flex,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -320,23 +319,16 @@ const styles = StyleSheet.create({
     bottom: 0,
     ...Layout.center,
     padding: Spacing.large,
-    // backgroundColor: 'red',
-    // ...Layout.justifyCenter,
-    // ...Layout.alignCenter,
     zIndex: 1
   },
   suggestionImage: {
     width: '100%',
     height: '80%',
     resizeMode: 'cover',
-    // backgroundColor: tamuColors.gray200,
-    // width: '100%',
-    // height: '100%',
     ...Border.roundedSmall
   },
   confirmSuggestionActions: {
     ...Layout.row,
-    // ...Layout.justifySpaceBetween,
     ...Layout.center,
     gap: Spacing.medium,
     marginTop: Spacing.medium

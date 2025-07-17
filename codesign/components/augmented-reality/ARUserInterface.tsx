@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { ImageButton } from '@/components/ui/ImageButton';
 import { ThemedText } from '@/components/ui/ThemedText';
@@ -67,11 +67,6 @@ export function ARUserInterface({
     transform: [{ scale: suggestionImageScale.value }]
   }));
 
-  /* Hide UI when taking a screenshot */
-  if (!showEntireUI) {
-    return null;
-  }
-
   const setMenuDisplay = (display: 'none' | 'flex') => {
     return `
       document.getElementById('container').style.display = '${display}';
@@ -129,11 +124,27 @@ export function ARUserInterface({
     AR_UI_TABS.ITEM_MENU
   ].includes(currentTab);
 
-  maybeAnimatesuggestionImage(
-    isConfirmSuggestionTabActive,
-    suggestionImageOpacity,
-    suggestionImageScale
-  );
+  useEffect(() => {
+    if (isConfirmSuggestionTabActive) {
+      suggestionImageOpacity.value = withTiming(1, {
+        duration: 400,
+        easing: Easing.out(Easing.ease)
+      });
+      suggestionImageScale.value = withTiming(1, {
+        duration: 400,
+        easing: Easing.out(Easing.ease)
+      });
+    } else {
+      suggestionImageOpacity.value = 0;
+      suggestionImageScale.value = 0.95;
+    }
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [currentTab]);
+
+  /* Hide UI when taking a screenshot */
+  if (!showEntireUI) {
+    return null;
+  }
 
   return (
     <>
@@ -253,26 +264,6 @@ export function ARUserInterface({
       )}
     </>
   );
-}
-
-function maybeAnimatesuggestionImage(
-  isConfirmSuggestionTabActive: boolean,
-  suggestionImageOpacity: SharedValue<number>,
-  suggestionImageScale: SharedValue<number>
-) {
-  if (isConfirmSuggestionTabActive) {
-    suggestionImageOpacity.value = withTiming(1, {
-      duration: 400,
-      easing: Easing.out(Easing.ease)
-    });
-    suggestionImageScale.value = withTiming(1, {
-      duration: 400,
-      easing: Easing.out(Easing.ease)
-    });
-  } else {
-    suggestionImageOpacity.value = 0;
-    suggestionImageScale.value = 0.95;
-  }
 }
 
 const styles = StyleSheet.create({

@@ -1,5 +1,17 @@
 import { StyleSheet } from 'react-native';
-import { saveToLibraryAsync, usePermissions } from 'expo-media-library';
+import { useEffect } from 'react';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  Easing,
+  runOnJS
+} from 'react-native-reanimated';
+import {
+  usePermissions,
+  createAssetAsync,
+  type Asset
+} from 'expo-media-library';
 
 import { ThemedView } from '@/components/ui/ThemedView';
 import { ImageButton } from '@/components/ui/ImageButton';
@@ -7,18 +19,26 @@ import { useARContext } from '@/components/augmented-reality/ARProvider';
 import { Spacing } from '@/constants/styles/Spacing';
 import { Layout } from '@/constants/styles/Layout';
 import { CAPTURE_BUTTON_SRC } from '@/constants/ImagePaths';
+import { convertImageToBase64 } from '@/utils/Image';
+import { ImageDetails } from '@/types/Report';
 
-const SCREENSHOT_WAIT_TIME = 25;
+const SCREENSHOT_WAIT_TIME = 5;
 const CAPTURE_BUTTON_SIZE = 75;
 
 type ScreenshotCaptureProps = {
-  handleSaveSuggestion: () => void;
+  isVisible: boolean;
+  unmountScreenCapture: () => void;
+  handleSaveSuggestions: (suggestion: ImageDetails[]) => void;
   setShowEntireUI: (show: boolean) => void;
+  afterScreenshotCallback?: () => void;
 };
 
 export function ScreenshotCapture({
-  handleSaveSuggestion,
-  setShowEntireUI
+  isVisible,
+  unmountScreenCapture,
+  handleSaveSuggestions,
+  setShowEntireUI,
+  afterScreenshotCallback
 }: ScreenshotCaptureProps) {
   const [libraryStatus, requestLibraryPermission] = usePermissions();
 
@@ -30,7 +50,7 @@ export function ScreenshotCapture({
       const { status } = await requestLibraryPermission();
       if (status && status !== 'granted') {
         setNudgeTextWithReset(
-          'Camera permission is required to take a photo. Please enable access in device settings.'
+          'Library access is required to save the photo. Please enable access in device settings.'
         );
         return;
       }
@@ -39,21 +59,35 @@ export function ScreenshotCapture({
     maybeHideNudgeText();
     setShowEntireUI(false);
     setTimeout(() => {
-      takeScreenshot();
+      takeScreenshot(afterScreenshotCallback);
     }, SCREENSHOT_WAIT_TIME);
   };
 
-  const takeScreenshot = async () => {
+  const takeScreenshot = async (afterScreenshotCallback?: () => void) => {
     return await ARSceneRef?.current?.capture?.().then((uri) => {
-      saveToLibraryAsync(uri)
-        .then(() => {
-          setNudgeTextWithReset('Screenshot saved');
-          setShowEntireUI(true);
-          handleSaveSuggestion();
+      createAssetAsync(uri)
+        .then((asset: Asset) => {
+          convertImageToBase64(uri)
+            .then((base64) => {
+              const screenshotImage: ImageDetails = {
+                uri: asset.uri,
+                base64: base64
+              };
+              // Save to form
+              handleSaveSuggestions([screenshotImage]);
+              afterScreenshotCallback?.();
+              setShowEntireUI(true);
+            })
+            .catch(() => {
+              setNudgeTextWithReset(
+                'An issue occurred while adding the suggestion to the report'
+              );
+              setShowEntireUI(true);
+            });
         })
         .catch(() => {
           setNudgeTextWithReset(
-            'An issue occurred while saving the screenshot.'
+            'An issue occurred while saving the screenshot to library'
           );
           setShowEntireUI(true);
         })
@@ -68,7 +102,10 @@ export function ScreenshotCapture({
 
   return (
     <>
-      <ThemedView style={[styles.screenCaptureContainer]}>
+      <AnimatedScreenCaptureContainer
+        isVisible={isVisible}
+        unmountScreenCapture={unmountScreenCapture}
+      >
         <ThemedView style={[styles.screenCaptureRow]}>
           <ImageButton
             source={CAPTURE_BUTTON_SRC}
@@ -80,8 +117,64 @@ export function ScreenshotCapture({
             accessibilityLabel="Take Screenshot"
           />
         </ThemedView>
-      </ThemedView>
+      </AnimatedScreenCaptureContainer>
     </>
+  );
+}
+
+function AnimatedScreenCaptureContainer({
+  isVisible,
+  unmountScreenCapture,
+  children
+}: {
+  isVisible: boolean;
+  unmountScreenCapture: () => void;
+  children: React.ReactNode;
+}) {
+  const opacity = useSharedValue(0);
+  const translateY = useSharedValue(40);
+
+  useEffect(
+    () => {
+      opacity.value = withTiming(1, {
+        duration: 400,
+        easing: Easing.out(Easing.ease)
+      });
+      translateY.value = withTiming(0, {
+        duration: 400,
+        easing: Easing.out(Easing.ease)
+      });
+    },
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+    []
+  );
+
+  useEffect(() => {
+    if (!isVisible) {
+      opacity.value = withTiming(
+        0,
+        { duration: 400, easing: Easing.out(Easing.ease) },
+        (finished) => {
+          if (finished) runOnJS(unmountScreenCapture)();
+        }
+      );
+      translateY.value = withTiming(40, {
+        duration: 400,
+        easing: Easing.out(Easing.ease)
+      });
+    }
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [isVisible, unmountScreenCapture]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: translateY.value }]
+  }));
+
+  return (
+    <Animated.View style={[styles.screenCaptureContainer, animatedStyle]}>
+      {children}
+    </Animated.View>
   );
 }
 

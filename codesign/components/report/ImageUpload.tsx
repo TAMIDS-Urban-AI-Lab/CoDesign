@@ -29,14 +29,11 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { ImageButton } from '@/components/ui/ImageButton';
 import { ImageDetails } from '@/types/Report';
+import { CLOSE_IMAGE_SRC } from '@/constants/ImagePaths';
 
 export const IMAGE_UPLOAD_LIMIT = 3;
 
 const CONTAINER_HEIGHT = 120;
-const CLOSE_IMAGE_SRC = {
-  light: require('@/assets/images/circle-xmark/circle-xmark-light.png'),
-  dark: require('@/assets/images/circle-xmark/circle-xmark-dark.png')
-};
 const MAX_MB = 20;
 const MAX_IMAGE_SIZE = MAX_MB * 1024 * 1024;
 const MAX_RESOLUTION = 1080;
@@ -367,7 +364,6 @@ const styles = StyleSheet.create({
     height: CONTAINER_HEIGHT
   },
   image: {
-    // ...Layout.flex,
     width: '100%',
     height: '100%',
     ...Border.roundedSmall

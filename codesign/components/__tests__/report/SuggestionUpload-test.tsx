@@ -22,7 +22,7 @@ describe('<SuggestionUpload />', () => {
 
     // Then show the suggestion message
     expect(
-      screen.getByText('Would you like to suggest an improvement?')
+      screen.getByText('Suggest an improvement with Augmented Reality')
     ).toBeVisible();
 
     // and show the SUGGEST button

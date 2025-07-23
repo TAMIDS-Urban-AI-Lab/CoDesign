@@ -63,7 +63,10 @@ describe('<ReportForm />', () => {
 
     // Location section should be visible
     await waitFor(() => {
-      expect(screen.getByText('Location')).toBeVisible();
+      expect(screen.getByText('Location Details')).toBeVisible();
+    });
+    await waitFor(() => {
+      expect(screen.getByText('Issue Location*')).toBeVisible();
     });
     await waitFor(() => {
       expect(screen.getByText('Indoor')).toBeVisible();

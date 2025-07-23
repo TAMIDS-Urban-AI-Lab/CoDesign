@@ -170,7 +170,7 @@ export function ReportForm({ style }: ViewProps) {
             rules={VALIDATION_RULES.reportLocation}
             render={({ field: { onChange, value } }) => (
               <>
-                <ThemedText type={'formText'}>
+                <ThemedText type={'formText'} id="issue-location-label">
                   Issue Location
                   <ThemedText type="error">*</ThemedText>
                 </ThemedText>
@@ -179,26 +179,31 @@ export function ReportForm({ style }: ViewProps) {
                     {errors.reportLocation.message}
                   </ThemedText>
                 )}
-                <ThemedRadioButton
-                  title="Indoor"
-                  checked={value === ReportLocationType.INDOOR}
-                  onPress={() =>
-                    maybeSwitchLocationAlert(
-                      ReportLocationType.INDOOR,
-                      onChange
-                    )
-                  }
-                />
-                <ThemedRadioButton
-                  title="Outdoor"
-                  checked={value === ReportLocationType.OUTDOOR}
-                  onPress={() =>
-                    maybeSwitchLocationAlert(
-                      ReportLocationType.OUTDOOR,
-                      onChange
-                    )
-                  }
-                />
+                <ThemedView
+                  role="radiogroup"
+                  aria-labelledby="issue-location-label"
+                >
+                  <ThemedRadioButton
+                    title="Indoor"
+                    checked={value === ReportLocationType.INDOOR}
+                    onPress={() =>
+                      maybeSwitchLocationAlert(
+                        ReportLocationType.INDOOR,
+                        onChange
+                      )
+                    }
+                  />
+                  <ThemedRadioButton
+                    title="Outdoor"
+                    checked={value === ReportLocationType.OUTDOOR}
+                    onPress={() =>
+                      maybeSwitchLocationAlert(
+                        ReportLocationType.OUTDOOR,
+                        onChange
+                      )
+                    }
+                  />
+                </ThemedView>
               </>
             )}
           />

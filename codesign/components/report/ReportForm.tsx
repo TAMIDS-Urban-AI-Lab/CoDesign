@@ -146,8 +146,22 @@ export function ReportForm({ style }: ViewProps) {
           withDivider={true}
           style={{ marginBottom: Spacing.small }}
         >
-          Location
+          Location Details
         </ThemedText>
+        <ThemedView style={styles.input}>
+          <Controller
+            control={control}
+            name="coordinates"
+            rules={VALIDATION_RULES.coordinates}
+            render={({ field: { onChange, value } }) => (
+              <SelectLocation
+                setSelectedLocation={onChange}
+                selectedLocation={value}
+                errorText={errors.coordinates?.message}
+              />
+            )}
+          />
+        </ThemedView>
         <ThemedView style={styles.input}>
           <Controller
             control={control}
@@ -156,6 +170,10 @@ export function ReportForm({ style }: ViewProps) {
             rules={VALIDATION_RULES.reportLocation}
             render={({ field: { onChange, value } }) => (
               <>
+                <ThemedText type={'formText'}>
+                  Issue Location
+                  <ThemedText type="error">*</ThemedText>
+                </ThemedText>
                 {errors.reportLocation && (
                   <ThemedText type="error">
                     {errors.reportLocation.message}
@@ -185,22 +203,6 @@ export function ReportForm({ style }: ViewProps) {
             )}
           />
         </ThemedView>
-
-        <ThemedView style={styles.input}>
-          <Controller
-            control={control}
-            name="coordinates"
-            rules={VALIDATION_RULES.coordinates}
-            render={({ field: { onChange, value } }) => (
-              <SelectLocation
-                setSelectedLocation={onChange}
-                selectedLocation={value}
-                errorText={errors.coordinates?.message}
-              />
-            )}
-          />
-        </ThemedView>
-
         {reportLocation === ReportLocationType.INDOOR && (
           <>
             <ThemedView style={styles.input}>

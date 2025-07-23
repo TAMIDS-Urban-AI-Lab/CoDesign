@@ -56,6 +56,9 @@ export function ThemedRadioButton({
           {title}
         </ThemedText>
       }
+      aria-label={title}
+      role="radio"
+      aria-checked={checked}
       checked={checked}
       onPress={onPress}
       checkedIcon={

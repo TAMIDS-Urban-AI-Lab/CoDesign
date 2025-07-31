@@ -238,7 +238,8 @@ const styles = StyleSheet.create({
   previewContainer: {
     height: PREVIEW_HEIGHT,
     ...Border.roundedLarge,
-    ...Border.elevatedSmall
+    ...Border.elevatedSmall,
+    marginTop: Spacing.large
   },
   roundCorner: {
     ...Layout.flex,

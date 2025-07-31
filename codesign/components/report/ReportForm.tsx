@@ -146,46 +146,8 @@ export function ReportForm({ style }: ViewProps) {
           withDivider={true}
           style={{ marginBottom: Spacing.small }}
         >
-          Location
+          Location Details
         </ThemedText>
-        <ThemedView style={styles.input}>
-          <Controller
-            control={control}
-            name="reportLocation"
-            defaultValue={ReportLocationType.INDOOR}
-            rules={VALIDATION_RULES.reportLocation}
-            render={({ field: { onChange, value } }) => (
-              <>
-                {errors.reportLocation && (
-                  <ThemedText type="error">
-                    {errors.reportLocation.message}
-                  </ThemedText>
-                )}
-                <ThemedRadioButton
-                  title="Indoor"
-                  checked={value === ReportLocationType.INDOOR}
-                  onPress={() =>
-                    maybeSwitchLocationAlert(
-                      ReportLocationType.INDOOR,
-                      onChange
-                    )
-                  }
-                />
-                <ThemedRadioButton
-                  title="Outdoor"
-                  checked={value === ReportLocationType.OUTDOOR}
-                  onPress={() =>
-                    maybeSwitchLocationAlert(
-                      ReportLocationType.OUTDOOR,
-                      onChange
-                    )
-                  }
-                />
-              </>
-            )}
-          />
-        </ThemedView>
-
         <ThemedView style={styles.input}>
           <Controller
             control={control}
@@ -200,7 +162,52 @@ export function ReportForm({ style }: ViewProps) {
             )}
           />
         </ThemedView>
-
+        <ThemedView style={styles.input}>
+          <Controller
+            control={control}
+            name="reportLocation"
+            defaultValue={ReportLocationType.INDOOR}
+            rules={VALIDATION_RULES.reportLocation}
+            render={({ field: { onChange, value } }) => (
+              <>
+                <ThemedText type={'formText'} id="issue-location-label">
+                  Issue Location
+                  <ThemedText type="error">*</ThemedText>
+                </ThemedText>
+                {errors.reportLocation && (
+                  <ThemedText type="error">
+                    {errors.reportLocation.message}
+                  </ThemedText>
+                )}
+                <ThemedView
+                  role="radiogroup"
+                  aria-labelledby="issue-location-label"
+                >
+                  <ThemedRadioButton
+                    title="Indoor"
+                    checked={value === ReportLocationType.INDOOR}
+                    onPress={() =>
+                      maybeSwitchLocationAlert(
+                        ReportLocationType.INDOOR,
+                        onChange
+                      )
+                    }
+                  />
+                  <ThemedRadioButton
+                    title="Outdoor"
+                    checked={value === ReportLocationType.OUTDOOR}
+                    onPress={() =>
+                      maybeSwitchLocationAlert(
+                        ReportLocationType.OUTDOOR,
+                        onChange
+                      )
+                    }
+                  />
+                </ThemedView>
+              </>
+            )}
+          />
+        </ThemedView>
         {reportLocation === ReportLocationType.INDOOR && (
           <>
             <ThemedView style={styles.input}>

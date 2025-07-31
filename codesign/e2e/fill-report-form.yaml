@@ -9,16 +9,6 @@ appId: com.urbanailab.codesign
 # When tap on the "Create Report" tab
 - tapOn: Create Report, tab, 2 of 3
 
-# Location options should be visible
-- assertVisible: "Location"
-- assertVisible: "Indoor"
-- assertVisible: "Outdoor"
-
-# and indoor fields
-- assertVisible: "Building Name*"
-- assertVisible: "Floor Number*"
-- assertVisible: 1
-
 # When interact with map
 - tapOn:
     id: mapbox-mapview
@@ -39,10 +29,20 @@ appId: com.urbanailab.codesign
 - assertNotVisible: "Use Current Location"
 - assertNotVisible: "Set Location"
 
+# Location options should be visible
+- assertVisible: "Issue Location*"
+- assertVisible: "Indoor"
+- assertVisible: "Outdoor"
+
+# and indoor fields
+- assertVisible: "Building Name*"
+- assertVisible: "Floor Number*"
+- assertVisible: 1
+
 # and fill in the Build Name
 - tapOn: "Enter building name"
 - inputText: "Test Building"
-- tapOn: "Location" # close keyboard without using flakey hideKeyboard
+- tapOn: "Issue Location*" # close keyboard without using flakey hideKeyboard
 
 # Then, switching to Outdoor should trigger confirmation alert
 - tapOn: "Outdoor"

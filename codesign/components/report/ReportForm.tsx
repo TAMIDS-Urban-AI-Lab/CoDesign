@@ -277,6 +277,7 @@ export function ReportForm({ style }: ViewProps) {
             name="suggestions"
             render={({ field: { onChange, value } }) => (
               <SuggestionUpload
+                currentLocation={reportLocation}
                 value={value}
                 onChange={onChange}
                 style={{ marginTop: Spacing.xsmall }}

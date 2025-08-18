@@ -5,10 +5,14 @@ import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 import { Layout } from '@/constants/styles/Layout';
 import { useARContext } from '@/components/augmented-reality/ARProvider';
 import { AR_ITEMS, AR_ITEM_NAMES } from '@/constants/augmented-reality/Items';
+import { ReportLocationType } from '@/types/Report';
 
-const AR_SCENE_PROD_URL = 'https://tamucodesign.8thwall.app/tap-menu/';
-
-export function ARScene() {
+export function ARScene({
+  currentLocation
+}: {
+  currentLocation: ReportLocationType;
+}) {
+  const AR_SCENE_PROD_URL = `https://tamucodesign.8thwall.app/tap-menu/?location=${currentLocation}`;
   const { setNudgeTextWithReset, webViewRef, ARSceneRef } = useARContext();
 
   const handleWebViewMessage = (event: WebViewMessageEvent) => {

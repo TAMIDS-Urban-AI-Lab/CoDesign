@@ -16,11 +16,8 @@ import { Coordinates, Report } from '@/types/Report';
 import { ReportDetailsSheet } from '@/components/report/ReportDetailsSheet';
 import { ALBRITTON_BELL_TOWER } from '@/constants/map/Coordinates';
 import { getImageById } from '@/api/report/getImageById';
-
-const REPORT_ICON_SRC = {
-  light: require('@/assets/images/custom-form-icon-light.png'),
-  dark: require('@/assets/images/custom-form-icon-dark.png')
-};
+import { SELF_AUTHOR_ID } from '@/constants/report/Report';
+import { REPORT_ICON_SELF, REPORT_ICON_OTHER } from '@/constants/ImagePaths';
 
 const SUCCESS_BADGE_SRC = {
   light: require('@/assets/images/badge-check-light.png'),
@@ -89,7 +86,11 @@ export default function HomeScreen() {
               onPress={() => expandSheet(report)}
             >
               <Image
-                source={REPORT_ICON_SRC[colorScheme]}
+                source={
+                  report.getAuthorId() === SELF_AUTHOR_ID
+                    ? REPORT_ICON_SELF[colorScheme]
+                    : REPORT_ICON_OTHER[colorScheme]
+                }
                 style={styles.reportImage}
               />
             </MarkerView>

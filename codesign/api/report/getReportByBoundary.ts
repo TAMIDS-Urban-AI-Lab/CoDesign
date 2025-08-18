@@ -35,6 +35,7 @@ const convertToReportArray = (data: ReportFormDetails[]): Report[] => {
       coordinates: item.coordinates as Coordinates,
       images: item.images || [],
       title: item.title,
+      authorId: item.authorId || undefined,
       description: item.description
     };
 

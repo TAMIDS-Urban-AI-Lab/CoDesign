@@ -10,6 +10,7 @@ import { ROUTES } from '@/constants/api/routes';
 import { getMockImage } from '@/mocks/mockImage';
 import { reportFactory } from '@/mocks/mockReport';
 import { ReportFormDetails } from '@/types/Report';
+import { SELF_AUTHOR_ID } from '@/constants/report/Report';
 
 declare global {
   interface Window {
@@ -52,6 +53,7 @@ function createMockServer() {
         const report: ReportFormDetails = JSON.parse(request.requestBody)[0];
         report.id = Math.floor(Math.random() * 1000);
         report.createdAt = new Date();
+        report.authorId = SELF_AUTHOR_ID;
         return JSON.stringify({ data: report });
       });
 

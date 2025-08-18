@@ -33,3 +33,5 @@ export const DefaultOutdoorReport: ReportFormDetails = {
   createdAt: new Date(),
   images: []
 };
+
+export const SELF_AUTHOR_ID: number = 1; // Placeholder for the author's ID, to be replaced with actual logic

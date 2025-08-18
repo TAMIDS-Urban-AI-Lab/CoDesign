@@ -10,6 +10,7 @@ import {
 } from '@/types/Report';
 import { ReportFormDetails } from '@/types/Report';
 import { TAMU_CAMPUS_BOUNDS } from '@/constants/map/Coordinates';
+import { SELF_AUTHOR_ID } from '@/constants/report/Report';
 
 export const createMockedReportFormDetails = (
   overrideData: Partial<ReportFormDetails> = {}
@@ -30,6 +31,10 @@ export const createMockedReportFormDetails = (
     images: [],
     title: createMockedReportTitle(id),
     description: createMockedReportDescription(id),
+    authorId: faker.number.int({
+      min: SELF_AUTHOR_ID + 1,
+      max: 1000000
+    }),
     ...overrideData
   };
 };

@@ -17,7 +17,7 @@ import { TextButton } from '@/components/ui/TextButton';
 import { ThemedRadioButton } from '@/components/ui/ThemedRadioButton';
 import { ThemedTextInput } from '@/components/ui/ThemedTextInput';
 import { Typography } from '@/constants/styles/Typography';
-import { DefaultIndoorReport } from '@/constants/report/Report';
+import { DefaultIndoorReport, SELF_AUTHOR_ID } from '@/constants/report/Report';
 import {
   ReportLocationType,
   ReportType,
@@ -68,7 +68,8 @@ export function ReportForm({ style }: ViewProps) {
           id: success.id,
           createdAt: success.createdAt
             ? new Date(success.createdAt)
-            : new Date()
+            : new Date(),
+          authorId: SELF_AUTHOR_ID
         });
         setReports([...reports, newReport]);
 

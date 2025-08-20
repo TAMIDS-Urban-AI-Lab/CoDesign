@@ -16,6 +16,7 @@ import { ARUserInterface } from '@/components/augmented-reality/ARUserInterface'
 import { ImageDetails } from '@/types/Report';
 import { ImageButton } from '@/components/ui/ImageButton';
 import { CLOSE_IMAGE_SRC } from '@/constants/ImagePaths';
+import { ReportLocationType } from '@/types/Report';
 
 const SPARKLES_SRC = {
   light: require('@/assets/images/sparkles/sparkles-light.png'),
@@ -25,12 +26,14 @@ const SPARKLES_SRC = {
 const SUGGESTION_IMAGE_HEIGHT = 90;
 
 type SuggestionUploadProps = {
+  currentLocation: ReportLocationType;
   style?: ViewProps['style'];
   onChange: (...event: any[]) => void;
   value: ImageDetails[];
 };
 
 export function SuggestionUpload({
+  currentLocation,
   style,
   onChange: saveSuggestionToForm,
   value: suggestions
@@ -104,7 +107,7 @@ export function SuggestionUpload({
               }}
               closeARModal={closeARModal}
             />
-            <ARScene />
+            <ARScene currentLocation={currentLocation} />
           </ARProvider>
         </ThemedView>
       </ThemedModal>

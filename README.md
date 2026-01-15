@@ -1,6 +1,6 @@
 # Welcome to Codesign
 
-Codesign enables students and faculty to provide feedback reports about Texas A&M's on-site facilities to help improve and imagine a better community space.
+Codesign enables citizens to provide feedback reports about indoor/outdoor public spaces to help improve and imagine a better community space.
 
 ## Current Features
 
@@ -8,6 +8,7 @@ Codesign enables students and faculty to provide feedback reports about Texas A&
 - Submit a new feedback report
   - Include photos from Photo Library
   - Select report location on a map
+- Suggest improvements with AR mode
 
 ## Getting started
 
